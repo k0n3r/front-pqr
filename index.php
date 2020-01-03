@@ -16,7 +16,7 @@ include_once $rootPath . 'views/assets/librerias.php';
 
 $params = json_encode([
     'baseUrl' => $rootPath,
-] + $_REQUEST);
+]);
 
 ?>
 <!DOCTYPE html>
@@ -39,7 +39,7 @@ $params = json_encode([
     <?= bootstrap() ?>
     <?= theme() ?>
     <?= icons() ?>
-    <script id="base_script" data-params='<?= $params ?>' type="module" src="<?= $rootPath ?>views/modules/pqr/main.js"></script>
+    <script id="base_script" data-params='<?= $params ?>' type="module" src="<?= $rootPath ?>views/modules/pqr/js/main.js"></script>
 </body>
 
 </html>
