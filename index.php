@@ -32,14 +32,17 @@ $params = json_encode([
 </head>
 
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <BaseComponent></BaseComponent>
+    </div>
     <?= vue() ?>
     <?= vuex() ?>
     <?= jquery() ?>
+    <?= validate() ?>
     <?= bootstrap() ?>
     <?= theme() ?>
     <?= icons() ?>
-    <script id="base_script" data-params='<?= $params ?>' type="module" src="<?= $rootPath ?>views/modules/pqr/js/main.js"></script>
+    <script id="base_script" type="module" src="<?= $rootPath ?>views/modules/pqr/js/main.js"></script>
 </body>
 
 </html>

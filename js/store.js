@@ -1,3 +1,15 @@
+var baseUrl = '../../../';
+$.ajaxSetup({
+    url: `${baseUrl}app/modules/back_pqr/app/request.php`,
+    method: "post",
+    dataType: "json",
+    data: {
+        key: localStorage.getItem('key'),
+        token: localStorage.getItem('token')
+    }
+});
+
+
 const store = new Vuex.Store({
     state: {
         componentsHTML: [],
@@ -27,12 +39,17 @@ const store = new Vuex.Store({
 
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: `api/htmlfields`,
-                    method: "get",
-                    dataType: "json",
+                    data: {
+                        class: 'PqrHtmlFieldController',
+                        method: 'index'
+                    },
                     success: function (response) {
-                        commit("setComponentsHTML", response.data.data);
-                        resolve();
+                        if (response.success) {
+                            commit("setComponentsHTML", response.data);
+                            resolve();
+                        } else {
+                            console.log(response)
+                        }
                     },
                     error: function (error) {
                         console.error(error);
@@ -43,6 +60,7 @@ const store = new Vuex.Store({
         },
         getDataFormFields({ commit }, id) {
             return new Promise((resolve, reject) => {
+
                 axios
                     .request({
                         url: `api/formfields/form/${id}`,
@@ -61,21 +79,26 @@ const store = new Vuex.Store({
         },
         insertFormField({ commit }, dataField) {
             return new Promise((resolve, reject) => {
-                axios
-                    .request({
-                        url: `api/formfields`,
-                        method: "post",
-                        dataType: "json",
-                        data: dataField
-                    })
-                    .then(response => {
-                        commit("addFormField", response.data.data);
-                        resolve();
-                    })
-                    .catch(error => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormFieldController',
+                        method: 'store',
+                        params: dataField
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("addFormField", response.data);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    },
+                    error: function (error) {
                         console.error(error);
                         reject();
-                    });
+                    }
+                })
             });
         },
         updateFormField({ commit }, { dataField, id }) {
