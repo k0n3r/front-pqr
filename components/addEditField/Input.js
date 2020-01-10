@@ -1,5 +1,5 @@
 
-import validateFormMixin from "../js/validateFormMixin.js";
+import validateFormMixin from "../../js/validateFormMixin.js";
 
 export default {
     name: "Input",

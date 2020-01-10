@@ -36,7 +36,6 @@ const store = new Vuex.Store({
     },
     actions: {
         getDataComponentsHTML({ commit }) {
-
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
@@ -58,23 +57,27 @@ const store = new Vuex.Store({
                 })
             });
         },
-        getDataFormFields({ commit }, id) {
-            return new Promise((resolve, reject) => {
+        getDataFormFields({ commit }) {
 
-                axios
-                    .request({
-                        url: `api/formfields/form/${id}`,
-                        method: "get",
-                        dataType: "json"
-                    })
-                    .then(response => {
-                        commit("setFormFields", response.data.data);
-                        resolve();
-                    })
-                    .catch(error => {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormFieldController',
+                        method: 'index'
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("setFormFields", response.data);
+                            resolve();
+                        } else {
+                            console.log(response)
+                        }
+                    },
+                    error: function (error) {
                         console.error(error);
                         reject();
-                    });
+                    }
+                })
             });
         },
         insertFormField({ commit }, dataField) {

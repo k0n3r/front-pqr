@@ -1,5 +1,5 @@
-import InputComponent from "../components/Input.js";
-import SelectComponent from "../components/Select.js";
+import InputComponent from "../components/addEditField/Input.js";
+import SelectComponent from "../components/addEditField/Select.js";
 
 export default {
     name: "AddEditFormField",
@@ -17,8 +17,14 @@ export default {
             required: true
         }
     },
-    template: `
-    <InputComponent v-if="typeHtmlField=='input'" :dataParams="paramsFormField" />    
-    <SelectComponent v-if="typeHtmlField=='select'" :dataParams="paramsFormField" />    
+    template: `<div>
+        <template v-if="typeHtmlField=='input' || typeHtmlField=='textarea'">
+            <InputComponent :dataParams="paramsFormField" />
+        </template>
+
+        <template v-if="typeHtmlField=='select' || typeHtmlField=='radio' || typeHtmlField=='checkbox'">
+            <SelectComponent :dataParams="paramsFormField" />
+        </template>
+    </div>
     `
 }
