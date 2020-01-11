@@ -19,10 +19,6 @@ const validateFormMixin = {
             $("#fomInput").trigger('submit');
         },
         resetForm() {
-            $("#form_buttons").show();
-            $("#spiner").addClass('d-none');
-
-            this.form = this.clearDataForm();
             $("#divPqrModal").modal('hide');
         }
     }

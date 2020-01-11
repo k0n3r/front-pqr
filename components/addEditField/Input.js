@@ -121,7 +121,7 @@ export default {
 
             <div class="float-right">
                 <div class='form-group' id='form_buttons'>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" @click="resetForm">Cancelar</button>
                     <button type="button" class="btn btn-complete" @click="onSubmit">Guardar</button>
                 </div>
                 <div class='progress-circle-indeterminate d-none' id='spiner'></div>

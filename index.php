@@ -38,6 +38,7 @@ $params = json_encode([
     <?= vue() ?>
     <?= vuex() ?>
     <?= jquery() ?>
+    <?= select2() ?>
     <?= validate() ?>
     <?= bootstrap() ?>
     <?= theme() ?>

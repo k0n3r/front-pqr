@@ -18,6 +18,9 @@ export default {
         }
     },
     template: `<div>
+        <template v-if="typeHtmlField=='blank'">
+        </template>
+
         <template v-if="typeHtmlField=='input' || typeHtmlField=='textarea'">
             <InputComponent :dataParams="paramsFormField" />
         </template>

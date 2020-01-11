@@ -46,11 +46,13 @@ export default {
                     idFormField: 0
                 }
                 this.modalTitle = obj.label;
-                this.typeHtmlField = obj.type;
+                this.typeHtmlField = 'blank';
                 resolve();
             }).then(() => {
+                this.typeHtmlField = obj.type;
+            }).then(() => {
                 $("#divPqrModal").modal('show');
-            });
+            })
         },
         valid() {
             let _this = this;
