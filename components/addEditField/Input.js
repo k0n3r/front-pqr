@@ -18,6 +18,9 @@ export default {
     created() {
         this.form = this.clearDataForm();
     },
+    computed: {
+        ...Vuex.mapState(["formFields"]),
+    },
     methods: {
         ...Vuex.mapActions(["insertFormField", "updateFormField"]),
         clearDataForm() {
@@ -27,15 +30,15 @@ export default {
                 placeholder: null
             };
             if (this.dataParams.isEdit) {
-                /*let dataFormField = this.formFields.find(
-                  i => i.id == this.dataParams.idFormField
+                let dataFormField = this.formFields.find(
+                    i => i.id == this.dataParams.idFormField
                 );
-        
+
                 dataForm = {
-                  label: dataFormField.label,
-                  required: dataFormField.required,
-                  placeholder: dataFormField.setting.placeholder
-                };*/
+                    label: dataFormField.label,
+                    required: dataFormField.required,
+                    placeholder: dataFormField.setting.placeholder
+                };
             }
             return dataForm;
         },
@@ -48,7 +51,7 @@ export default {
                         placeholder: this.form.placeholder
                     }
                 },
-                id: this.dataRequest.idFormField
+                id: this.dataParams.idFormField
             };
 
             this.updateFormField(editField).catch(() => {
@@ -57,6 +60,8 @@ export default {
                     message: 'No fue posible actualizar el campo'
                 })
             });
+            this.resetForm();
+
         },
         addField() {
             let dataField = {

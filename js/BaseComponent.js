@@ -16,10 +16,12 @@ export default {
             typeHtmlField: ''
         }
     },
-    computed: Vuex.mapState([
-        "componentsHTML",
-        "formFields"
-    ]),
+    computed: {
+        ...Vuex.mapState([
+            "componentsHTML",
+            "formFields"
+        ])
+    },
     created() {
 
         this.getDataComponentsHTML().catch(() => {
@@ -37,7 +39,7 @@ export default {
         });
     },
     methods: {
-        ...Vuex.mapActions(['getDataComponentsHTML', 'getDataFormFields']),
+        ...Vuex.mapActions(['getDataComponentsHTML', 'getDataFormFields', 'deleteFormField',]),
         addField(obj) {
             new Promise((resolve, reject) => {
                 this.paramsFormField = {
@@ -53,6 +55,29 @@ export default {
             }).then(() => {
                 $("#divPqrModal").modal('show');
             })
+        },
+        editField(obj) {
+            new Promise((resolve, reject) => {
+                this.paramsFormField = {
+                    isEdit: true,
+                    idFormField: obj.id
+                }
+                this.modalTitle = obj.fk_pqr_html_field.label;
+                this.typeHtmlField = 'blank';
+                resolve();
+            }).then(() => {
+                this.typeHtmlField = obj.fk_pqr_html_field.type;
+            }).then(() => {
+                $("#divPqrModal").modal('show');
+            })
+        },
+        deleteField(id) {
+            this.deleteFormField(id).catch(() => {
+                top.notification({
+                    type: 'error',
+                    message: 'No fue posible eliminar el campo'
+                })
+            });
         },
         valid() {
             let _this = this;
@@ -111,8 +136,19 @@ export default {
                     <div class="modal-body">
                         <template v-if="formFields.length">
                             <form id="formulario" name="formulario">
+
                                 <div v-for="field in formFields" :key="field.id">
-                                    <ViewFormField :data="field" />
+                                    <div class="row form-group">
+                                        <div class="col">
+                                            <div class="btn-group btn-group-xs float-right" role="group">
+                                                <button type="button" class="btn btn-xs btn-danger" @click="deleteField(field.id)"><i class="fa fa-trash"></i></button>
+                                                <button type="button" class="btn btn-xs btn-warning" @click="editField(field)"><i class="fa fa-edit"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <ViewFormField :data="field" />
+                                    </div>
                                 </div>
 
                                 <div class='form-group float-right'>

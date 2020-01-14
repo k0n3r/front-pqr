@@ -50,7 +50,7 @@ export default {
             placeholder: this.form.placeholder
           }
         },
-        id: this.dataRequest.idFormField
+        id: this.dataParams.idFormField
       };
 
       this.updateFormField(editField).catch(() => {
@@ -59,6 +59,8 @@ export default {
           message: 'No fue posible actualizar el campo'
         })
       });
+      this.resetForm();
+
     },
     addField() {
 

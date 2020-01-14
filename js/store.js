@@ -86,7 +86,7 @@ const store = new Vuex.Store({
                     data: {
                         class: 'PqrFormFieldController',
                         method: 'store',
-                        params: dataField
+                        data: { params: dataField }
                     },
                     success: function (response) {
                         if (response.success) {
@@ -104,41 +104,55 @@ const store = new Vuex.Store({
                 })
             });
         },
-        updateFormField({ commit }, { dataField, id }) {
+        updateFormField({ commit }, dataField) {
+
             return new Promise((resolve, reject) => {
-                axios
-                    .request({
-                        url: `api/formfields/${id}`,
-                        method: "put",
-                        dataType: "json",
-                        data: dataField
-                    })
-                    .then(response => {
-                        commit("editFormField", response.data.data);
-                        resolve();
-                    })
-                    .catch(error => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormFieldController',
+                        method: 'update',
+                        data: { params: dataField }
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("editFormField", response.data);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    },
+                    error: function (error) {
                         console.error(error);
                         reject();
-                    });
+                    }
+                })
             });
         },
         deleteFormField({ commit }, id) {
             return new Promise((resolve, reject) => {
-                axios
-                    .request({
-                        url: `api/formfields/${id}`,
-                        method: "delete",
-                        dataType: "json",
-                    })
-                    .then(() => {
-                        commit("delFormField", id);
-                        resolve();
-                    })
-                    .catch(error => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormFieldController',
+                        method: 'destroy',
+                        data: {
+                            id: id
+                        }
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("delFormField", id);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    },
+                    error: function (error) {
                         console.error(error);
                         reject();
-                    });
+                    }
+                })
             });
         }
     }

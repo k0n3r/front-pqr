@@ -20,7 +20,7 @@ export default {
         }
     },
     template: `
-    <div>
+    <div class="col">
         <ViewInputComponent v-if="data.fk_pqr_html_field.type=='input'" :dataParams="data" />
         <ViewTextareaComponent v-if="data.fk_pqr_html_field.type=='textarea'" :dataParams="data" />
         <ViewSelectComponent v-if="data.fk_pqr_html_field.type=='select'" :dataParams="data" />
