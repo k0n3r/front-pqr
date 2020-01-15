@@ -37,9 +37,23 @@ export default {
                 message: 'No fue posible obtener los campos del formulario'
             })
         });
+
+        this.getDataForm().catch(() => {
+            top.notification({
+                type: 'error',
+                message: 'No fue posible obtener la informacion del formulario'
+            })
+        });
+
     },
     methods: {
-        ...Vuex.mapActions(['getDataComponentsHTML', 'getDataFormFields', 'deleteFormField',]),
+        ...Vuex.mapActions([
+            'getDataComponentsHTML',
+            'getDataFormFields',
+            'getDataForm',
+            'deleteFormField',
+            'publishForm'
+        ]),
         addField(obj) {
             new Promise((resolve, reject) => {
                 this.paramsFormField = {
@@ -80,7 +94,6 @@ export default {
             });
         },
         valid() {
-            let _this = this;
             $("#formulario").validate({
                 submitHandler: function (form) {
                     top.notification({
@@ -90,6 +103,19 @@ export default {
                 }
             });
             $("#formulario").trigger('submit');
+        },
+        publish() {
+            this.publishForm().then(() => {
+                top.notification({
+                    type: 'success',
+                    message: 'Formulario generado'
+                })
+            }).catch(() => {
+                top.notification({
+                    type: 'error',
+                    message: 'No fue posible generar el formulario'
+                })
+            });
         }
     },
     template: `
@@ -153,7 +179,7 @@ export default {
 
                                 <div class='form-group float-right'>
                                     <button type="button" class="btn btn-complete" @click="valid">Validar</button>
-                                    <button type="button" class="btn btn-success">Publicar</button>
+                                    <button type="button" class="btn btn-success" @click="publish">Publicar</button>
                                 </div>
         
                             </form>

@@ -20,6 +20,9 @@ export default {
   created() {
     this.form = this.clearDataForm();
   },
+  computed: {
+    ...Vuex.mapState(["formFields"]),
+  },
   methods: {
     ...Vuex.mapActions(["insertFormField", "updateFormField"]),
     clearDataForm() {
@@ -29,15 +32,17 @@ export default {
         options: null
       };
       if (this.dataParams.isEdit) {
-        /*let dataFormField = this.formFields.find(
+
+        let dataFormField = this.formFields.find(
           i => i.id == this.dataParams.idFormField
         );
- 
+
         dataForm = {
           label: dataFormField.label,
           required: dataFormField.required,
-          placeholder: dataFormField.setting.placeholder
-        };*/
+          options: dataFormField.setting.options
+        };
+        this.valueOptions = 1;
       }
       return dataForm;
     },
@@ -47,7 +52,7 @@ export default {
           label: this.form.label,
           required: this.form.required,
           setting: {
-            placeholder: this.form.placeholder
+            options: this.form.options
           }
         },
         id: this.dataParams.idFormField
@@ -60,7 +65,6 @@ export default {
         })
       });
       this.resetForm();
-
     },
     addField() {
 

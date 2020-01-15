@@ -13,7 +13,8 @@ $.ajaxSetup({
 const store = new Vuex.Store({
     state: {
         componentsHTML: [],
-        formFields: []
+        formFields: [],
+        form: null
     },
     mutations: {
         setComponentsHTML(state, data) {
@@ -21,6 +22,9 @@ const store = new Vuex.Store({
         },
         setFormFields(state, data) {
             state.formFields = data;
+        },
+        setForm(state, data) {
+            state.form = data;
         },
         addFormField(state, data) {
             state.formFields.push(data);
@@ -45,6 +49,30 @@ const store = new Vuex.Store({
                     success: function (response) {
                         if (response.success) {
                             commit("setComponentsHTML", response.data);
+                            resolve();
+                        } else {
+                            console.log(response);
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        reject();
+                    }
+                })
+            });
+        },
+        getDataForm({ commit }) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormController',
+                        method: 'index'
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            if (Object.keys(response.data).length !== 0) {
+                                commit("setForm", response.data);
+                            }
                             resolve();
                         } else {
                             console.log(response)
@@ -142,6 +170,38 @@ const store = new Vuex.Store({
                     success: function (response) {
                         if (response.success) {
                             commit("delFormField", id);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        reject();
+                    }
+                })
+            });
+        },
+        publishForm({ commit, state }) {
+            return new Promise((resolve, reject) => {
+                let id = 0;
+                if (typeof state.form != null) {
+                    id = state.form.id;
+                }
+                console.log(id)
+                return false;
+                $.ajax({
+                    data: {
+                        class: 'PqrFormController',
+                        method: 'publish',
+                        data: {
+                            id: id
+                        }
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("setForm", data);
                             resolve();
                         } else {
                             console.log(response)
