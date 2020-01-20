@@ -1,26 +1,20 @@
 
-import AddEditFormField from "../components/AddEditFormField.js";
+import ViewContentModal from "../components/ViewContentModal.js";
 import ViewFormField from "../components/ViewFormField.js";
 
 export default {
     name: "BaseComponent",
     components: {
-        AddEditFormField,
+        ViewContentModal,
         ViewFormField
     },
     data() {
         return {
             baseUrl: 'views/modules/pqr/',
-            paramsFormField: null,
+            paramsContentModal: null,
             modalTitle: '',
-            typeHtmlField: ''
+            typeModal: ''
         }
-    },
-    computed: {
-        ...Vuex.mapState([
-            "componentsHTML",
-            "formFields"
-        ])
     },
     created() {
 
@@ -31,20 +25,28 @@ export default {
             })
         });
 
-        this.getDataFormFields().catch(() => {
-            top.notification({
-                type: 'error',
-                message: 'No fue posible obtener los campos del formulario'
-            })
-        });
-
-        this.getDataForm().catch(() => {
+        this.getDataForm().then(() => {
+            this.validFormConfig(true);
+        }).catch(() => {
             top.notification({
                 type: 'error',
                 message: 'No fue posible obtener la informacion del formulario'
             })
         });
 
+        this.getDataFormFields().catch(() => {
+            top.notification({
+                type: 'error',
+                message: 'No fue posible obtener los campos del formulario'
+            })
+        });
+    },
+    computed: {
+        ...Vuex.mapState([
+            "componentsHTML",
+            "formFields",
+            "form"
+        ])
     },
     methods: {
         ...Vuex.mapActions([
@@ -54,33 +56,60 @@ export default {
             'deleteFormField',
             'publishForm'
         ]),
+        validFormConfig(automatic) {
+            if (automatic) {
+                if (Object.keys(this.form).length === 0) {
+                    this.openFormConfig();
+                }
+            } else {
+                this.openFormConfig();
+            }
+        },
+        openFormConfig() {
+            new Promise((resolve, reject) => {
+                let edit = false;
+                if (Object.keys(this.form).length !== 0) {
+                    edit = true;
+                }
+                this.paramsContentModal = {
+                    isEdit: edit
+                }
+                this.modalTitle = "Configuración del formulario";
+                this.typeModal = 'blank';
+                resolve();
+            }).then(() => {
+                this.typeModal = 'setting';
+            }).then(() => {
+                $("#divPqrModal").modal('show');
+            })
+        },
         addField(obj) {
             new Promise((resolve, reject) => {
-                this.paramsFormField = {
+                this.paramsContentModal = {
                     isEdit: false,
                     fk_pqr_html_field: obj.id,
                     idFormField: 0
                 }
                 this.modalTitle = obj.label;
-                this.typeHtmlField = 'blank';
+                this.typeModal = 'blank';
                 resolve();
             }).then(() => {
-                this.typeHtmlField = obj.type;
+                this.typeModal = obj.type;
             }).then(() => {
                 $("#divPqrModal").modal('show');
             })
         },
         editField(obj) {
             new Promise((resolve, reject) => {
-                this.paramsFormField = {
+                this.paramsContentModal = {
                     isEdit: true,
                     idFormField: obj.id
                 }
                 this.modalTitle = obj.fk_pqr_html_field.label;
-                this.typeHtmlField = 'blank';
+                this.typeModal = 'blank';
                 resolve();
             }).then(() => {
-                this.typeHtmlField = obj.fk_pqr_html_field.type;
+                this.typeModal = obj.fk_pqr_html_field.type;
             }).then(() => {
                 $("#divPqrModal").modal('show');
             })
@@ -128,7 +157,7 @@ export default {
                         <h5 class="modal-title">{{modalTitle}}</h5>
                     </div>
                     <div class="modal-body">
-                        <AddEditFormField :typeHtmlField="typeHtmlField" :paramsFormField="paramsFormField" />
+                        <ViewContentModal :typeModal="typeModal" :paramsContentModal="paramsContentModal" />
                     </div>
                 </div>
             </div>
@@ -137,10 +166,9 @@ export default {
         
         <div class="row">
             <div class="col-3">
-
                 <div class="card">
                     <div class="card-header">
-                        <h5>COMPONENTES</h5>
+                        <div class="card-title"><h6>COMPONENTES</h6></div>
                     </div>
 
                     <ul class="list-group list-group-flush">
@@ -156,7 +184,14 @@ export default {
 
                 <div class="card">
                     <div class="card-header">
-                        <h5>FORMULARIO</h5>
+                        <div class="card-title"><h6>FORMULARIO</h6></div>
+                        <div class="card-controls">
+                            <ul>
+                                <li>
+                                    <a href="#" @click="validFormConfig(false)"><i class="fa fa-cogs"></i></a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="modal-body">

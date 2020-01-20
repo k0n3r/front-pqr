@@ -46,8 +46,8 @@ export default {
       }
       return dataForm;
     },
-    editField() {
-      let editField = {
+    edit() {
+      let edit = {
         dataField: {
           label: this.form.label,
           required: this.form.required,
@@ -58,7 +58,7 @@ export default {
         id: this.dataParams.idFormField
       };
 
-      this.updateFormField(editField).catch(() => {
+      this.updateFormField(edit).catch(() => {
         top.notification({
           type: 'error',
           message: 'No fue posible actualizar el campo'
@@ -66,7 +66,7 @@ export default {
       });
       this.resetForm();
     },
-    addField() {
+    add() {
 
       let dataField = {
         fk_pqr_html_field: this.dataParams.fk_pqr_html_field,
@@ -108,7 +108,7 @@ export default {
   template: `<div class="animated fadeIn">
   <div class="row">
       <div class="col">
-          <form id="fomInput" name="fomInput">
+          <form id="form" name="form">
 
               <div class='form-group form-group-default required'>
                   <label>ETIQUETA</label>

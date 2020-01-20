@@ -14,7 +14,7 @@ const store = new Vuex.Store({
     state: {
         componentsHTML: [],
         formFields: [],
-        form: null
+        form: {}
     },
     mutations: {
         setComponentsHTML(state, data) {
@@ -52,6 +52,7 @@ const store = new Vuex.Store({
                             resolve();
                         } else {
                             console.log(response);
+                            reject();
                         }
                     },
                     error: function (error) {
@@ -86,7 +87,6 @@ const store = new Vuex.Store({
             });
         },
         getDataFormFields({ commit }) {
-
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
@@ -99,6 +99,64 @@ const store = new Vuex.Store({
                             resolve();
                         } else {
                             console.log(response)
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        reject();
+                    }
+                })
+            });
+        },
+        getOptionsContador() {
+            return new Promise((resolve, reject) => {
+                let data = [
+                    { id: 1, name: 'Externo-Interno' },
+                    { id: 2, name: 'Interno-Externo' },
+                    { id: 3, name: 'Interno-Interno' }
+                ];
+                resolve(data)
+            });
+        },
+        insertForm({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormController',
+                        method: 'store',
+                        data: { params: data }
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("setForm", response.data);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        reject();
+                    }
+                })
+            });
+        },
+        updateForm({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormController',
+                        method: 'update',
+                        data: { params: data }
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("setForm", response.data);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
                         }
                     },
                     error: function (error) {
@@ -133,7 +191,6 @@ const store = new Vuex.Store({
             });
         },
         updateFormField({ commit }, dataField) {
-
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
@@ -185,23 +242,17 @@ const store = new Vuex.Store({
         },
         publishForm({ commit, state }) {
             return new Promise((resolve, reject) => {
-                let id = 0;
-                if (typeof state.form != null) {
-                    id = state.form.id;
-                }
-                console.log(id)
-                return false;
                 $.ajax({
                     data: {
                         class: 'PqrFormController',
                         method: 'publish',
                         data: {
-                            id: id
+                            id: state.form
                         }
                     },
                     success: function (response) {
                         if (response.success) {
-                            commit("setForm", data);
+                            commit("delFormField", id);
                             resolve();
                         } else {
                             console.log(response)

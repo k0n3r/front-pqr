@@ -2,21 +2,21 @@ const validateFormMixin = {
     methods: {
         onSubmit() {
             let _this = this;
-            $("#fomInput").validate({
+            $("#form").validate({
                 submitHandler: function (form) {
                     $("#form_buttons").hide();
                     $("#spiner").removeClass('d-none');
 
                     _this.$nextTick(() => {
                         if (_this.dataParams.isEdit) {
-                            _this.editField();
+                            _this.edit();
                         } else {
-                            _this.addField();
+                            _this.add();
                         }
                     });
                 }
             });
-            $("#fomInput").trigger('submit');
+            $("#form").trigger('submit');
         },
         resetForm() {
             $("#divPqrModal").modal('hide');
