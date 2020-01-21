@@ -71,12 +71,15 @@ const store = new Vuex.Store({
                     },
                     success: function (response) {
                         if (response.success) {
+                            let exist = 0;
                             if (Object.keys(response.data).length !== 0) {
                                 commit("setForm", response.data);
+                                exist = 1;
                             }
-                            resolve();
+                            resolve(exist);
                         } else {
-                            console.log(response)
+                            console.log(response);
+                            reject();
                         }
                     },
                     error: function (error) {
@@ -166,7 +169,9 @@ const store = new Vuex.Store({
                 })
             });
         },
-        insertFormField({ commit }, dataField) {
+        insertFormField({ commit, state }, dataField) {
+            dataField.fk_pqr_form = state.form.id;
+
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
@@ -247,12 +252,12 @@ const store = new Vuex.Store({
                         class: 'PqrFormController',
                         method: 'publish',
                         data: {
-                            id: state.form
+                            id: state.form.id
                         }
                     },
                     success: function (response) {
                         if (response.success) {
-                            commit("delFormField", id);
+                            //commit("delFormField", id);
                             resolve();
                         } else {
                             console.log(response)

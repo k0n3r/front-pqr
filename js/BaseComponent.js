@@ -25,19 +25,22 @@ export default {
             })
         });
 
-        this.getDataForm().then(() => {
-            this.validFormConfig(true);
+        this.getDataForm().then((existForm) => {
+            if (existForm) {
+                this.getDataFormFields().catch(() => {
+                    top.notification({
+                        type: 'error',
+                        message: 'No fue posible obtener los campos del formulario'
+                    })
+                });
+            } else {
+                this.openFormConfig();
+            }
+
         }).catch(() => {
             top.notification({
                 type: 'error',
                 message: 'No fue posible obtener la informacion del formulario'
-            })
-        });
-
-        this.getDataFormFields().catch(() => {
-            top.notification({
-                type: 'error',
-                message: 'No fue posible obtener los campos del formulario'
             })
         });
     },
@@ -56,15 +59,6 @@ export default {
             'deleteFormField',
             'publishForm'
         ]),
-        validFormConfig(automatic) {
-            if (automatic) {
-                if (Object.keys(this.form).length === 0) {
-                    this.openFormConfig();
-                }
-            } else {
-                this.openFormConfig();
-            }
-        },
         openFormConfig() {
             new Promise((resolve, reject) => {
                 let edit = false;
@@ -188,7 +182,7 @@ export default {
                         <div class="card-controls">
                             <ul>
                                 <li>
-                                    <a href="#" @click="validFormConfig(false)"><i class="fa fa-cogs"></i></a>
+                                    <a href="#" @click="openFormConfig"><i class="fa fa-cogs"></i></a>
                                 </li>
                             </ul>
                         </div>
