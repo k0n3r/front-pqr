@@ -1,9 +1,12 @@
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+const path = require('path');
 
 module.exports = {
     entry: './src/main.js',
     output: {
-        path: __dirname + '/dist',
+        path: path.resolve(__dirname, './dist'),
         filename: 'main.js'
     },
     module: {
@@ -29,6 +32,16 @@ module.exports = {
         ]
     },
     plugins: [
-        new VueLoaderPlugin()
-    ]
+        new VueLoaderPlugin(),
+        new HtmlWebpackPlugin({
+            template: './src/index.html'
+        }),
+        new Dotenv()
+    ],
+    resolve: {
+        modules: ['node_modules', '../../assets/node_modules'],
+        alias: {
+            src: path.resolve(__dirname, './src/')
+        }
+    }
 }
