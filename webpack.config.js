@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
@@ -28,7 +29,19 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader'],
-            }
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg|woff(2)?|ttf|eot)$/i,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "[name].[ext]",
+                            outputPath: 'images'
+                        }
+                    }
+                ]
+            },
         ]
     },
     plugins: [
@@ -36,12 +49,16 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html'
         }),
-        new Dotenv()
+        new Dotenv(),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        }),
     ],
     resolve: {
         modules: ['node_modules', '../../assets/node_modules'],
         alias: {
-            src: path.resolve(__dirname, './src/')
+            topAssets: path.resolve(__dirname, '../../assets/')
         }
     }
 }
