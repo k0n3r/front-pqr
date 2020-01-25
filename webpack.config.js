@@ -58,7 +58,8 @@ module.exports = {
     resolve: {
         modules: ['node_modules', '../../assets/node_modules'],
         alias: {
-            topAssets: path.resolve(__dirname, '../../assets/')
+            topAssets: path.resolve(__dirname, '../../assets/'),
+            src: path.resolve(__dirname, './src/')
         }
     }
 }
