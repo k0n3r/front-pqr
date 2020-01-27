@@ -1,15 +1,13 @@
 <template>
   <div class="form-group form-group-default form-group-default-select2" :class="isRequired">
     <label>{{dataParams.label}}</label>
-
     <select
-      class="full-width required"
+      class="full-width sel2"
       :class="isRequired"
       :name="dataParams.name"
       :id="dataParams.name"
-      v-model="selected"
     >
-      <option value="null">Por favor seleccione...</option>
+      <option value selected>Por favor seleccione...</option>
       <option
         v-for="option in dataParams.setting.options"
         :value="option"
@@ -25,11 +23,6 @@ import viewFormFieldMixin from "src/shared/viewFormFieldMixin.js";
 export default {
   name: "ViewSelect",
   mixins: [viewFormFieldMixin],
-  data() {
-    return {
-      selected: null
-    };
-  },
   props: {
     dataParams: {
       type: Object,

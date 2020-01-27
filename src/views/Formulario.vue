@@ -1,20 +1,5 @@
 <template>
   <div class="container-fluid h-100" style="overflow-y: auto">
-    <!-- Modal -->
-    <div class="modal fade" id="divPqrModal" aria-hidden="true" data-backdrop="static">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{modalTitle}}</h5>
-          </div>
-          <div class="modal-body">
-            <ViewContentModal :typeModal="typeModal" :paramsContentModal="paramsContentModal" />
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Termina Modal -->
-
     <div class="row">
       <div class="col-3">
         <div class="card">
@@ -95,7 +80,6 @@
 </template>
 
 <script>
-import ViewContentModal from "src/components/ViewContentModal.vue";
 import ViewFormField from "src/components/ViewFormField.vue";
 
 import { mapState, mapActions } from "vuex";
@@ -103,12 +87,10 @@ import { mapState, mapActions } from "vuex";
 export default {
   name: "Formulario",
   components: {
-    ViewContentModal,
     ViewFormField
   },
   data() {
     return {
-      paramsContentModal: {},
       modalTitle: "",
       typeModal: ""
     };
@@ -131,7 +113,7 @@ export default {
             });
           });
         } else {
-          //this.openFormConfig();
+          this.openFormConfig();
         }
       })
       .catch(() => {
@@ -150,62 +132,135 @@ export default {
       "getDataFormFields",
       "getDataForm",
       "deleteFormField",
-      "publishForm"
+      "publishForm",
+      "insertFormField",
+      "updateFormField",
+      "getOptionsContador",
+      "insertForm",
+      "updateForm"
     ]),
     openFormConfig() {
-      new Promise((resolve, reject) => {
-        let edit = false;
-        if (Object.keys(this.form).length !== 0) {
-          edit = true;
-        }
-        this.paramsContentModal = {
-          isEdit: edit
-        };
-        this.modalTitle = "Configuración del formulario";
-        this.typeModal = "blank";
-        resolve();
-      })
-        .then(() => {
-          this.typeModal = "setting";
+      this.getOptionsContador()
+        .then(data => {
+          let edit = false;
+          if (Object.keys(this.form).length !== 0) {
+            edit = true;
+          }
+          let paramsModal = {
+            isEdit: edit,
+            options: data,
+            form: this.form
+          };
+          let optionsModal = {
+            url: "views/modules/pqr/src/modals/formConfiguration.php",
+            title: "Configuración del formulario",
+            buttons: {}
+          };
+          top.window.dataModal = paramsModal;
+          this.openModalFormConfig(optionsModal, edit);
         })
-        .then(() => {
-          $("#divPqrModal").modal("show");
+        .catch(() => {
+          top.notification({
+            type: "error",
+            message: "No fue posible cargar los contadores"
+          });
         });
+    },
+    openModalFormConfig(options) {
+      top.topModal({
+        ...options,
+        onSuccess: response => {
+          if (response.edit) {
+            this.updateForm(response.data).catch(() => {
+              top.notification({
+                type: "error",
+                message:
+                  "No fue posible actualizar la configuración del formulario"
+              });
+            });
+          } else {
+            this.insertForm(response.data).catch(() => {
+              top.notification({
+                type: "error",
+                message:
+                  "No fue posible guardar la configuración del formulario"
+              });
+            });
+          }
+          top.closeTopModal();
+        }
+      });
+    },
+    getUrlAddEditField(type) {
+      let url = "";
+      switch (type) {
+        case "select":
+        case "radio":
+        case "checkbox":
+          url = "views/modules/pqr/src/modals/addEditField/select.php";
+          break;
+
+        case "textarea":
+        case "input":
+          url = "views/modules/pqr/src/modals/addEditField/input.php";
+          break;
+      }
+
+      return url;
     },
     addField(obj) {
-      new Promise((resolve, reject) => {
-        this.paramsContentModal = {
-          isEdit: false,
-          fk_pqr_html_field: obj.id,
-          idFormField: 0
-        };
-        this.modalTitle = obj.label;
-        this.typeModal = "blank";
-        resolve();
-      })
-        .then(() => {
-          this.typeModal = obj.type;
-        })
-        .then(() => {
-          $("#divPqrModal").modal("show");
-        });
+      let paramsModal = {
+        isEdit: false,
+        fk_pqr_html_field: obj.id,
+        idFormField: 0
+      };
+
+      let optionsModal = {
+        url: this.getUrlAddEditField(obj.type),
+        title: obj.label,
+        buttons: {}
+      };
+
+      top.window.dataModal = paramsModal;
+      this.openModalAddEditField(optionsModal);
     },
     editField(obj) {
-      new Promise((resolve, reject) => {
-        this.paramsContentModal = {
-          isEdit: true,
-          idFormField: obj.id
-        };
-        this.modalTitle = obj.fk_pqr_html_field.label;
-        this.typeModal = "blank";
-        resolve();
-      })
-        .then(() => {
-          this.typeModal = obj.fk_pqr_html_field.type;
-        })
-        .then(() => {
-          $("#divPqrModal").modal("show");
-        });
+      let paramsModal = {
+        isEdit: true,
+        dataFormField: obj
+      };
+
+      let optionsModal = {
+        url: this.getUrlAddEditField(obj.fk_pqr_html_field.type),
+        title: "Actualizar : " + obj.label,
+        buttons: {}
+      };
+
+      top.window.dataModal = paramsModal;
+      this.openModalAddEditField(optionsModal);
+    },
+    openModalAddEditField(options) {
+      top.topModal({
+        ...options,
+        onSuccess: response => {
+          if (response.edit) {
+            this.updateFormField(response.data).catch(() => {
+              top.notification({
+                type: "error",
+                message: "No fue posible actualizar el campo"
+              });
+            });
+          } else {
+            this.insertFormField(response.data).catch(() => {
+              top.notification({
+                type: "error",
+                message: "No fue posible guardar el nuevo campo"
+              });
+            });
+          }
+          top.closeTopModal();
+        }
+      });
     },
     deleteField(id) {
       this.deleteFormField(id).catch(() => {
@@ -217,6 +272,19 @@ export default {
     },
     valid() {
       $("#formulario").validate({
+        errorPlacement: function(error, element) {
+          let node = element[0];
+
+          if (
+            node.tagName == "SELECT" &&
+            node.className.indexOf("select2") !== false
+          ) {
+            error.addClass("pl-2");
+            element.next().append(error);
+          } else {
+            error.insertAfter(element);
+          }
+        },
         submitHandler: function(form) {
           top.notification({
             type: "success",
