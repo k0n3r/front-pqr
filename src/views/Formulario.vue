@@ -80,8 +80,16 @@
 </template>
 
 <script>
-import ViewFormField from "src/components/ViewFormField.vue";
+//select 2
+import "topAssets/node_modules/select2/dist/js/select2.min.js";
+import "topAssets/node_modules/select2/dist/js/i18n/es.js";
+import "topAssets/node_modules/select2/dist/css/select2.min.css";
 
+//jquery validate
+import "topAssets/node_modules/jquery-validation/dist/jquery.validate.min.js";
+import "topAssets/node_modules/jquery-validation/dist/localization/messages_es.min.js";
+
+import ViewFormField from "src/components/ViewFormField.vue";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -113,7 +121,7 @@ export default {
             });
           });
         } else {
-          this.openFormConfig();
+          this.openFormConfig("static", false);
         }
       })
       .catch(() => {
@@ -139,7 +147,7 @@ export default {
       "insertForm",
       "updateForm"
     ]),
-    openFormConfig() {
+    openFormConfig(backdrop = true, keyboard = true) {
       this.getOptionsContador()
         .then(data => {
           let edit = false;
@@ -153,6 +161,8 @@ export default {
           };
           let optionsModal = {
             url: "views/modules/pqr/src/modals/formConfiguration.php",
+            backdrop: backdrop,
+            keyboard: keyboard,
             title: "Configuración del formulario",
             buttons: {}
           };

@@ -2,17 +2,15 @@
   <div class="form-group form-group-default form-group-default-select2" :class="isRequired">
     <label>{{dataParams.label}}</label>
     <select
-      class="full-width sel2"
+      class="full-width select2-hidden-accessible"
       :class="isRequired"
       :name="dataParams.name"
       :id="dataParams.name"
     >
       <option value selected>Por favor seleccione...</option>
-      <option
-        v-for="option in dataParams.setting.options"
-        :value="option"
-        :key="option"
-      >{{ option }}</option>
+      <template v-for="(option,index) in dataParams.setting.options">
+        <option :value="option" :key="index">{{ option }}</option>
+      </template>
     </select>
   </div>
 </template>

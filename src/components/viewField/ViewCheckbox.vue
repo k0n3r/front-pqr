@@ -1,19 +1,21 @@
 <template>
   <div class="form-group form-group-default" :class="isRequired">
     <label>{{dataParams.label}}</label>
+
     <div class="checkbox check-success input-group">
       <div v-for="(option,index) in dataParams.setting.options" :key="index">
         <input
-          :class="isRequired"
           type="checkbox"
           :name="dataParams.name+'[]'"
           :id="getIdOption(index)"
-          :value="index"
+          aria-required="true"
+          :class="isRequired"
         />
         <label :for="getIdOption(index)" class="mr-3">{{option}}</label>
       </div>
-      <!-- EL DIV ANTERIOR ERA UN TEMPLATE-->
     </div>
+
+    <label :for="dataParams.name+'[]'" class="error" style="display: none;"></label>
   </div>
 </template>
 

@@ -89,6 +89,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                 onSubmit() {
                     let _this = this;
                     $("#form").validate({
+                        ignore: [],
                         errorPlacement: function(error, element) {
                             let node = element[0];
                             if (
