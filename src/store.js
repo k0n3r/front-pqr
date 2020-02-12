@@ -114,16 +114,6 @@ export default new Vuex.Store({
                 })
             });
         },
-        getOptionsContador() {
-            return new Promise((resolve, reject) => {
-                let data = [
-                    { id: 1, name: 'Externo-Interno' },
-                    { id: 2, name: 'Interno-Externo' },
-                    { id: 3, name: 'Interno-Interno' }
-                ];
-                resolve(data)
-            });
-        },
         insertForm({ commit }, data) {
             return new Promise((resolve, reject) => {
                 $.ajax({

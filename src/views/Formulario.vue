@@ -148,33 +148,23 @@ export default {
       "updateForm"
     ]),
     openFormConfig(backdrop = true, keyboard = true) {
-      this.getOptionsContador()
-        .then(data => {
-          let edit = false;
-          if (Object.keys(this.form).length !== 0) {
-            edit = true;
-          }
-          let paramsModal = {
-            isEdit: edit,
-            options: data,
-            form: this.form
-          };
-          let optionsModal = {
-            url: "views/modules/pqr/src/modals/formConfiguration.php",
-            backdrop: backdrop,
-            keyboard: keyboard,
-            title: "Configuración del formulario",
-            buttons: {}
-          };
-          top.window.dataModal = paramsModal;
-          this.openModalFormConfig(optionsModal, edit);
-        })
-        .catch(() => {
-          top.notification({
-            type: "error",
-            message: "No fue posible cargar los contadores"
-          });
-        });
+      let edit = false;
+      if (Object.keys(this.form).length !== 0) {
+        edit = true;
+      }
+      let paramsModal = {
+        isEdit: edit,
+        form: this.form
+      };
+      let optionsModal = {
+        url: "views/modules/pqr/src/modals/formConfiguration.php",
+        backdrop: backdrop,
+        keyboard: keyboard,
+        title: "Configuración del formulario",
+        buttons: {}
+      };
+      top.window.dataModal = paramsModal;
+      this.openModalFormConfig(optionsModal, edit);
     },
     openModalFormConfig(options) {
       top.topModal({
@@ -189,13 +179,17 @@ export default {
               });
             });
           } else {
-            this.insertForm(response.data).catch(() => {
-              top.notification({
-                type: "error",
-                message:
-                  "No fue posible guardar la configuración del formulario"
+            this.insertForm(response.data)
+              .then(() => {
+                this.getDataFormFields();
+              })
+              .catch(() => {
+                top.notification({
+                  type: "error",
+                  message:
+                    "No fue posible guardar la configuración del formulario"
+                });
               });
-            });
           }
           top.closeTopModal();
         }

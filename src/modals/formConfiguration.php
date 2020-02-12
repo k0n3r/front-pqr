@@ -24,15 +24,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                     <input class="form-control required" placeholder="Etiqueta del formulario" v-model.trim="formulario.label" type="text" maxlength="250" />
                 </div>
 
-                <div class="form-group form-group-default form-group-default-select2 required">
-                    <label>CONTADOR</label>
-
-                    <select class="full-width required" id="selecOptions" name="selecOptions" v-model="formulario.fk_contador">
-                        <option value="-1">Crear propio contador</option>
-                        <option v-for="(option, index) in options" :value="option.id" :key="index">{{option.name}}</option>
-                    </select>
-                </div>
-
                 <div class="float-right">
                     <div class="form-group" id="form_buttons">
                         <button type="button" class="btn btn-danger" @click="resetForm">Cancelar</button>
@@ -108,31 +99,21 @@ include_once $rootPath . 'views/assets/librerias.php';
             created() {
                 this.formulario = this.clearDataForm();
             },
-            mounted() {
-                let _this = this;
-                let select = $("#selecOptions").select2();
-                select.on("select2:select", function(e) {
-                    _this.formulario.fk_contador = e.params.data.id;
-                });
-            },
             methods: {
                 clearDataForm() {
                     let dataForm = {
-                        label: null,
-                        fk_contador: -1
+                        label: null
                     };
                     if (this.isEdit) {
                         dataForm = {
-                            label: this.form.label,
-                            fk_contador: this.form.fk_contador
+                            label: this.form.label
                         };
                     }
                     return dataForm;
                 },
                 add() {
                     let data = {
-                        label: this.formulario.label,
-                        fk_contador: this.formulario.fk_contador
+                        label: this.formulario.label
                     };
 
                     top.successModalEvent({
@@ -143,8 +124,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                 edit() {
                     let data = {
                         data: {
-                            label: this.formulario.label,
-                            fk_contador: this.formulario.fk_contador
+                            label: this.formulario.label
                         },
                         id: this.form.id
                     };
