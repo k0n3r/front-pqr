@@ -40,29 +40,38 @@
           <div class="modal-body">
             <template v-if="formFields.length">
               <form id="formulario" name="formulario">
-                <div v-for="field in formFields" :key="field.id">
-                  <div class="row form-group">
-                    <div class="col">
-                      <div class="btn-group btn-group-xs float-right" role="group">
-                        <button
-                          type="button"
-                          class="btn btn-xs btn-danger"
-                          @click="deleteField(field.id)"
-                        >
-                          <i class="fa fa-trash"></i>
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-xs btn-warning"
-                          @click="editField(field)"
-                        >
-                          <i class="fa fa-edit"></i>
-                        </button>
+                <div id="sortable">
+                  <div
+                    class="sortable"
+                    v-for="field in formFields"
+                    :key="field.id"
+                    :data-id="field.id"
+                    style="cursor:move"
+                  >
+                    <div class="row form-group">
+                      <div class="col">
+                        <div class="btn-group btn-group-xs float-right" role="group">
+                          <button
+                            v-if="field.system==0"
+                            type="button"
+                            class="btn btn-xs btn-danger"
+                            @click="deleteField(field.id)"
+                          >
+                            <i class="fa fa-trash"></i>
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-xs btn-warning"
+                            @click="editField(field)"
+                          >
+                            <i class="fa fa-edit"></i>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <ViewFormField :data="field" />
+                    <div class="row">
+                      <ViewFormField :data="field" @refreshSortable="initSortable" />
+                    </div>
                   </div>
                 </div>
 
@@ -80,6 +89,10 @@
 </template>
 
 <script>
+//jquery ui
+import "topAssets/node_modules/jquery-ui-dist/jquery-ui.min.js";
+import "topAssets/node_modules/jquery-ui-dist/jquery-ui.min.css";
+
 //select 2
 import "topAssets/node_modules/select2/dist/js/select2.min.js";
 import "topAssets/node_modules/select2/dist/js/i18n/es.js";
@@ -131,6 +144,9 @@ export default {
         });
       });
   },
+  mounted() {
+    this.initSortable();
+  },
   computed: {
     ...mapState(["componentsHTML", "formFields", "form"])
   },
@@ -145,8 +161,30 @@ export default {
       "updateFormField",
       "getOptionsContador",
       "insertForm",
-      "updateForm"
+      "updateForm",
+      "udpateOrderOfFormField"
     ]),
+    initSortable() {
+      let _this = this;
+      $("#sortable").sortable({
+        update: function(event, ui) {
+          let order = [];
+          $(".sortable").each(function(index, element) {
+            order.push({
+              id: element.attributes["data-id"].value,
+              order: index
+            });
+          });
+
+          _this.udpateOrderOfFormField(order).catch(() => {
+            top.notification({
+              type: "error",
+              message: "No fue posible actualizar el orden de los campos"
+            });
+          });
+        }
+      });
+    },
     openFormConfig(backdrop = true, keyboard = true) {
       let edit = false;
       if (Object.keys(this.form).length !== 0) {
@@ -206,6 +244,7 @@ export default {
 
         case "textarea":
         case "input":
+        case "email":
           url = "views/modules/pqr/src/modals/addEditField/input.php";
           break;
       }

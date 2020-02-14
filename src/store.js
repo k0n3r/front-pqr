@@ -238,7 +238,7 @@ export default new Vuex.Store({
                 })
             });
         },
-        publishForm({ commit, state }) {
+        publishForm({ state }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
@@ -250,7 +250,32 @@ export default new Vuex.Store({
                     },
                     success: function (response) {
                         if (response.success) {
-                            //commit("delFormField", id);
+                            commit("setForm", response.data);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        reject();
+                    }
+                })
+            });
+        },
+        udpateOrderOfFormField({ commit }, fieldOrder) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormFieldController',
+                        method: 'updateOrder',
+                        data: {
+                            params: fieldOrder
+                        }
+                    },
+                    success: function (response) {
+                        if (response.success) {
                             resolve();
                         } else {
                             console.log(response)
