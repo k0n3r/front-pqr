@@ -10,7 +10,13 @@
           </div>
 
           <ul class="list-group list-group-flush">
-            <li class="list-group-item" v-for="(htmlField,index) in componentsHTML" :key="index">
+            <li
+              class="list-group-item"
+              data-toggle="tooltip"
+              title="Adicionar componente"
+              v-for="(htmlField,index) in componentsHTML"
+              :key="index"
+            >
               {{htmlField.label}}
               <span class="btn pull-right" @click="addField(htmlField)">
                 <i class="fa fa-plus"></i>
@@ -28,7 +34,7 @@
             </div>
             <div class="card-controls">
               <ul>
-                <li>
+                <li data-toggle="tooltip" title="Configuración">
                   <a href="#" @click="openFormConfig">
                     <i class="fa fa-cogs"></i>
                   </a>
@@ -52,17 +58,34 @@
                       <div class="col">
                         <div class="btn-group btn-group-xs float-right" role="group">
                           <button
-                            v-if="field.system==0"
+                            v-if="field.system==0 && !field.fk_campos_formato"
                             type="button"
                             class="btn btn-xs btn-danger"
                             @click="deleteField(field.id)"
+                            data-toggle="tooltip"
+                            title="Eliminar"
                           >
                             <i class="fa fa-trash"></i>
                           </button>
+
+                          <button
+                            v-if="field.system==0 && field.fk_campos_formato"
+                            type="button"
+                            class="btn btn-xs"
+                            :class="field.active ? 'btn-danger' : 'btn-success'"
+                            @click="changeStatus(field.id,field.active)"
+                            data-toggle="tooltip"
+                            :title="field.active ? 'Inactivar' : 'Activar'"
+                          >
+                            <i :class="field.active ? 'fa fa-toggle-off' : 'fa fa-toggle-on'"></i>
+                          </button>
+
                           <button
                             type="button"
                             class="btn btn-xs btn-warning"
                             @click="editField(field)"
+                            data-toggle="tooltip"
+                            title="Editar"
                           >
                             <i class="fa fa-edit"></i>
                           </button>
@@ -162,8 +185,22 @@ export default {
       "getOptionsContador",
       "insertForm",
       "updateForm",
-      "udpateOrderOfFormField"
+      "udpateOrderOfFormField",
+      "udpateActiveOfFormField"
     ]),
+    changeStatus(id, status) {
+      let data = {
+        id: id,
+        active: +!status
+      };
+      let text = data.active ? "activar" : "inactivar";
+      this.udpateActiveOfFormField(data).catch(() => {
+        top.notification({
+          type: "error",
+          message: "No fue posible " + text + " el campo"
+        });
+      });
+    },
     initSortable() {
       let _this = this;
       $("#sortable").sortable({
@@ -340,10 +377,20 @@ export default {
     publish() {
       this.publishForm()
         .then(() => {
-          top.notification({
-            type: "success",
-            message: "Formulario generado"
-          });
+          this.getDataFormFields()
+            .then(() => {
+              top.notification({
+                type: "success",
+                message: "Formulario generado"
+              });
+            })
+            .catch(() => {
+              top.notification({
+                type: "error",
+                message:
+                  "No fue posible obtener los campos actualizados del formulario"
+              });
+            });
         })
         .catch(() => {
           top.notification({

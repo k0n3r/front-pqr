@@ -238,7 +238,7 @@ export default new Vuex.Store({
                 })
             });
         },
-        publishForm({ state }) {
+        publishForm({ commit, state }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
@@ -276,6 +276,32 @@ export default new Vuex.Store({
                     },
                     success: function (response) {
                         if (response.success) {
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        reject();
+                    }
+                })
+            });
+        },
+        udpateActiveOfFormField({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormFieldController',
+                        method: 'updateActive',
+                        data: {
+                            params: data
+                        }
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("editFormField", response.data);
                             resolve();
                         } else {
                             console.log(response)

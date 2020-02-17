@@ -29,7 +29,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                     <input class="form-control" type="text" v-model.trim="form.placeholder" maxlength="250" />
                 </div>
 
-                <div v-if="!system" class="form-group form-group-default required">
+                <div v-if="system==0" class="form-group form-group-default required">
                     <label>OBLIGATORIO?</label>
 
                     <div class="radio radio-success input-group">
