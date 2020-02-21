@@ -58,7 +58,7 @@
                       <div class="col">
                         <div class="btn-group btn-group-xs float-right" role="group">
                           <button
-                            v-if="field.system==0 && !field.fk_campos_formato"
+                            v-if="+field.system==0 && !+field.fk_campos_formato"
                             type="button"
                             class="btn btn-xs btn-danger"
                             @click="deleteField(field.id)"
@@ -69,7 +69,7 @@
                           </button>
 
                           <button
-                            v-if="field.system==0 && field.fk_campos_formato"
+                            v-if="+field.system==0 && +field.fk_campos_formato"
                             type="button"
                             class="btn btn-xs"
                             :class="field.active ? 'btn-danger' : 'btn-success'"
