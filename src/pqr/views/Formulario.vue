@@ -125,7 +125,7 @@ import "topAssets/node_modules/select2/dist/css/select2.min.css";
 import "topAssets/node_modules/jquery-validation/dist/jquery.validate.min.js";
 import "topAssets/node_modules/jquery-validation/dist/localization/messages_es.min.js";
 
-import ViewFormField from "src/components/ViewFormField.vue";
+import ViewFormField from "pqr/components/ViewFormField.vue";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -232,7 +232,7 @@ export default {
         form: this.form
       };
       let optionsModal = {
-        url: "views/modules/pqr/src/modals/formConfiguration.php",
+        url: "views/modules/pqr/src/pqr/modals/formConfiguration.php",
         backdrop: backdrop,
         keyboard: keyboard,
         title: "Configuración del formulario",
@@ -276,13 +276,13 @@ export default {
         case "select":
         case "radio":
         case "checkbox":
-          url = "views/modules/pqr/src/modals/addEditField/select.php";
+          url = "views/modules/pqr/src/pqr/modals/addEditField/select.php";
           break;
 
         case "textarea":
         case "input":
         case "email":
-          url = "views/modules/pqr/src/modals/addEditField/input.php";
+          url = "views/modules/pqr/src/pqr/modals/addEditField/input.php";
           break;
       }
 

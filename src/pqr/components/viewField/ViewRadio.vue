@@ -2,11 +2,11 @@
   <div class="form-group form-group-default" :class="isRequired">
     <label>{{dataParams.label}}</label>
 
-    <div class="checkbox check-success input-group">
+    <div class="radio radio-success input-group">
       <div v-for="(option,index) in dataParams.setting.options" :key="index">
         <input
-          type="checkbox"
-          :name="dataParams.name+'[]'"
+          type="radio"
+          :name="dataParams.name"
           :id="getIdOption(index)"
           aria-required="true"
           :class="isRequired"
@@ -15,15 +15,15 @@
       </div>
     </div>
 
-    <label :for="dataParams.name+'[]'" class="error" style="display: none;"></label>
+    <label :for="dataParams.name" class="error" style="display: none;"></label>
   </div>
 </template>
 
 <script>
-import viewFormFieldMixin from "src/shared/viewFormFieldMixin.js";
+import viewFormFieldMixin from "src/pqr/shared/viewFormFieldMixin.js";
 
 export default {
-  name: "ViewCheckbox",
+  name: "ViewRadio",
   mixins: [viewFormFieldMixin],
   props: {
     dataParams: {
@@ -38,4 +38,3 @@ export default {
   }
 };
 </script>
-

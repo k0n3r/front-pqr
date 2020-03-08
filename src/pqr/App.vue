@@ -2,9 +2,8 @@
   <Formulario></Formulario>
 </template>
 
-
 <script>
-import Formulario from "src/views/Formulario.vue";
+import Formulario from "pqr/views/Formulario.vue";
 
 export default {
   name: "App",

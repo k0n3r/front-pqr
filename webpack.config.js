@@ -5,10 +5,14 @@ const Dotenv = require('dotenv-webpack');
 const path = require('path');
 
 module.exports = {
-    entry: './src/main.js',
+    entry: {
+        pqr: "./src/pqr/main.js",
+        respuestaPqr: "./src/respuestaPqr/main.js",
+    },
     output: {
-        path: path.resolve(__dirname, './dist'),
-        filename: 'main.js'
+        path: path.resolve(__dirname, "./dist/"),
+        publicPath: "../",
+        filename: "[name]/[name].js"
     },
     module: {
         rules: [
@@ -46,20 +50,31 @@ module.exports = {
     },
     plugins: [
         new VueLoaderPlugin(),
-        new HtmlWebpackPlugin({
-            template: './src/index.html'
-        }),
         new Dotenv(),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
+        }),
+        new HtmlWebpackPlugin({
+            template: "./src/pqr/index.html",
+            filename: "pqr/index.html",
+            chunks: ["pqr"],
+            hash: true
+        }),
+        new HtmlWebpackPlugin({
+            template: "./src/respuestaPqr/index.html",
+            filename: "respuestaPqr/index.html",
+            chunks: ["respuestaPqr"],
+            hash: true
         }),
     ],
     resolve: {
         modules: ['node_modules', '../../assets/node_modules'],
         alias: {
             topAssets: path.resolve(__dirname, '../../assets/'),
-            src: path.resolve(__dirname, './src/')
+            src: path.resolve(__dirname, './src/'),
+            pqr: path.resolve(__dirname, './src/pqr/'),
+            respuesta: path.resolve(__dirname, './src/respuestaPqr/')
         }
     }
 }

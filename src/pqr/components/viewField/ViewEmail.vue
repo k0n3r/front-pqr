@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import viewFormFieldMixin from "src/shared/viewFormFieldMixin.js";
+import viewFormFieldMixin from "src/pqr/shared/viewFormFieldMixin.js";
 
 export default {
   name: "ViewEmail",
