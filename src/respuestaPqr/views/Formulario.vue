@@ -8,6 +8,21 @@
               <h6>PLANTILLAS</h6>
             </div>
           </div>
+
+          <ul class="list-group list-group-flush">
+            <li
+              class="list-group-item"
+              data-toggle="tooltip"
+              title="Adicionar componente"
+              v-for="(template,index) in templates"
+              :key="index"
+            >
+              {{template.name}}
+              <span class="btn pull-right" @click="loadTemplate(template)">
+                <i :class="+template.system ? 'fa fa-eye':'fa fa-edit'"></i>
+              </span>
+            </li>
+          </ul>
         </div>
       </div>
 
@@ -15,7 +30,7 @@
         <div class="card">
           <div class="card-header">
             <div class="card-title">
-              <h6>PLANTILLA {{nameTemplate}}</h6>
+              <h6>{{templateName ? templateName :'NUEVA PLANTILLA'}}</h6>
             </div>
           </div>
 
@@ -28,12 +43,27 @@
                 :config="editorConfig"
               ></ckeditor>
             </div>
-            <div class="form-group">
-              <label>Nombre de la plantilla</label>
-              <input type="text" v-model="templateName" />
+            <hr />
+
+            <div class="form-group form-group-default required">
+              <label>PLANTILLA</label>
+              <input
+                class="form-control required"
+                placeholder="Nombre de la plantilla"
+                type="text"
+                maxlength="250"
+                v-model.trim="templateName"
+              />
             </div>
+
             <div class="form-group float-right">
-              <button type="button" class="btn btn-complete" @click="save">Guardar</button>
+              <button v-if="+id" type="button" class="btn btn-danger" @click="del">Eliminar</button>
+
+              <button
+                type="button"
+                class="btn btn-complete"
+                @click="save"
+              >{{+id ? 'Actualizar':'Guardar'}}</button>
             </div>
           </div>
         </div>
@@ -45,10 +75,18 @@
 <script>
 import Vue from "vue";
 import CKEditor from "@ckeditor/ckeditor5-vue";
+Vue.use(CKEditor);
+
 import ckeditorDocument from "@ckeditor/ckeditor5-build-decoupled-document";
 import "@ckeditor/ckeditor5-build-decoupled-document/build/translations/es";
 
-Vue.use(CKEditor);
+import { mapState, mapActions } from "vuex";
+
+const defaultData = {
+  editorData: "",
+  id: 0,
+  templateName: null
+};
 
 export default {
   name: "Formulario",
@@ -58,16 +96,16 @@ export default {
   data() {
     return {
       editor: ckeditorDocument,
-      editorData: "<p>Ingrese el contenido.</p>",
+      editorData: defaultData.editorData,
       editorConfig: {
         language: "es"
       },
-      templateName: null,
-      edit: 0
+      id: defaultData.id,
+      templateName: defaultData.templateName
     };
   },
   created() {
-    this.getDataComponentsHTML().catch(() => {
+    this.getDataTemplate().catch(() => {
       top.notification({
         type: "error",
         message: "No fue posible cargar los componentes HTML"
@@ -92,23 +130,51 @@ export default {
           editor.ui.getEditableElement()
         );
     },
+    loadTemplate(template) {
+      if (+template.system) {
+        this.clearForm();
+        this.editorData = template.content;
+      } else {
+        this.templateName = template.name;
+        this.id = template.id;
+        this.editorData = template.content;
+      }
+    },
+    clearForm() {
+      this.templateName = defaultData.templateName;
+      this.id = defaultData.id;
+      this.editorData = defaultData.editorData;
+    },
     save() {
       if (this.editorData) {
         if (this.templateName) {
-          if (this.edit) {
-            this.updateTemplate().catch(() => {
+          let data = {
+            name: this.templateName,
+            content: this.editorData
+          };
+
+          if (this.id) {
+            this.updateTemplate(data).catch(() => {
               top.notification({
                 type: "error",
-                message: "No fue posible guardar la plantilla"
+                message: "No fue posible actualizar la plantilla"
               });
             });
           } else {
-            this.insertTemplate().catch(() => {
-              top.notification({
-                type: "error",
-                message: "No fue posible guardar la plantilla"
+            this.insertTemplate(data)
+              .then(() => {
+                this.clearForm();
+                top.notification({
+                  type: "success",
+                  message: "Plantilla guardada!"
+                });
+              })
+              .catch(() => {
+                top.notification({
+                  type: "error",
+                  message: "No fue posible guardar la plantilla"
+                });
               });
-            });
           }
         } else {
           top.notification({
@@ -122,7 +188,22 @@ export default {
           message: "Por favor ingrese el contenido de la plantilla"
         });
       }
-      console.log(this.editorData);
+    },
+    del() {
+      this.deleteTemplate(this.id)
+        .then(() => {
+          this.clearForm();
+          top.notification({
+            type: "success",
+            message: "Plantilla Eliminada"
+          });
+        })
+        .catch(() => {
+          top.notification({
+            type: "error",
+            message: "No fue posible eliminar la plantilla"
+          });
+        });
     }
   }
 };

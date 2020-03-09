@@ -38,7 +38,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
-                        class: 'PqrFormFieldController',
+                        class: 'PqrResponseTemplateController',
                         method: 'index'
                     },
                     success: function (response) {
@@ -60,7 +60,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
-                        class: 'PqrFormController',
+                        class: 'PqrResponseTemplateController',
                         method: 'store',
                         data: { params: data }
                     },
@@ -84,7 +84,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
-                        class: 'PqrFormController',
+                        class: 'PqrResponseTemplateController',
                         method: 'update',
                         data: { params: data }
                     },
@@ -108,7 +108,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
-                        class: 'PqrFormFieldController',
+                        class: 'PqrResponseTemplateController',
                         method: 'destroy',
                         data: {
                             id: id
