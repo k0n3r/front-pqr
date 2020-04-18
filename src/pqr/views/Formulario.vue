@@ -29,14 +29,11 @@
       <div class="col-9">
         <div class="card">
           <div class="card-header">
-            <div class="card-title">
-              <h6>FORMULARIO</h6>
-            </div>
             <div class="card-controls">
               <ul>
                 <li data-toggle="tooltip" title="Configuración">
                   <a href="#" @click="openFormConfig">
-                    <i class="fa fa-cogs"></i>
+                    <i class="fa fa-cogs fa-2x"></i>
                   </a>
                 </li>
               </ul>
@@ -44,6 +41,8 @@
           </div>
 
           <div class="modal-body">
+            <h5 class="text-black w-100 text-center">{{form.label}}</h5>
+
             <template v-if="formFields.length">
               <form id="formulario" name="formulario">
                 <div id="sortable">
@@ -72,12 +71,12 @@
                             v-if="+field.system==0 && +field.fk_campos_formato"
                             type="button"
                             class="btn btn-xs"
-                            :class="field.active ? 'btn-danger' : 'btn-success'"
+                            :class="field.active ? 'btn-success' : 'btn-danger'"
                             @click="changeStatus(field.id,field.active)"
                             data-toggle="tooltip"
                             :title="field.active ? 'Inactivar' : 'Activar'"
                           >
-                            <i :class="field.active ? 'fa fa-toggle-off' : 'fa fa-toggle-on'"></i>
+                            <i :class="field.active ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"></i>
                           </button>
 
                           <button
@@ -99,7 +98,7 @@
                 </div>
 
                 <div class="form-group float-right">
-                  <button type="button" class="btn btn-complete" @click="valid">Validar</button>
+                  <!--button type="button" class="btn btn-complete" @click="valid">Validar</button-->
                   <button type="button" class="btn btn-success" @click="publish">Publicar</button>
                 </div>
               </form>
@@ -193,13 +192,21 @@ export default {
         id: id,
         active: +!status
       };
-      let text = data.active ? "activar" : "inactivar";
-      this.udpateActiveOfFormField(data).catch(() => {
-        top.notification({
-          type: "error",
-          message: "No fue posible " + text + " el campo"
+      this.udpateActiveOfFormField(data)
+        .then(() => {
+          let text = data.active ? "activo" : "inactivo";
+          top.notification({
+            type: "success",
+            message: "Campo " + text
+          });
+        })
+        .catch(() => {
+          let text = data.active ? "activar" : "inactivar";
+          top.notification({
+            type: "error",
+            message: "No fue posible " + text + " el campo"
+          });
         });
-      });
     },
     initSortable() {
       let _this = this;

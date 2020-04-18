@@ -38,7 +38,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                 </div>
 
                 <div class="form-group form-group-default required">
-                    <label>VALORES A MOSTRAR</label>
+                    <label>OPCIONES A ELEGIR</label>
                     <input class="form-control required" name="valueOptions" v-model="valueOptions" type="hidden" />
                 </div>
 
