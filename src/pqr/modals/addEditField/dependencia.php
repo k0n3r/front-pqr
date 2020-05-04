@@ -52,26 +52,28 @@ include_once $rootPath . 'views/assets/librerias.php';
                 </div>
 
                 <div class="form-group form-group-default required">
-                    <label>OPCIONES A ELEGIR</label>
-                    <input class="form-control required" name="valueOptions" v-model="valueOptions" type="hidden" />
+                    <label>DEPENDENCIA A ELEGIR</label>
+                    <div class="radio radio-success input-group">
+
+                        <input type="radio" name="allDependency" id="allDependency1" value="1" aria-required='true' v-model="allDependency" class="required" />
+                        <label for="allDependency1" class="mr-3">TODAS</label>
+
+                        <input type="radio" name="allDependency" id="allDependency0" value="0" aria-required='true' v-model="allDependency" />
+                        <label for="allDependency0" class="mr-3">SELECCIONAR</label>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" placeholder="Ingrese un valor" class="form-control" v-model.trim="inputOption" id="inputOption" />
-                        <div class="input-group-append">
-                            <span class="btn btn-success" @click="addOption">
-                                <i class="fa fa-plus"></i>
-                            </span>
-                        </div>
-                    </div>
+                <div class="form-group form-group-default form-group-default-select2 required" v-show="+allDependency==0">
+                    <label>SELECCIONE LAS DEPENDENCIAS</label>
+                    <select class="full-width" id="dependency"></select>
+                    <input class="form-control" :class="+allDependency==0 ? 'required' :''" name="valueOptions" v-model="valueOptions" type="hidden" />
                 </div>
 
                 <div class="form-group" v-for="(option,index) in form.options" :key="index">
                     <div class="input-group">
-                        <input type="text" class="form-control" :value="option" readonly />
+                        <input type="text" class="form-control" :value="option.text" readonly />
                         <div class="input-group-append">
-                            <span class="btn btn-danger" @click="deleteOption(index)">
+                            <span class="btn btn-danger" @click="deleteOption(option.id)">
                                 <i class="fa fa-trash"></i>
                             </span>
                         </div>
@@ -94,7 +96,7 @@ include_once $rootPath . 'views/assets/librerias.php';
 <?= validate() ?>
 <?= vue() ?>
 
-<script>
+<script id="scriptDependency" data-baseurl="../../">
     $(function() {
         //TODO: ESTO DEBE SER UNA FUNCION GLOBAL 
         const dataParams = top.window.dataModal;
@@ -145,12 +147,55 @@ include_once $rootPath . 'views/assets/librerias.php';
                     dataParams: dataParams,
                     system: 0,
                     form: null,
-                    inputOption: null,
+                    allDependency: 1,
                     valueOptions: null
                 };
             },
             created() {
                 this.form = this.clearDataForm();
+            },
+            watch: {
+                allDependency: function(newValue, oldValue) {
+                    if (newValue == 1) {
+                        this.form.options = null;
+                        this.valueOptions = null;
+                    }
+                }
+            },
+            mounted() {
+                let _this = this;
+                let baseUrl = $("#scriptDependency").data('baseurl');
+                let options = {
+                    language: "es",
+                    placeholder: "Ingrese el nombre de la dependencia",
+                    dropdownParent: "#dinamic_modal",
+                    minimumInputLength: 3,
+                    multiple: false,
+                    ajax: {
+                        delay: 400,
+                        url: `${baseUrl}app/dependencia/autocompletar.php`,
+                        dataType: 'json',
+                        data: function(p) {
+                            var query = {
+                                key: localStorage.getItem('key'),
+                                token: localStorage.getItem('token'),
+                                term: p.term
+                            };
+                            return query;
+                        },
+                        processResults: function(response) {
+                            return {
+                                results: response.data,
+                            };
+                        }
+                    }
+                };
+
+                let select2 = $("#dependency");
+                select2.select2(options);
+                select2.on('select2:select', function(e) {
+                    _this.addOption(e.params.data);
+                });
             },
             methods: {
                 clearDataForm() {
@@ -162,26 +207,30 @@ include_once $rootPath . 'views/assets/librerias.php';
                     };
                     if (this.dataParams.isEdit) {
                         let dataFormField = this.dataParams.dataFormField;
-                        this.system = this.dataParams.dataFormField.system;
+                        this.system = dataFormField.system;
+                        this.allDependency = +dataFormField.setting.allDependency
+                        this.valueOptions = this.allDependency ? null : 1;
 
                         dataForm = {
                             label: dataFormField.label,
                             required: dataFormField.required,
                             show_anonymous: dataFormField.show_anonymous,
-                            options: dataFormField.setting.options
+                            options: this.allDependency ? null : dataFormField.setting.options
                         };
-                        this.valueOptions = 1;
                     }
                     return dataForm;
                 },
                 edit() {
+                    let allDependency = +this.allDependency;
+
                     let data = {
                         dataField: {
                             label: this.form.label,
                             required: this.form.required,
                             show_anonymous: this.form.show_anonymous,
                             setting: {
-                                options: this.form.options
+                                allDependency: allDependency,
+                                options: allDependency ? null : this.form.options
                             }
                         },
                         id: this.dataParams.dataFormField.id
@@ -193,13 +242,15 @@ include_once $rootPath . 'views/assets/librerias.php';
                     });
                 },
                 add() {
+                    let allDependency = +this.allDependency;
                     let data = {
                         fk_pqr_html_field: this.dataParams.fk_pqr_html_field,
                         label: this.form.label,
                         required: this.form.required,
                         show_anonymous: this.form.show_anonymous,
                         setting: {
-                            options: this.form.options
+                            allDependency: allDependency,
+                            options: allDependency ? null : this.form.options
                         }
                     };
 
@@ -208,19 +259,28 @@ include_once $rootPath . 'views/assets/librerias.php';
                         edit: false
                     });
                 },
-                addOption() {
-                    if (this.inputOption) {
-                        this.valueOptions = 1;
-                        if (!this.form.options) {
-                            this.form.options = [];
-                        }
-                        this.form.options.push(this.inputOption);
-                        this.inputOption = null;
-                        $("#inputOption").focus();
+                addOption(select2) {
+                    let data = {
+                        id: select2.id,
+                        text: select2.text
                     }
+
+                    this.valueOptions = 1;
+                    if (!this.form.options) {
+                        this.form.options = [];
+                    }
+                    let index = this.form.options.findIndex(i => i.id == data.id);
+                    if (index != -1) {
+                        this.form.options.splice(index, 1, data);
+                    } else {
+                        this.form.options.push(data);
+                    }
+                    $("#dependency").val(null).trigger("change");
                 },
-                deleteOption(index) {
+                deleteOption(id) {
+                    let index = this.form.options.findIndex(i => i.id == id);
                     this.form.options.splice(index, 1);
+
                     if (!this.form.options.length) {
                         this.form.options = null;
                         this.valueOptions = null;

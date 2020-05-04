@@ -25,10 +25,9 @@
           </ul>
         </div>
       </div>
-
       <div class="col-9">
         <div class="card">
-          <div class="card-header">
+          <!--div class="card-header">
             <div class="card-controls">
               <ul>
                 <li data-toggle="tooltip" title="Configuración">
@@ -38,7 +37,7 @@
                 </li>
               </ul>
             </div>
-          </div>
+          </div-->
 
           <div class="modal-body">
             <h5 class="text-black w-100 text-center">{{form.label}}</h5>
@@ -229,25 +228,25 @@ export default {
         }
       });
     },
-    openFormConfig(backdrop = true, keyboard = true) {
-      let edit = false;
-      if (Object.keys(this.form).length !== 0) {
-        edit = true;
-      }
-      let paramsModal = {
-        isEdit: edit,
-        form: this.form
-      };
-      let optionsModal = {
-        url: "views/modules/pqr/src/pqr/modals/formConfiguration.php",
-        backdrop: backdrop,
-        keyboard: keyboard,
-        title: "Configuración del formulario",
-        buttons: {}
-      };
-      top.window.dataModal = paramsModal;
-      this.openModalFormConfig(optionsModal, edit);
-    },
+    // openFormConfig(backdrop = true, keyboard = true) {
+    //   let edit = false;
+    //   if (Object.keys(this.form).length !== 0) {
+    //     edit = true;
+    //   }
+    //   let paramsModal = {
+    //     isEdit: edit,
+    //     form: this.form
+    //   };
+    //   let optionsModal = {
+    //     url: "views/modules/pqr/src/pqr/modals/formConfiguration.php",
+    //     backdrop: backdrop,
+    //     keyboard: keyboard,
+    //     title: "Configuración del formulario",
+    //     buttons: {}
+    //   };
+    //   top.window.dataModal = paramsModal;
+    //   this.openModalFormConfig(optionsModal, edit);
+    // },
     openModalFormConfig(options) {
       top.topModal({
         ...options,
@@ -291,11 +290,39 @@ export default {
         case "email":
           url = "views/modules/pqr/src/pqr/modals/addEditField/input.php";
           break;
+        case "dependencia":
+          url = "views/modules/pqr/src/pqr/modals/addEditField/dependencia.php";
+          break;
+        case "tratamiento":
+          url = "views/modules/pqr/src/pqr/modals/addEditField/tratamiento.php";
+          break;
       }
 
       return url;
     },
+    validUniq(type) {
+      let valid = true;
+      this.formFields.forEach(element => {
+        if (element.fk_pqr_html_field.type == type) {
+          valid = false;
+        }
+      });
+      return valid;
+    },
     addField(obj) {
+      let allow = true;
+      if (+obj.uniq == 1) {
+        allow = this.validUniq(obj.type);
+      }
+
+      if (!allow) {
+        top.notification({
+          type: "error",
+          message: "Este campo solo se puede crear una sola vez"
+        });
+        return false;
+      }
+
       let paramsModal = {
         isEdit: false,
         fk_pqr_html_field: obj.id,
