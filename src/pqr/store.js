@@ -188,13 +188,16 @@ export default new Vuex.Store({
                 })
             });
         },
-        updateFormField({ commit }, dataField) {
+        updateFormField({ commit }, { dataField, id }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
                         class: 'PqrFormFieldController',
                         method: 'update',
-                        data: { params: dataField }
+                        data: {
+                            params: dataField,
+                            id: id
+                        }
                     },
                     success: function (response) {
                         if (response.success) {
@@ -295,9 +298,7 @@ export default new Vuex.Store({
                     data: {
                         class: 'PqrFormFieldController',
                         method: 'updateActive',
-                        data: {
-                            params: data
-                        }
+                        data
                     },
                     success: function (response) {
                         if (response.success) {

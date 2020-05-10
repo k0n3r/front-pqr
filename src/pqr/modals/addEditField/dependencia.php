@@ -96,52 +96,14 @@ include_once $rootPath . 'views/assets/librerias.php';
 <?= validate() ?>
 <?= vue() ?>
 
+<script src="../../views/modules/pqr/src/pqr/modals/addEditField/js/mixin.js"></script>
 <script id="scriptDependency" data-baseurl="../../">
     $(function() {
-        //TODO: ESTO DEBE SER UNA FUNCION GLOBAL 
         const dataParams = top.window.dataModal;
-        const validateFormMixin = {
-            methods: {
-                onSubmit() {
-                    let _this = this;
-                    $("#form").validate({
-                        ignore: [],
-                        errorPlacement: function(error, element) {
-                            let node = element[0];
-                            if (
-                                node.tagName == 'SELECT' &&
-                                node.className.indexOf('select2') !== false
-                            ) {
-                                error.addClass('pl-3');
-                                element.next().append(error);
-                            } else {
-                                error.insertAfter(element);
-                            }
-                        },
-                        submitHandler: function(form) {
-                            $("#form_buttons").hide();
-                            $("#spiner").removeClass('d-none');
-
-                            _this.$nextTick(() => {
-                                if (_this.dataParams.isEdit) {
-                                    _this.edit();
-                                } else {
-                                    _this.add();
-                                }
-                            });
-                        }
-                    });
-                    $("#form").trigger('submit');
-                },
-                resetForm() {
-                    top.closeTopModal();
-                }
-            }
-        };
 
         new Vue({
             el: "#AppSelect",
-            mixins: [validateFormMixin],
+            mixins: [top.window.validateFormMixin],
             data() {
                 return {
                     dataParams: dataParams,
@@ -173,20 +135,20 @@ include_once $rootPath . 'views/assets/librerias.php';
                     multiple: false,
                     ajax: {
                         delay: 400,
-                        url: `${baseUrl}app/dependencia/autocompletar.php`,
+                        url: `${baseUrl}app/modules/back_pqr/app/request.php`,
                         dataType: 'json',
                         data: function(p) {
                             var query = {
                                 key: localStorage.getItem('key'),
                                 token: localStorage.getItem('token'),
-                                term: p.term
+                                class: 'PqrFormFieldController',
+                                method: 'getList',
+                                data: {
+                                    type: 'dependencia',
+                                    term: p.term
+                                }
                             };
                             return query;
-                        },
-                        processResults: function(response) {
-                            return {
-                                results: response.data,
-                            };
                         }
                     }
                 };

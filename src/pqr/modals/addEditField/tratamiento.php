@@ -15,46 +15,13 @@ while ($max_salida > 0) {
 include_once $rootPath . 'views/assets/librerias.php';
 
 ?>
-<div id="AppInput" class="animated fadeIn">
+<div id="AppTratamiento" class="animated fadeIn">
     <div class="row">
         <div class="col">
             <form id="form" name="form">
                 <div class="form-group form-group-default required">
-                    <label>ETIQUETA</label>
-                    <input class="form-control required" v-model.trim="form.label" type="text" maxlength="250" />
-                </div>
-
-                <div class="form-group form-group-default">
-                    <label>MARCADOR DE TEXTO</label>
-                    <input class="form-control" type="text" v-model.trim="form.placeholder" maxlength="250" />
-                </div>
-
-                <div v-if="system==0" class="form-group form-group-default required">
-                    <label>OBLIGATORIO?</label>
-
-                    <div class="radio radio-success input-group">
-                        <input type="radio" name="required" id="required1" value="1" v-model="form.required" class="required" />
-                        <label for="required1" class="mr-3">SI</label>
-
-                        <input type="radio" name="required" id="required0" value="0" v-model="form.required" />
-                        <label for="required0" class="mr-3">NO</label>
-                    </div>
-
-                    <label id='required-error' class='error' for='required' style='display: none;'></label>
-                </div>
-
-                <div v-if="system==0" class="form-group form-group-default required">
-                    <label>VISIBLE PARA ANÓNIMO?</label>
-
-                    <div class="radio radio-success input-group">
-                        <input type="radio" name="show_anonymous" id="show_anonymous1" value="1" v-model="form.show_anonymous" class="required" />
-                        <label for="show_anonymous1" class="mr-3">SI</label>
-
-                        <input type="radio" name="show_anonymous" id="show_anonymous0" value="0" v-model="form.show_anonymous" />
-                        <label for="show_anonymous0" class="mr-3">NO</label>
-                    </div>
-
-                    <label id='show_anonymous-error' class='error' for='show_anonymous' style='display: none;'></label>
+                    <label>TEXTO DE TRATAMIENTO DE DATOS</label>
+                    <textarea class="form-control required" v-model.trim="form.text"></textarea>
                 </div>
 
                 <div class="float-right">
@@ -72,58 +39,19 @@ include_once $rootPath . 'views/assets/librerias.php';
 <?= validate() ?>
 <?= vue() ?>
 
+<script src="../../views/modules/pqr/src/pqr/modals/addEditField/js/mixin.js"></script>
+
 <script>
     $(function() {
-        //TODO: ESTO DEBE SER UNA FUNCION GLOBAL 
         const dataParams = top.window.dataModal;
 
-        const validateFormMixin = {
-            methods: {
-                onSubmit() {
-                    let _this = this;
-                    $("#form").validate({
-                        ignore: [],
-                        errorPlacement: function(error, element) {
-                            let node = element[0];
-                            if (
-                                node.tagName == 'SELECT' &&
-                                node.className.indexOf('select2') !== false
-                            ) {
-                                error.addClass('pl-3');
-                                element.next().append(error);
-                            } else {
-                                error.insertAfter(element);
-                            }
-                        },
-                        submitHandler: function(form) {
-                            $("#form_buttons").hide();
-                            $("#spiner").removeClass('d-none');
-
-                            _this.$nextTick(() => {
-                                if (_this.dataParams.isEdit) {
-                                    _this.edit();
-                                } else {
-                                    _this.add();
-                                }
-                            });
-                        }
-                    });
-                    $("#form").trigger('submit');
-                },
-                resetForm() {
-                    top.closeTopModal();
-                }
-            }
-        }
-
         new Vue({
-            el: "#AppInput",
-            mixins: [validateFormMixin],
+            el: "#AppTratamiento",
+            mixins: [top.window.validateFormMixin],
             data() {
                 return {
                     form: null,
                     dataParams: dataParams,
-                    system: 0
                 };
             },
             created() {
@@ -132,20 +60,12 @@ include_once $rootPath . 'views/assets/librerias.php';
             methods: {
                 clearDataForm() {
                     let dataForm = {
-                        label: null,
-                        required: 1,
-                        show_anonymous: 1,
-                        placeholder: null
+                        text: null
                     };
                     if (this.dataParams.isEdit) {
                         let dataFormField = this.dataParams.dataFormField;
-                        this.system = this.dataParams.dataFormField.name == 'sys_email' ?
-                            0 : this.dataParams.dataFormField.system;
                         dataForm = {
-                            label: dataFormField.label,
-                            required: dataFormField.required,
-                            show_anonymous: dataFormField.show_anonymous,
-                            placeholder: dataFormField.setting.placeholder
+                            text: dataFormField.setting.tratamiento
                         };
                     }
                     return dataForm;
@@ -153,11 +73,8 @@ include_once $rootPath . 'views/assets/librerias.php';
                 edit() {
                     let data = {
                         dataField: {
-                            label: this.form.label,
-                            required: this.form.required,
-                            show_anonymous: this.form.show_anonymous,
                             setting: {
-                                placeholder: this.form.placeholder
+                                tratamiento: this.form.text
                             }
                         },
                         id: this.dataParams.dataFormField.id
@@ -169,11 +86,12 @@ include_once $rootPath . 'views/assets/librerias.php';
                 },
                 add() {
                     let data = {
+                        name: 'sys_tratamiento',
+                        label: 'Tratamiento de datos',
                         fk_pqr_html_field: this.dataParams.fk_pqr_html_field,
-                        label: this.form.label,
-                        required: this.form.required,
+                        required: 1,
                         setting: {
-                            placeholder: this.form.placeholder
+                            tratamiento: this.form.text
                         }
                     };
 

@@ -288,13 +288,18 @@ export default {
         case "textarea":
         case "input":
         case "email":
+        case "number":
           url = "views/modules/pqr/src/pqr/modals/addEditField/input.php";
           break;
+
         case "dependencia":
           url = "views/modules/pqr/src/pqr/modals/addEditField/dependencia.php";
           break;
         case "tratamiento":
           url = "views/modules/pqr/src/pqr/modals/addEditField/tratamiento.php";
+          break;
+        case "localidad":
+          url = "views/modules/pqr/src/pqr/modals/addEditField/localidad.php";
           break;
       }
 
