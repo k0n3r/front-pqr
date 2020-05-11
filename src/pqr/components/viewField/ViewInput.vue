@@ -6,7 +6,7 @@
       :class="isRequired"
       :name="dataParams.name"
       :placeholder="dataParams.setting.placeholder"
-      type="text"
+      :type="dataParams.fk_pqr_html_field.type"
       maxlength="250"
     />
   </div>

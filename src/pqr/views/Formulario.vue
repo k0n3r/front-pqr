@@ -27,18 +27,6 @@
       </div>
       <div class="col-9">
         <div class="card">
-          <!--div class="card-header">
-            <div class="card-controls">
-              <ul>
-                <li data-toggle="tooltip" title="Configuración">
-                  <a href="#" @click="openFormConfig">
-                    <i class="fa fa-cogs fa-2x"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div-->
-
           <div class="modal-body">
             <h5 class="text-black w-100 text-center">{{form.label}}</h5>
 
@@ -97,7 +85,6 @@
                 </div>
 
                 <div class="form-group float-right">
-                  <!--button type="button" class="btn btn-complete" @click="valid">Validar</button-->
                   <button type="button" class="btn btn-success" @click="publish">Publicar</button>
                 </div>
               </form>
@@ -228,25 +215,6 @@ export default {
         }
       });
     },
-    // openFormConfig(backdrop = true, keyboard = true) {
-    //   let edit = false;
-    //   if (Object.keys(this.form).length !== 0) {
-    //     edit = true;
-    //   }
-    //   let paramsModal = {
-    //     isEdit: edit,
-    //     form: this.form
-    //   };
-    //   let optionsModal = {
-    //     url: "views/modules/pqr/src/pqr/modals/formConfiguration.php",
-    //     backdrop: backdrop,
-    //     keyboard: keyboard,
-    //     title: "Configuración del formulario",
-    //     buttons: {}
-    //   };
-    //   top.window.dataModal = paramsModal;
-    //   this.openModalFormConfig(optionsModal, edit);
-    // },
     openModalFormConfig(options) {
       top.topModal({
         ...options,
@@ -286,7 +254,7 @@ export default {
           break;
 
         case "textarea":
-        case "input":
+        case "text":
         case "email":
         case "number":
           url = "views/modules/pqr/src/pqr/modals/addEditField/input.php";
@@ -388,30 +356,6 @@ export default {
           message: "No fue posible eliminar el campo"
         });
       });
-    },
-    valid() {
-      $("#formulario").validate({
-        errorPlacement: function(error, element) {
-          let node = element[0];
-
-          if (
-            node.tagName == "SELECT" &&
-            node.className.indexOf("select2") !== false
-          ) {
-            error.addClass("pl-2");
-            element.next().append(error);
-          } else {
-            error.insertAfter(element);
-          }
-        },
-        submitHandler: function(form) {
-          top.notification({
-            type: "success",
-            message: "Formulario Ok!"
-          });
-        }
-      });
-      $("#formulario").trigger("submit");
     },
     publish() {
       this.publishForm()

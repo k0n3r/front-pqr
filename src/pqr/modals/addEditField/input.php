@@ -43,20 +43,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                     <label id='required-error' class='error' for='required' style='display: none;'></label>
                 </div>
 
-                <div v-if="system==0" class="form-group form-group-default required">
-                    <label>VISIBLE PARA ANÓNIMO?</label>
-
-                    <div class="radio radio-success input-group">
-                        <input type="radio" name="show_anonymous" id="show_anonymous1" value="1" v-model="form.show_anonymous" class="required" />
-                        <label for="show_anonymous1" class="mr-3">SI</label>
-
-                        <input type="radio" name="show_anonymous" id="show_anonymous0" value="0" v-model="form.show_anonymous" />
-                        <label for="show_anonymous0" class="mr-3">NO</label>
-                    </div>
-
-                    <label id='show_anonymous-error' class='error' for='show_anonymous' style='display: none;'></label>
-                </div>
-
                 <div class="float-right">
                     <div class="form-group" id="form_buttons">
                         <button type="button" class="btn btn-danger" @click="resetForm">Cancelar</button>
@@ -95,7 +81,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                     let dataForm = {
                         label: null,
                         required: 1,
-                        show_anonymous: 1,
                         placeholder: null
                     };
                     if (this.dataParams.isEdit) {
@@ -105,7 +90,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                         dataForm = {
                             label: dataFormField.label,
                             required: dataFormField.required,
-                            show_anonymous: dataFormField.show_anonymous,
                             placeholder: dataFormField.setting.placeholder
                         };
                     }
@@ -116,7 +100,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                         dataField: {
                             label: this.form.label,
                             required: this.form.required,
-                            show_anonymous: this.form.show_anonymous,
                             setting: {
                                 placeholder: this.form.placeholder
                             }

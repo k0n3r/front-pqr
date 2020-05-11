@@ -37,20 +37,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                     <label id='required-error' class='error' for='required' style='display: none;'></label>
                 </div>
 
-                <div v-if="system==0" class="form-group form-group-default required">
-                    <label>VISIBLE PARA ANÓNIMO?</label>
-
-                    <div class="radio radio-success input-group">
-                        <input type="radio" name="show_anonymous" id="show_anonymous1" value="1" aria-required='true' v-model="form.show_anonymous" class="required" />
-                        <label for="show_anonymous1" class="mr-3">SI</label>
-
-                        <input type="radio" name="show_anonymous" id="show_anonymous0" value="0" aria-required='true' v-model="form.show_anonymous" />
-                        <label for="show_anonymous0" class="mr-3">NO</label>
-                    </div>
-
-                    <label id='show_anonymous-error' class='error' for='show_anonymous' style='display: none;'></label>
-                </div>
-
                 <div class="form-group form-group-default required">
                     <label>OPCIONES A ELEGIR</label>
                     <input class="form-control required" name="valueOptions" v-model="valueOptions" type="hidden" />
@@ -118,7 +104,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                     let dataForm = {
                         label: null,
                         required: 1,
-                        show_anonymous: 1,
                         options: null
                     };
                     if (this.dataParams.isEdit) {
@@ -128,7 +113,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                         dataForm = {
                             label: dataFormField.label,
                             required: dataFormField.required,
-                            show_anonymous: dataFormField.show_anonymous,
                             options: dataFormField.setting.options
                         };
                         this.valueOptions = 1;
@@ -140,7 +124,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                         dataField: {
                             label: this.form.label,
                             required: this.form.required,
-                            show_anonymous: this.form.show_anonymous,
                             setting: {
                                 options: this.form.options
                             }
@@ -158,7 +141,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                         fk_pqr_html_field: this.dataParams.fk_pqr_html_field,
                         label: this.form.label,
                         required: this.form.required,
-                        show_anonymous: this.form.show_anonymous,
                         setting: {
                             options: this.form.options
                         }

@@ -23,7 +23,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                     <input class="form-control required" v-model.trim="form.label" type="text" maxlength="250" />
                 </div>
 
-                <div v-if="system==0" class="form-group form-group-default required">
+                <div class="form-group form-group-default required">
                     <label>OBLIGATORIO?</label>
 
                     <div class="radio radio-success input-group">
@@ -37,26 +37,12 @@ include_once $rootPath . 'views/assets/librerias.php';
                     <label id='required-error' class='error' for='required' style='display: none;'></label>
                 </div>
 
-                <div v-if="system==0" class="form-group form-group-default required">
-                    <label>VISIBLE PARA ANÓNIMO?</label>
-
-                    <div class="radio radio-success input-group">
-                        <input type="radio" name="show_anonymous" id="show_anonymous1" value="1" aria-required='true' v-model="form.show_anonymous" class="required" />
-                        <label for="show_anonymous1" class="mr-3">SI</label>
-
-                        <input type="radio" name="show_anonymous" id="show_anonymous0" value="0" aria-required='true' v-model="form.show_anonymous" />
-                        <label for="show_anonymous0" class="mr-3">NO</label>
-                    </div>
-
-                    <label id='show_anonymous-error' class='error' for='show_anonymous' style='display: none;'></label>
-                </div>
-
                 <div class="form-group form-group-default required">
-                    <label>DEPENDENCIA A ELEGIR</label>
+                    <label>MOSTRAR TODAS LAS DEPENDENCIAS?</label>
                     <div class="radio radio-success input-group">
 
                         <input type="radio" name="allDependency" id="allDependency1" value="1" aria-required='true' v-model="allDependency" class="required" />
-                        <label for="allDependency1" class="mr-3">TODAS</label>
+                        <label for="allDependency1" class="mr-3">SI</label>
 
                         <input type="radio" name="allDependency" id="allDependency0" value="0" aria-required='true' v-model="allDependency" />
                         <label for="allDependency0" class="mr-3">SELECCIONAR</label>
@@ -107,7 +93,6 @@ include_once $rootPath . 'views/assets/librerias.php';
             data() {
                 return {
                     dataParams: dataParams,
-                    system: 0,
                     form: null,
                     allDependency: 1,
                     valueOptions: null
@@ -164,19 +149,16 @@ include_once $rootPath . 'views/assets/librerias.php';
                     let dataForm = {
                         label: null,
                         required: 1,
-                        show_anonymous: 1,
                         options: null
                     };
                     if (this.dataParams.isEdit) {
                         let dataFormField = this.dataParams.dataFormField;
-                        this.system = dataFormField.system;
                         this.allDependency = +dataFormField.setting.allDependency
                         this.valueOptions = this.allDependency ? null : 1;
 
                         dataForm = {
                             label: dataFormField.label,
                             required: dataFormField.required,
-                            show_anonymous: dataFormField.show_anonymous,
                             options: this.allDependency ? null : dataFormField.setting.options
                         };
                     }
@@ -189,7 +171,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                         dataField: {
                             label: this.form.label,
                             required: this.form.required,
-                            show_anonymous: this.form.show_anonymous,
                             setting: {
                                 allDependency: allDependency,
                                 options: allDependency ? null : this.form.options
@@ -206,10 +187,10 @@ include_once $rootPath . 'views/assets/librerias.php';
                 add() {
                     let allDependency = +this.allDependency;
                     let data = {
+                        name: 'sys_dependencia',
                         fk_pqr_html_field: this.dataParams.fk_pqr_html_field,
                         label: this.form.label,
                         required: this.form.required,
-                        show_anonymous: this.form.show_anonymous,
                         setting: {
                             allDependency: allDependency,
                             options: allDependency ? null : this.form.options
