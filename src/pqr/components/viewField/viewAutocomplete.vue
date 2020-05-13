@@ -14,7 +14,7 @@
 import viewFormFieldMixin from "src/pqr/shared/viewFormFieldMixin.js";
 
 export default {
-  name: "ViewLocalidad",
+  name: "ViewAutocomplete",
   mixins: [viewFormFieldMixin],
   props: {
     dataParams: {
@@ -27,7 +27,7 @@ export default {
     let options = {
       language: "es",
       placeholder: "Ingrese el nombre",
-      minimumInputLength: 3,
+      //minimumInputLength: 3,
       multiple: false,
       ajax: {
         delay: 400,

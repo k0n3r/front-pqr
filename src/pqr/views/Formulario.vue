@@ -3,9 +3,9 @@
     <div class="row">
       <div class="col-3">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header text-center">
             <div class="card-title">
-              <h6>COMPONENTES</h6>
+              <h5 class="text-black">COMPONENTES</h5>
             </div>
           </div>
 
@@ -27,9 +27,12 @@
       </div>
       <div class="col-9">
         <div class="card">
+          <div class="card-header text-center">
+            <div class="card-title">
+              <h5 class="text-black">{{form.label}}</h5>
+            </div>
+          </div>
           <div class="modal-body">
-            <h5 class="text-black w-100 text-center">{{form.label}}</h5>
-
             <template v-if="formFields.length">
               <form id="formulario" name="formulario">
                 <div id="sortable">

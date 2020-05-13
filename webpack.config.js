@@ -8,6 +8,7 @@ module.exports = {
     entry: {
         pqr: "./src/pqr/main.js",
         respuestaPqr: "./src/respuestaPqr/main.js",
+        configuracionPqr: "./src/configuracionPqr/main.js",
     },
     output: {
         path: path.resolve(__dirname, "./dist/"),
@@ -67,6 +68,12 @@ module.exports = {
             chunks: ["respuestaPqr"],
             hash: true
         }),
+        new HtmlWebpackPlugin({
+            template: "./src/configuracionPqr/index.html",
+            filename: "configuracionPqr/index.html",
+            chunks: ["configuracionPqr"],
+            hash: true
+        })
     ],
     resolve: {
         modules: ['node_modules', '../../assets/node_modules'],
@@ -74,7 +81,8 @@ module.exports = {
             topAssets: path.resolve(__dirname, '../../assets/'),
             src: path.resolve(__dirname, './src/'),
             pqr: path.resolve(__dirname, './src/pqr/'),
-            respuesta: path.resolve(__dirname, './src/respuestaPqr/')
+            respuesta: path.resolve(__dirname, './src/respuestaPqr/'),
+            configuracion: path.resolve(__dirname, './src/configuracionPqr/')
         }
     }
 }

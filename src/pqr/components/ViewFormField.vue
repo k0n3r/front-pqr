@@ -11,8 +11,12 @@
     <ViewCheckboxComponent v-if="data.fk_pqr_html_field.type=='checkbox'" :dataParams="data" />
 
     <ViewTratamientoComponent v-if="data.fk_pqr_html_field.type=='tratamiento'" :dataParams="data" />
-    <ViewDependenciaComponent v-if="data.fk_pqr_html_field.type=='dependencia'" :dataParams="data" />
-    <ViewLocalidadComponent v-if="data.fk_pqr_html_field.type=='localidad'" :dataParams="data" />
+
+    <ViewAutocompleteComponent
+      v-if="data.fk_pqr_html_field.type=='dependencia'"
+      :dataParams="data"
+    />
+    <ViewAutocompleteComponent v-if="data.fk_pqr_html_field.type=='localidad'" :dataParams="data" />
   </div>
 </template>
 
@@ -23,8 +27,7 @@ import ViewSelectComponent from "pqr/components/viewField/ViewSelect.vue";
 import ViewRadioComponent from "pqr/components/viewField/ViewRadio.vue";
 import ViewCheckboxComponent from "pqr/components/viewField/ViewCheckbox.vue";
 import ViewTratamientoComponent from "pqr/components/viewField/ViewTratamiento.vue";
-import ViewDependenciaComponent from "pqr/components/viewField/ViewDependencia.vue";
-import ViewLocalidadComponent from "pqr/components/viewField/ViewLocalidad.vue";
+import ViewAutocompleteComponent from "pqr/components/viewField/ViewAutocomplete.vue";
 
 export default {
   name: "ViewFormField",
@@ -35,8 +38,7 @@ export default {
     ViewRadioComponent,
     ViewCheckboxComponent,
     ViewTratamientoComponent,
-    ViewDependenciaComponent,
-    ViewLocalidadComponent
+    ViewAutocompleteComponent
   },
   props: {
     data: {

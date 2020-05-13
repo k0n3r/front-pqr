@@ -24,6 +24,11 @@ include_once $rootPath . 'views/assets/librerias.php';
                     <textarea class="form-control required" v-model.trim="form.text"></textarea>
                 </div>
 
+                <div class="form-group form-group-default">
+                    <label>URL CONDICIONES DE USO Y POLÍTICAS DE PRIVACIDAD</label>
+                    <input class="form-control" type="url" id="url" placeholder="http://example.com" v-model.trim="form.url" maxlength="250" />
+                </div>
+
                 <div class="float-right">
                     <div class="form-group" id="form_buttons">
                         <button type="button" class="btn btn-danger" @click="resetForm">Cancelar</button>
@@ -65,7 +70,8 @@ include_once $rootPath . 'views/assets/librerias.php';
                     if (this.dataParams.isEdit) {
                         let dataFormField = this.dataParams.dataFormField;
                         dataForm = {
-                            text: dataFormField.setting.tratamiento
+                            text: dataFormField.setting.tratamiento,
+                            url: dataFormField.setting.url
                         };
                     }
                     return dataForm;
@@ -74,7 +80,8 @@ include_once $rootPath . 'views/assets/librerias.php';
                     let data = {
                         dataField: {
                             setting: {
-                                tratamiento: this.form.text
+                                tratamiento: this.form.text,
+                                url: this.form.url
                             }
                         },
                         id: this.dataParams.dataFormField.id
@@ -91,7 +98,8 @@ include_once $rootPath . 'views/assets/librerias.php';
                         fk_pqr_html_field: this.dataParams.fk_pqr_html_field,
                         required: 1,
                         setting: {
-                            tratamiento: this.form.text
+                            tratamiento: this.form.text,
+                            url: this.form.url
                         }
                     };
 
