@@ -10,10 +10,6 @@ $.ajaxSetup({
     data: {
         key: localStorage.getItem('key'),
         token: localStorage.getItem('token')
-    },
-    error: function (error) {
-        console.error(error);
-        reject();
     }
 });
 
@@ -22,21 +18,17 @@ export default new Vuex.Store({
         formFields: [],
         formName: null,
         urlWs: null,
-        anonymous: null
+        show_anonymous: null,
+        show_label: null
     },
     mutations: {
         setData(state, data) {
             state.formName = data.formName;
-            state.formFields = data.fields;
+            state.show_anonymous = data.showAnonymous;
+            state.show_label = data.showLabel;
+            state.formFields = data.formfields;
             state.urlWs = data.urlWs;
-            state.anonymous = data.showAnonymous;
-        },
-        setFormName(state, name) {
-            state.formName = name;
-        },
-        setFormFields(state, data) {
-            state.formFields = data;
-        },
+        }
     },
     actions: {
         getDataSetting({ commit }) {
@@ -54,6 +46,34 @@ export default new Vuex.Store({
                             console.log(response)
                             reject();
                         }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        reject();
+                    }
+                })
+            });
+        },
+        saveData({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'SettingController',
+                        method: 'updateSetting',
+                        data: data
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("setData", response.data);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        reject();
                     }
                 })
             });

@@ -109,6 +109,16 @@ import "topAssets/node_modules/select2/dist/js/select2.min.js";
 import "topAssets/node_modules/select2/dist/js/i18n/es.js";
 import "topAssets/node_modules/select2/dist/css/select2.min.css";
 
+// //switchery
+// import Switchery from "topAssets/theme/assets/plugins/switchery/js/switchery.min.js";
+// import "topAssets/theme/assets/plugins/switchery/css/switchery.min.css";
+// window.Switchery = Switchery;
+
+//Dropzone
+import Dropzone from "topAssets/theme/assets/plugins/dropzone/min/dropzone.min.js";
+import "topAssets/theme/assets/plugins/dropzone/custom.css";
+window.Dropzone = Dropzone;
+
 //jquery validate
 import "topAssets/node_modules/jquery-validation/dist/jquery.validate.min.js";
 import "topAssets/node_modules/jquery-validation/dist/localization/messages_es.min.js";
@@ -271,6 +281,9 @@ export default {
           break;
         case "localidad":
           url = "views/modules/pqr/src/pqr/modals/addEditField/localidad.php";
+          break;
+        case "file":
+          url = "views/modules/pqr/src/pqr/modals/addEditField/file.php";
           break;
       }
 

@@ -3,6 +3,7 @@
     <ViewInputComponent v-if="data.fk_pqr_html_field.type=='text'" :dataParams="data" />
     <ViewInputComponent v-if="data.fk_pqr_html_field.type=='number'" :dataParams="data" />
     <ViewInputComponent v-if="data.fk_pqr_html_field.type=='email'" :dataParams="data" />
+    <ViewFileComponent v-if="data.fk_pqr_html_field.type=='file'" :dataParams="data" />
 
     <ViewTextareaComponent v-if="data.fk_pqr_html_field.type=='textarea'" :dataParams="data" />
 
@@ -28,6 +29,7 @@ import ViewRadioComponent from "pqr/components/viewField/ViewRadio.vue";
 import ViewCheckboxComponent from "pqr/components/viewField/ViewCheckbox.vue";
 import ViewTratamientoComponent from "pqr/components/viewField/ViewTratamiento.vue";
 import ViewAutocompleteComponent from "pqr/components/viewField/ViewAutocomplete.vue";
+import ViewFileComponent from "pqr/components/viewField/ViewFile.vue";
 
 export default {
   name: "ViewFormField",
@@ -38,7 +40,8 @@ export default {
     ViewRadioComponent,
     ViewCheckboxComponent,
     ViewTratamientoComponent,
-    ViewAutocompleteComponent
+    ViewAutocompleteComponent,
+    ViewFileComponent
   },
   props: {
     data: {

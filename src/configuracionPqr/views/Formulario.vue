@@ -61,35 +61,43 @@
             <div class="table-responsive" v-show="+showAnonymous">
               <table class="table">
                 <caption>Lista de campos</caption>
-                <thead class="thead-light">
+                <thead class="thead-light text-center">
                   <tr>
                     <th scope="col">Etiqueta</th>
                     <th scope="col">Mostrar</th>
+                    <th scope="col">Obligatorio</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <template v-for="field in fields">
+                  <template v-for="field in formFields">
                     <tr :key="field.id" v-if="showField(field.name)">
                       <td scope="row">{{field.label}}</td>
-                      <td>Mark</td>
+                      <td class="text-center">
+                        <input
+                          type="checkbox"
+                          data-init-plugin="switchery"
+                          data-size="small"
+                          data-color="primary"
+                          :value="field.id"
+                          v-model="showFieldsAnonymous"
+                          @change="isCheck($event,1,field.id)"
+                        />
+                      </td>
+                      <td class="text-center">
+                        <input
+                          type="checkbox"
+                          data-init-plugin="switchery"
+                          data-size="small"
+                          data-color="primary"
+                          :value="field.id"
+                          v-model="requiredFieldsAnonymous"
+                          @change="isCheck($event,2,field.id)"
+                        />
+                      </td>
                     </tr>
                   </template>
                 </tbody>
               </table>
-              <input
-                type="checkbox"
-                data-init-plugin="switchery"
-                data-size="small"
-                data-color="primary"
-                checked="checked"
-              />
-              <input
-                type="checkbox"
-                data-init-plugin="switchery"
-                data-size="large"
-                data-color="primary"
-                checked="checked"
-              />
             </div>
             <div class="form-group float-right">
               <button type="button" class="btn btn-complete" @click="saveChanges">Guardar</button>
@@ -136,18 +144,32 @@ export default {
   name: "Formulario",
   data() {
     return {
-      showFormName: 1,
       name: null,
+      showFormName: 1,
       showAnonymous: 0,
-      fields: []
+      showFieldsAnonymous: [],
+      requiredFieldsAnonymous: []
     };
   },
   created() {
     this.getDataSetting()
       .then(() => {
         this.name = this.formName;
-        this.fields = this.formFields;
-        this.showAnonymous = this.anonymous;
+        this.showAnonymous = this.show_anonymous;
+        this.showFormName = this.show_label;
+
+        let idsShowFields = new Array();
+        let idsRequiredFields = new Array();
+        this.formFields.forEach(row => {
+          if (+row.anonymous) {
+            idsShowFields.push(row.id);
+            if (+row.required_anonymous) {
+              idsRequiredFields.push(row.id);
+            }
+          }
+        });
+        this.showFieldsAnonymous = idsShowFields;
+        this.requiredFieldsAnonymous = idsRequiredFields;
       })
       .catch(() => {
         top.notification({
@@ -157,7 +179,13 @@ export default {
       });
   },
   computed: {
-    ...mapState(["formFields", "formName", "urlWs", "anonymous"]),
+    ...mapState([
+      "formFields",
+      "formName",
+      "urlWs",
+      "show_anonymous",
+      "show_label"
+    ]),
     getContentIframe() {
       return (
         '<iframe src="' +
@@ -167,11 +195,49 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getDataSetting"]),
+    ...mapActions(["getDataSetting", "saveData"]),
     showField(name) {
       return !(name == "sys_tratamiento" || name == "sys_tipo");
     },
-    saveChanges() {}
+    isCheck(e, type, id) {
+      if (e.target.checked && type == 2) {
+        if (!this.showFieldsAnonymous.includes(id)) {
+          this.showFieldsAnonymous.push(id);
+        }
+      } else if (e.target.checked === false && type == 1) {
+        let i = this.requiredFieldsAnonymous.indexOf(id);
+        if (i !== -1) {
+          this.requiredFieldsAnonymous.splice(i, 1);
+        }
+      }
+    },
+    saveChanges() {
+      let data = {
+        formFields: {
+          dataShowAnonymous: this.showFieldsAnonymous,
+          dataRequiredAnonymous: this.requiredFieldsAnonymous
+        },
+        pqrForm: {
+          label: this.name,
+          show_anonymous: this.showAnonymous,
+          show_label: this.showFormName
+        }
+      };
+      this.saveData(data)
+        .then(() => {
+          top.notification({
+            title: "Datos Guardados!",
+            type: "success",
+            message: "Recuerde publicar el formulario"
+          });
+        })
+        .catch(() => {
+          top.notification({
+            type: "error",
+            message: "No fue posible obtener los datos"
+          });
+        });
+    }
   }
 };
 </script>
