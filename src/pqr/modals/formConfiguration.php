@@ -18,123 +18,165 @@ include_once $rootPath . 'views/assets/librerias.php';
 <div id="AppFormConfiguration" class="animated fadeIn">
     <div class="row">
         <div class="col">
-            <form id="form" name="form">
-                <div class="form-group form-group-default required">
-                    <label>ETIQUETA</label>
-                    <input class="form-control required" placeholder="Etiqueta del formulario" v-model.trim="formulario.label" type="text" maxlength="250" />
-                </div>
 
-                <div class="float-right">
-                    <div class="form-group" id="form_buttons">
-                        <button type="button" class="btn btn-danger" @click="resetForm">Cancelar</button>
-                        <button type="button" class="btn btn-complete" @click="onSubmit">Guardar</button>
-                    </div>
-                    <div class="progress-circle-indeterminate d-none" id="spiner"></div>
+            <div class="form-group">
+                <label>MOSTRAR NOMBRE DEL FORMULARIO</label>
+
+                <div class="radio radio-success">
+                    <input type="radio" value="1" v-model="showFormName" name="showFormName" id="showFormName1" />
+                    <label for="showFormName1">Configurar</label>
+                    <input type="radio" value="0" v-model="showFormName" name="showFormName" id="showFormName0" />
+                    <label for="showFormName0">Ocultar</label>
                 </div>
-            </form>
+            </div>
+
+            <div class="form-group" v-show="+showFormName">
+                <label>NOMBRE</label>
+                <input type="text" class="form-control" v-model="name" />
+            </div>
+
+            <div class="form-group">
+                <label>CONFIGURAR ANÓNIMO</label>
+
+                <div class="radio radio-success">
+                    <input type="radio" value="1" v-model="showAnonymous" name="showAnonymous" id="showAnonymous1" />
+                    <label for="showAnonymous1">Configurar</label>
+                    <input type="radio" value="0" v-model="showAnonymous" name="showAnonymous" id="showAnonymous0" />
+                    <label for="showAnonymous0">Inactivar</label>
+                </div>
+            </div>
+            <div class="table-responsive" v-show="+showAnonymous">
+                <table class="table">
+                    <caption>Lista de campos</caption>
+                    <thead class="thead-light text-center">
+                        <tr>
+                            <th scope="col">Etiqueta</th>
+                            <th scope="col">Mostrar</th>
+                            <th scope="col">Obligatorio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template v-for="field in formFields">
+                            <tr :key="field.id" v-if="showField(field.name)">
+                                <td scope="row">{{field.label}}</td>
+                                <td class="text-center">
+                                    <input type="checkbox" :value="field.id" v-model="showFieldsAnonymous" @change="isCheck($event,1,field.id)" />
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" :value="field.id" v-model="requiredFieldsAnonymous" @change="isCheck($event,2,field.id)" />
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group float-right">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-complete" @click="saveChanges">Guardar</button>
+            </div>
+
+
         </div>
     </div>
 </div>
 
-<?= select2() ?>
 <?= validate() ?>
 <?= vue() ?>
 
 <script>
     $(function() {
-        //TODO: ESTO DEBE SER UNA FUNCION GLOBAL 
         const dataParams = top.window.dataModal;
-        const validateFormMixin = {
-            methods: {
-                onSubmit() {
-                    let _this = this;
-                    $("#form").validate({
-                        errorPlacement: function(error, element) {
-                            let node = element[0];
-                            if (
-                                node.tagName == 'SELECT' &&
-                                node.className.indexOf('select2') !== false
-                            ) {
-                                error.addClass('pl-3');
-                                element.next().append(error);
-                            } else {
-                                error.insertAfter(element);
-                            }
-                        },
-                        submitHandler: function(form) {
-                            $("#form_buttons").hide();
-                            $("#spiner").removeClass('d-none');
-
-                            _this.$nextTick(() => {
-                                if (_this.isEdit) {
-                                    _this.edit();
-                                } else {
-                                    _this.add();
-                                }
-                            });
-                        }
-                    });
-                    $("#form").trigger('submit');
-                },
-                resetForm() {
-                    if (!this.isEdit) {
-                        window.location.href = "dashboard.php";
-                    }
-                    top.closeTopModal();
-                }
-            }
-        }
 
         new Vue({
             el: "#AppFormConfiguration",
-            mixins: [validateFormMixin],
             data() {
                 return {
-                    formulario: null,
-                    isEdit: dataParams.isEdit,
-                    options: dataParams.options,
-                    form: dataParams.form
+                    name: null,
+                    showFormName: 1,
+                    showAnonymous: 0,
+                    showFieldsAnonymous: [],
+                    requiredFieldsAnonymous: [],
+                    formFields: []
                 };
             },
             created() {
-                this.formulario = this.clearDataForm();
+                let form = dataParams.form;
+                let fields = this.formFields = dataParams.fields;
+
+                this.name = form.label;
+                this.showAnonymous = form.show_anonymous;
+                this.showFormName = form.show_label;
+
+                let idsShowFields = new Array();
+                let idsRequiredFields = new Array();
+                fields.forEach(row => {
+                    if (+row.anonymous) {
+                        idsShowFields.push(row.id);
+                        if (+row.required_anonymous) {
+                            idsRequiredFields.push(row.id);
+                        }
+                    }
+                });
+                this.showFieldsAnonymous = idsShowFields;
+                this.requiredFieldsAnonymous = idsRequiredFields;
             },
             methods: {
-                clearDataForm() {
-                    let dataForm = {
-                        label: null
-                    };
-                    if (this.isEdit) {
-                        dataForm = {
-                            label: this.form.label
-                        };
+                showField(name) {
+                    return !(name == "sys_tratamiento" || name == "sys_tipo");
+                },
+                isCheck(e, type, id) {
+                    if (e.target.checked && type == 2) {
+                        if (!this.showFieldsAnonymous.includes(id)) {
+                            this.showFieldsAnonymous.push(id);
+                        }
+                    } else if (e.target.checked === false && type == 1) {
+                        let i = this.requiredFieldsAnonymous.indexOf(id);
+                        if (i !== -1) {
+                            this.requiredFieldsAnonymous.splice(i, 1);
+                        }
                     }
-                    return dataForm;
                 },
-                add() {
+                saveChanges() {
                     let data = {
-                        label: this.formulario.label
-                    };
-
-                    top.successModalEvent({
-                        data,
-                        edit: false
-                    });
-                },
-                edit() {
-                    let data = {
-                        data: {
-                            label: this.formulario.label
+                        formFields: {
+                            dataShowAnonymous: this.showFieldsAnonymous,
+                            dataRequiredAnonymous: this.requiredFieldsAnonymous
                         },
-                        id: this.form.id
+                        pqrForm: {
+                            label: this.name,
+                            show_anonymous: this.showAnonymous,
+                            show_label: this.showFormName
+                        }
                     };
-
-                    top.successModalEvent({
-                        data,
-                        edit: true
-                    });
-
+                    this.saveData(data)
+                        .then(() => {
+                            top.notification({
+                                title: "Datos Guardados!",
+                                type: "success",
+                                message: "Recuerde publicar el formulario"
+                            });
+                        })
+                        .catch(() => {
+                            top.notification({
+                                type: "error",
+                                message: "No fue posible obtener los datos"
+                            });
+                        });
                 }
+                // edit() {
+                //     let data = {
+                //         data: {
+                //             label: this.formulario.label
+                //         },
+                //         id: this.form.id
+                //     };
+
+                //     top.successModalEvent({
+                //         data,
+                //         edit: true
+                //     });
+
+                // }
             }
         });
     });

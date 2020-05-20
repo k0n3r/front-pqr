@@ -65,7 +65,7 @@ export default new Vuex.Store({
                 })
             });
         },
-        getDataForm({ commit }) {
+        getDataForm({ commit, dispatch }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
@@ -74,12 +74,9 @@ export default new Vuex.Store({
                     },
                     success: function (response) {
                         if (response.success) {
-                            let exist = 0;
-                            if (Object.keys(response.data).length !== 0) {
-                                commit("setForm", response.data);
-                                exist = 1;
-                            }
-                            resolve(exist);
+                            commit("setForm", response.data);
+                            dispatch('getDataFormFields');
+                            resolve();
                         } else {
                             console.log(response);
                             reject();

@@ -31,6 +31,15 @@
             <div class="card-title">
               <h5 class="text-black">{{form.label}}</h5>
             </div>
+            <div class="card-controls">
+              <ul>
+                <li data-toggle="tooltip" title="Configuración" @click="openFormConfig">
+                  <a href="#">
+                    <i class="fa fa-cogs fa-2x"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="modal-body">
             <template v-if="formFields.length">
@@ -109,11 +118,6 @@ import "topAssets/node_modules/select2/dist/js/select2.min.js";
 import "topAssets/node_modules/select2/dist/js/i18n/es.js";
 import "topAssets/node_modules/select2/dist/css/select2.min.css";
 
-// //switchery
-// import Switchery from "topAssets/theme/assets/plugins/switchery/js/switchery.min.js";
-// import "topAssets/theme/assets/plugins/switchery/css/switchery.min.css";
-// window.Switchery = Switchery;
-
 //Dropzone
 import Dropzone from "topAssets/theme/assets/plugins/dropzone/min/dropzone.min.js";
 import "topAssets/theme/assets/plugins/dropzone/custom.css";
@@ -145,25 +149,12 @@ export default {
       });
     });
 
-    this.getDataForm()
-      .then(existForm => {
-        if (existForm) {
-          this.getDataFormFields().catch(() => {
-            top.notification({
-              type: "error",
-              message: "No fue posible obtener los campos del formulario"
-            });
-          });
-        } else {
-          this.openFormConfig("static", false);
-        }
-      })
-      .catch(() => {
-        top.notification({
-          type: "error",
-          message: "No fue posible obtener la informacion del formulario"
-        });
+    this.getDataForm().catch(() => {
+      top.notification({
+        type: "error",
+        message: "No fue posible obtener la informacion del formulario"
       });
+    });
   },
   mounted() {
     this.initSortable();
@@ -227,6 +218,21 @@ export default {
           });
         }
       });
+    },
+    openFormConfig() {
+      let paramsModal = {
+        fields: this.formFields,
+        form: this.form
+      };
+      let optionsModal = {
+        url: "views/modules/pqr/src/pqr/modals/formConfiguration.php",
+        backdrop: "static",
+        keyboard: false,
+        title: "Configuración adicional",
+        buttons: {}
+      };
+      top.window.dataModal = paramsModal;
+      this.openModalFormConfig(optionsModal);
     },
     openModalFormConfig(options) {
       top.topModal({
@@ -320,6 +326,8 @@ export default {
 
       let optionsModal = {
         url: this.getUrlAddEditField(obj.type),
+        backdrop: "static",
+        keyboard: false,
         title: obj.label,
         buttons: {}
       };
@@ -336,6 +344,8 @@ export default {
       let optionsModal = {
         url: this.getUrlAddEditField(obj.fk_pqr_html_field.type),
         title: "Actualizar : " + obj.label,
+        backdrop: "static",
+        keyboard: false,
         buttons: {}
       };
 

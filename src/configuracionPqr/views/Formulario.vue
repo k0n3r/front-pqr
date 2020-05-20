@@ -75,9 +75,6 @@
                       <td class="text-center">
                         <input
                           type="checkbox"
-                          data-init-plugin="switchery"
-                          data-size="small"
-                          data-color="primary"
                           :value="field.id"
                           v-model="showFieldsAnonymous"
                           @change="isCheck($event,1,field.id)"
@@ -86,9 +83,6 @@
                       <td class="text-center">
                         <input
                           type="checkbox"
-                          data-init-plugin="switchery"
-                          data-size="small"
-                          data-color="primary"
                           :value="field.id"
                           v-model="requiredFieldsAnonymous"
                           @change="isCheck($event,2,field.id)"
@@ -139,7 +133,6 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-
 export default {
   name: "Formulario",
   data() {
