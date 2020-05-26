@@ -17,7 +17,8 @@ export default new Vuex.Store({
     state: {
         componentsHTML: [],
         formFields: [],
-        form: {}
+        form: {},
+        checkAnonymous: false
     },
     mutations: {
         setComponentsHTML(state, data) {
@@ -39,6 +40,9 @@ export default new Vuex.Store({
         delFormField(state, id) {
             let index = state.formFields.findIndex(i => i.id == id);
             state.formFields.splice(index, 1);
+        },
+        setCheckAnonymous(state, value) {
+            state.checkAnonymous = value;
         }
     },
     actions: {
@@ -111,12 +115,12 @@ export default new Vuex.Store({
                 })
             });
         },
-        insertForm({ commit }, data) {
+        updateForm({ commit }, data) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
                         class: 'PqrFormController',
-                        method: 'store',
+                        method: 'update',
                         data: { params: data }
                     },
                     success: function (response) {
@@ -135,17 +139,19 @@ export default new Vuex.Store({
                 })
             });
         },
-        updateForm({ commit }, data) {
+        updateSetting({ commit }, data) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
                         class: 'PqrFormController',
-                        method: 'update',
-                        data: { params: data }
+                        method: 'updateFormSettings',
+                        data: data
                     },
                     success: function (response) {
                         if (response.success) {
-                            commit("setForm", response.data);
+                            commit("setCheckAnonymous", false);
+                            commit("setFormFields", response.data.PqrFormFields);
+                            commit("setForm", response.data.PqrForm);
                             resolve();
                         } else {
                             console.log(response)
@@ -238,19 +244,17 @@ export default new Vuex.Store({
                 })
             });
         },
-        publishForm({ commit, state }) {
+        publishForm({ commit, dispatch }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
                         class: 'PqrFormController',
-                        method: 'publish',
-                        data: {
-                            id: state.form.id
-                        }
+                        method: 'publish'
                     },
                     success: function (response) {
                         if (response.success) {
                             commit("setForm", response.data);
+                            dispatch('getDataFormFields');
                             resolve();
                         } else {
                             console.log(response)

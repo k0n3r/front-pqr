@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid h-100" style="overflow-y: auto">
     <div class="row">
-      <div class="col-3">
+      <div class="col-md-3 d-none d-sm-block">
         <div class="card">
           <div class="card-header text-center">
             <div class="card-title">
@@ -25,10 +25,10 @@
           </ul>
         </div>
       </div>
-      <div class="col-9">
+      <div class="col-md-9">
         <div class="card">
           <div class="card-header text-center">
-            <div class="card-title">
+            <div class="card-title" v-show="+form.show_label">
               <h5 class="text-black">{{form.label}}</h5>
             </div>
             <div class="card-controls">
@@ -42,15 +42,27 @@
             </div>
           </div>
           <div class="modal-body">
-            <template v-if="formFields.length">
-              <form id="formulario" name="formulario">
-                <div id="sortable">
+            <form id="formulario" name="formulario">
+              <div class="row form-group" v-show="+form.show_anonymous">
+                <div class="col">
+                  <p>
+                    ¿DESEA REGISTRAR ESTA SOLICITUD COMO UNA PERSONA &nbsp; ANÓNIMA?
+                    <input
+                      type="checkbox"
+                      v-model="checkAnonymous"
+                      @change="updatecheckAnonymous"
+                    />
+                  </p>
+                </div>
+              </div>
+              <div id="sortable">
+                <template v-for="field in formFields">
                   <div
                     class="sortable"
-                    v-for="field in formFields"
                     :key="field.id"
                     :data-id="field.id"
                     style="cursor:move"
+                    v-show="isVisible(field)"
                   >
                     <div class="row form-group">
                       <div class="col">
@@ -94,13 +106,13 @@
                       <ViewFormField :data="field" @refreshSortable="initSortable" />
                     </div>
                   </div>
-                </div>
+                </template>
+              </div>
 
-                <div class="form-group float-right">
-                  <button type="button" class="btn btn-success" @click="publish">Publicar</button>
-                </div>
-              </form>
-            </template>
+              <div class="form-group float-md-left float-lg-right">
+                <button type="button" class="btn btn-success" @click="publish">Publicar</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -128,7 +140,7 @@ import "topAssets/node_modules/jquery-validation/dist/jquery.validate.min.js";
 import "topAssets/node_modules/jquery-validation/dist/localization/messages_es.min.js";
 
 import ViewFormField from "pqr/components/ViewFormField.vue";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "Formulario",
@@ -160,23 +172,21 @@ export default {
     this.initSortable();
   },
   computed: {
-    ...mapState(["componentsHTML", "formFields", "form"])
+    ...mapState(["componentsHTML", "formFields", "form", "checkAnonymous"])
   },
   methods: {
     ...mapActions([
       "getDataComponentsHTML",
-      "getDataFormFields",
       "getDataForm",
       "deleteFormField",
       "publishForm",
       "insertFormField",
       "updateFormField",
-      "getOptionsContador",
-      "insertForm",
-      "updateForm",
+      "updateSetting",
       "udpateOrderOfFormField",
       "udpateActiveOfFormField"
     ]),
+    ...mapMutations(["setCheckAnonymous"]),
     changeStatus(id, status) {
       let data = {
         id: id,
@@ -238,27 +248,14 @@ export default {
       top.topModal({
         ...options,
         onSuccess: response => {
-          if (response.edit) {
-            this.updateForm(response.data).catch(() => {
-              top.notification({
-                type: "error",
-                message:
-                  "No fue posible actualizar la configuración del formulario"
-              });
+          this.updateSetting(response.data).catch(() => {
+            top.notification({
+              type: "error",
+              message:
+                "No fue posible actualizar la configuración del formulario"
             });
-          } else {
-            this.insertForm(response.data)
-              .then(() => {
-                this.getDataFormFields();
-              })
-              .catch(() => {
-                top.notification({
-                  type: "error",
-                  message:
-                    "No fue posible guardar la configuración del formulario"
-                });
-              });
-          }
+          });
+
           top.closeTopModal();
         }
       });
@@ -386,20 +383,10 @@ export default {
     publish() {
       this.publishForm()
         .then(() => {
-          this.getDataFormFields()
-            .then(() => {
-              top.notification({
-                type: "success",
-                message: "Formulario generado"
-              });
-            })
-            .catch(() => {
-              top.notification({
-                type: "error",
-                message:
-                  "No fue posible obtener los campos actualizados del formulario"
-              });
-            });
+          top.notification({
+            type: "success",
+            message: "Formulario generado"
+          });
         })
         .catch(() => {
           top.notification({
@@ -407,6 +394,16 @@ export default {
             message: "No fue posible generar el formulario"
           });
         });
+    },
+    updatecheckAnonymous(e) {
+      this.setCheckAnonymous(e.target.checked);
+    },
+    isVisible(field) {
+      let visible = true;
+      if (+this.checkAnonymous && +this.form.show_anonymous) {
+        visible = +field.anonymous;
+      }
+      return visible;
     }
   }
 };

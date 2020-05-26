@@ -148,35 +148,11 @@ include_once $rootPath . 'views/assets/librerias.php';
                             show_label: this.showFormName
                         }
                     };
-                    this.saveData(data)
-                        .then(() => {
-                            top.notification({
-                                title: "Datos Guardados!",
-                                type: "success",
-                                message: "Recuerde publicar el formulario"
-                            });
-                        })
-                        .catch(() => {
-                            top.notification({
-                                type: "error",
-                                message: "No fue posible obtener los datos"
-                            });
-                        });
+                    top.successModalEvent({
+                        data,
+                    });
                 }
-                // edit() {
-                //     let data = {
-                //         data: {
-                //             label: this.formulario.label
-                //         },
-                //         id: this.form.id
-                //     };
 
-                //     top.successModalEvent({
-                //         data,
-                //         edit: true
-                //     });
-
-                // }
             }
         });
     });

@@ -1,7 +1,14 @@
+import { mapState } from "vuex";
+
 const viewFormFieldMixin = {
     computed: {
+        ...mapState(["checkAnonymous"]),
         isRequired() {
-            return +this.dataParams.required ? 'required' : '';
+            if (this.checkAnonymous) {
+                return +this.dataParams.required_anonymous ? 'required' : ''
+            } else {
+                return +this.dataParams.required ? 'required' : '';
+            }
         }
     }
 };

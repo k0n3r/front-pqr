@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid h-100" style="overflow-y: auto">
     <div class="row">
-      <div class="col-md-6">
+      <!-- <div class="col-md-6">
         <div class="card card-default">
           <div class="card-header">
             <div class="card-title">Configuración del Formulario</div>
@@ -98,9 +98,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
 
-      <div class="col-md-6">
+      <div class="col">
         <div class="card card-default">
           <div class="card-header">
             <div class="card-title">Publicar en sitio web</div>
@@ -112,9 +112,7 @@
                 <p>Utilice el siguiente contenido HTML si desea agregar el formulario a su sitio web</p>
                 <code>{{getContentIframe}}</code>
               </div>
-            </div>
 
-            <div class="row">
               <div class="col">
                 <h5>Enlace</h5>
                 <p>
