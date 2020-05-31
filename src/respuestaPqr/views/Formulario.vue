@@ -154,6 +154,13 @@ export default {
           };
 
           if (this.id) {
+            data = {
+              dataField: {
+                name: this.templateName,
+                content: this.editorData
+              },
+              id: this.id
+            };
             this.updateTemplate(data).catch(() => {
               top.notification({
                 type: "error",

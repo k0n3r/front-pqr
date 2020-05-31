@@ -154,17 +154,10 @@ export default {
     };
   },
   created() {
-    this.getDataComponentsHTML().catch(() => {
+    this.getAllData().catch(() => {
       top.notification({
         type: "error",
-        message: "No fue posible cargar los componentes HTML"
-      });
-    });
-
-    this.getDataForm().catch(() => {
-      top.notification({
-        type: "error",
-        message: "No fue posible obtener la informacion del formulario"
+        message: "No fue posible cargar la información"
       });
     });
   },
@@ -176,8 +169,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      "getDataComponentsHTML",
-      "getDataForm",
+      "getAllData",
       "deleteFormField",
       "publishForm",
       "insertFormField",

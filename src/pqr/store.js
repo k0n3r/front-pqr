@@ -10,6 +10,9 @@ $.ajaxSetup({
     data: {
         key: localStorage.getItem('key'),
         token: localStorage.getItem('token')
+    },
+    error: function (...args) {
+        console.error(args);
     }
 });
 
@@ -46,95 +49,24 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        getDataComponentsHTML({ commit }) {
+        getAllData({ commit }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
-                        class: 'PqrHtmlFieldController',
-                        method: 'index'
+                        class: 'ProcessRequestController',
+                        method: 'getAllData'
                     },
                     success: function (response) {
                         if (response.success) {
-                            commit("setComponentsHTML", response.data);
+                            let data = response.data;
+                            commit("setComponentsHTML", data.pqrHtmlFields);
+                            commit("setForm", data.pqrForm);
+                            commit("setFormFields", data.pqrFormFields);
                             resolve();
                         } else {
                             console.log(response);
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
-                    }
-                })
-            });
-        },
-        getDataForm({ commit, dispatch }) {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    data: {
-                        class: 'PqrFormController',
-                        method: 'index'
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("setForm", response.data);
-                            dispatch('getDataFormFields');
-                            resolve();
-                        } else {
-                            console.log(response);
-                            reject();
-                        }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
-                    }
-                })
-            });
-        },
-        getDataFormFields({ commit }) {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    data: {
-                        class: 'PqrFormFieldController',
-                        method: 'index'
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("setFormFields", response.data);
-                            resolve();
-                        } else {
-                            console.log(response)
-                        }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
-                    }
-                })
-            });
-        },
-        updateForm({ commit }, data) {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    data: {
-                        class: 'PqrFormController',
-                        method: 'update',
-                        data: { params: data }
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("setForm", response.data);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
@@ -144,23 +76,20 @@ export default new Vuex.Store({
                 $.ajax({
                     data: {
                         class: 'PqrFormController',
-                        method: 'updateFormSettings',
+                        method: 'updateSetting',
                         data: data
                     },
                     success: function (response) {
                         if (response.success) {
+                            let data = response.data;
                             commit("setCheckAnonymous", false);
-                            commit("setFormFields", response.data.PqrFormFields);
-                            commit("setForm", response.data.PqrForm);
+                            commit("setFormFields", data.pqrFormFields);
+                            commit("setForm", data.pqrForm);
                             resolve();
                         } else {
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
@@ -173,7 +102,7 @@ export default new Vuex.Store({
                     data: {
                         class: 'PqrFormFieldController',
                         method: 'store',
-                        data: { params: dataField }
+                        data: dataField
                     },
                     success: function (response) {
                         if (response.success) {
@@ -183,24 +112,17 @@ export default new Vuex.Store({
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
         },
-        updateFormField({ commit }, { dataField, id }) {
+        updateFormField({ commit }, dataEdit) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
                         class: 'PqrFormFieldController',
                         method: 'update',
-                        data: {
-                            params: dataField,
-                            id: id
-                        }
+                        data: dataEdit
                     },
                     success: function (response) {
                         if (response.success) {
@@ -210,10 +132,6 @@ export default new Vuex.Store({
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
@@ -236,15 +154,11 @@ export default new Vuex.Store({
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
         },
-        publishForm({ commit, dispatch }) {
+        publishForm({ commit }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
@@ -254,16 +168,12 @@ export default new Vuex.Store({
                     success: function (response) {
                         if (response.success) {
                             commit("setForm", response.data);
-                            dispatch('getDataFormFields');
+                            commit("setFormFields", response.data);
                             resolve();
                         } else {
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
@@ -285,10 +195,6 @@ export default new Vuex.Store({
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
@@ -309,10 +215,6 @@ export default new Vuex.Store({
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });

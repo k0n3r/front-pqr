@@ -10,24 +10,19 @@ $.ajaxSetup({
     data: {
         key: localStorage.getItem('key'),
         token: localStorage.getItem('token')
+    },
+    error: function (...args) {
+        console.error(args);
     }
 });
 
 export default new Vuex.Store({
     state: {
-        formFields: [],
-        formName: null,
-        urlWs: null,
-        show_anonymous: null,
-        show_label: null
+        urlWs: null
     },
     mutations: {
-        setData(state, data) {
-            state.formName = data.formName;
-            state.show_anonymous = data.showAnonymous;
-            state.show_label = data.showLabel;
-            state.formFields = data.formfields;
-            state.urlWs = data.urlWs;
+        setUrlWs(state, url) {
+            state.urlWs = url;
         }
     },
     actions: {
@@ -35,45 +30,18 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
-                        class: 'SettingController',
+                        class: 'PqrFormController',
                         method: 'getSetting'
                     },
                     success: function (response) {
                         if (response.success) {
-                            commit("setData", response.data);
+                            let data = response.data;
+                            commit("setUrlWs", data.urlWs);
                             resolve();
                         } else {
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
-                    }
-                })
-            });
-        },
-        saveData({ commit }, data) {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    data: {
-                        class: 'SettingController',
-                        method: 'updateSetting',
-                        data: data
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("setData", response.data);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });

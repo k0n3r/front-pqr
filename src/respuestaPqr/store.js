@@ -10,6 +10,9 @@ $.ajaxSetup({
     data: {
         key: localStorage.getItem('key'),
         token: localStorage.getItem('token')
+    },
+    error: function (...args) {
+        console.error(args);
     }
 });
 
@@ -48,10 +51,6 @@ export default new Vuex.Store({
                         } else {
                             console.log(response)
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
@@ -62,7 +61,7 @@ export default new Vuex.Store({
                     data: {
                         class: 'PqrResponseTemplateController',
                         method: 'store',
-                        data: { params: data }
+                        data
                     },
                     success: function (response) {
                         if (response.success) {
@@ -72,21 +71,17 @@ export default new Vuex.Store({
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
         },
-        updateTemplate({ commit }, data) {
+        updateTemplate({ commit }, dataEdit) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
                         class: 'PqrResponseTemplateController',
                         method: 'update',
-                        data: { params: data }
+                        data: dataEdit
                     },
                     success: function (response) {
                         if (response.success) {
@@ -96,10 +91,6 @@ export default new Vuex.Store({
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
@@ -122,10 +113,6 @@ export default new Vuex.Store({
                             console.log(response)
                             reject();
                         }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        reject();
                     }
                 })
             });
