@@ -23,6 +23,7 @@ export default {
     }
   },
   mounted() {
+    let baseUrl = localStorage.getItem("baseUrl");
     let _this = this;
     let options = {
       language: "es",
@@ -31,12 +32,13 @@ export default {
       multiple: false,
       ajax: {
         delay: 400,
-        url: `../../../../../app/modules/back_pqr/app/requestProcessor.php`,
+        url: `${baseUrl}app/modules/back_pqr/app/request.php`,
         dataType: "json",
         data: function(p) {
           var query = {
             key: localStorage.getItem("key"),
             token: localStorage.getItem("token"),
+            class: "RequestProcessorController",
             method: "getListForField",
             data: {
               name: _this.dataParams.name,

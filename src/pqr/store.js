@@ -53,7 +53,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
-                        class: 'ProcessRequestController',
+                        class: 'RequestProcessorController',
                         method: 'getAllData'
                     },
                     success: function (response) {

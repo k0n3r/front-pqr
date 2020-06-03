@@ -20,7 +20,7 @@ export default {
   },
   mounted() {
     let setting = this.dataParams.setting;
-    let baseUrl = "../../../../../";
+    let baseUrl = localStorage.getItem("baseUrl");
     let loadeddivDropzone = [];
     let divDropzone = new Dropzone("#divDropzone", {
       url: baseUrl + "app/temporal/cargar_anexos.php",
