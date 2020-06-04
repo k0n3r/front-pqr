@@ -82,12 +82,12 @@
                             v-if="+field.system==0 && +field.fk_campos_formato"
                             type="button"
                             class="btn btn-xs"
-                            :class="field.active ? 'btn-success' : 'btn-danger'"
-                            @click="changeStatus(field.id,field.active)"
+                            :class="+field.active ? 'btn-success' : 'btn-danger'"
+                            @click="changeStatus(field.id,+field.active)"
                             data-toggle="tooltip"
-                            :title="field.active ? 'Inactivar' : 'Activar'"
+                            :title="+field.active ? 'Inactivar' : 'Activar'"
                           >
-                            <i :class="field.active ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"></i>
+                            <i :class="+field.active ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"></i>
                           </button>
 
                           <button

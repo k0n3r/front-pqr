@@ -167,8 +167,8 @@ export default new Vuex.Store({
                     },
                     success: function (response) {
                         if (response.success) {
-                            commit("setForm", response.data);
-                            commit("setFormFields", response.data);
+                            commit("setForm", response.data.pqrForm);
+                            commit("setFormFields", response.data.pqrFormFields);
                             resolve();
                         } else {
                             console.log(response)
