@@ -20,34 +20,25 @@ include_once $rootPath . 'views/assets/librerias.php';
         <div class="col">
 
             <div class="form-group">
-                <label>MOSTRAR NOMBRE DEL FORMULARIO</label>
-
-                <div class="radio radio-success">
-                    <input type="radio" value="1" v-model="showFormName" name="showFormName" id="showFormName1" />
-                    <label for="showFormName1">Configurar</label>
-                    <input type="radio" value="0" v-model="showFormName" name="showFormName" id="showFormName0" />
-                    <label for="showFormName0">Ocultar</label>
+                <div class="checkbox check-success input-group">
+                    <input type="checkbox" value="1" id="showFormName1" v-model="showFormName" />
+                    <label for="showFormName1">MOSTRAR NOMBRE DEL FORMULARIO</label>
                 </div>
             </div>
 
             <div class="form-group" v-show="+showFormName">
-                <label>NOMBRE</label>
-                <input type="text" class="form-control" v-model="name" />
+                <input type="text" class="form-control" v-model="name" placeholder="Nombre del formulario" />
             </div>
 
             <div class="form-group">
-                <label>CONFIGURAR ANÓNIMO</label>
-
-                <div class="radio radio-success">
-                    <input type="radio" value="1" v-model="showAnonymous" name="showAnonymous" id="showAnonymous1" />
-                    <label for="showAnonymous1">Configurar</label>
-                    <input type="radio" value="0" v-model="showAnonymous" name="showAnonymous" id="showAnonymous0" />
-                    <label for="showAnonymous0">Inactivar</label>
+                <div class="checkbox check-success input-group">
+                    <input type="checkbox" value="1" id="showAnonymous1" v-model="showAnonymous" />
+                    <label for="showAnonymous1">HABILITAR ANÓNIMO</label>
                 </div>
             </div>
+
             <div class="table-responsive" v-show="+showAnonymous">
                 <table class="table">
-                    <caption>Lista de campos</caption>
                     <thead class="thead-light text-center">
                         <tr>
                             <th scope="col">Etiqueta</th>
@@ -58,7 +49,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                     <tbody>
                         <template v-for="field in formFields">
                             <tr :key="field.id" v-if="showField(field.name)">
-                                <td scope="row">{{field.label}}</td>
+                                <td scope="row" class="text-uppercase">{{field.label}}</td>
                                 <td class="text-center">
                                     <input type="checkbox" :value="field.id" v-model="showFieldsAnonymous" @change="isCheck($event,1,field.id)" />
                                 </td>
@@ -74,8 +65,6 @@ include_once $rootPath . 'views/assets/librerias.php';
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-complete" @click="saveChanges">Guardar</button>
             </div>
-
-
         </div>
     </div>
 </div>
@@ -92,8 +81,8 @@ include_once $rootPath . 'views/assets/librerias.php';
             data() {
                 return {
                     name: null,
-                    showFormName: 1,
-                    showAnonymous: 0,
+                    showFormName: null,
+                    showAnonymous: null,
                     showFieldsAnonymous: [],
                     requiredFieldsAnonymous: [],
                     formFields: []
@@ -104,8 +93,8 @@ include_once $rootPath . 'views/assets/librerias.php';
                 let fields = this.formFields = dataParams.fields;
 
                 this.name = form.label;
-                this.showAnonymous = form.show_anonymous;
-                this.showFormName = form.show_label;
+                this.showAnonymous = +form.show_anonymous ? 1 : null;
+                this.showFormName = +form.show_label ? 1 : null;
 
                 let idsShowFields = new Array();
                 let idsRequiredFields = new Array();
@@ -144,8 +133,8 @@ include_once $rootPath . 'views/assets/librerias.php';
                         },
                         pqrForm: {
                             label: this.name,
-                            show_anonymous: this.showAnonymous,
-                            show_label: this.showFormName
+                            show_anonymous: +this.showAnonymous,
+                            show_label: +this.showFormName
                         }
                     };
                     top.successModalEvent({

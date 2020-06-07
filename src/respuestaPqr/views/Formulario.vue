@@ -10,6 +10,12 @@
           </div>
 
           <ul class="list-group list-group-flush">
+            <li class="list-group-item" data-toggle="tooltip" title="Adicionar plantilla">
+              Nueva plantilla
+              <span class="btn pull-right" @click="newTemplate()">
+                <i class="fa fa-plus"></i>
+              </span>
+            </li>
             <li
               class="list-group-item"
               data-toggle="tooltip"
@@ -122,6 +128,11 @@ export default {
       "updateTemplate",
       "deleteTemplate"
     ]),
+    newTemplate() {
+      this.editorData = defaultData.editorData;
+      this.id = defaultData.id;
+      this.templateName = defaultData.templateName;
+    },
     onReady(editor) {
       editor.ui
         .getEditableElement()

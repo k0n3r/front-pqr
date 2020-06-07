@@ -18,12 +18,28 @@ $.ajaxSetup({
 
 export default new Vuex.Store({
     state: {
-        urlWs: null
+        urlWs: null,
+        publish: null,
+        form: {},
+        formFields: [],
+        pqrTypes: []
     },
     mutations: {
         setUrlWs(state, url) {
             state.urlWs = url;
-        }
+        },
+        setPublish(state, value) {
+            state.publish = value;
+        },
+        setForm(state, data) {
+            state.form = data;
+        },
+        setFormFields(state, data) {
+            state.formFields = data;
+        },
+        setPqrTypes(state, data) {
+            state.pqrTypes = data;
+        },
     },
     actions: {
         getDataSetting({ commit }) {
@@ -36,7 +52,71 @@ export default new Vuex.Store({
                     success: function (response) {
                         if (response.success) {
                             let data = response.data;
+                            commit("setForm", data.pqrForm);
+                            commit("setFormFields", data.pqrFormFields);
+                            commit("setPqrTypes", data.pqrTypes);
                             commit("setUrlWs", data.urlWs);
+                            commit("setPublish", data.publish);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    }
+                })
+            });
+        },
+        updatePqrTypes({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormController',
+                        method: 'updatePqrTypes',
+                        data
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("setPqrTypes", response.pqrTypes);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    }
+                })
+            });
+        },
+        updateRadEmail({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormController',
+                        method: 'updatePqrForm',
+                        data
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("setForm", response.pqrForm);
+                            resolve();
+                        } else {
+                            console.log(response)
+                            reject();
+                        }
+                    }
+                })
+            });
+        },
+        updateShowReport({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'PqrFormFieldController',
+                        method: 'updateShowReport',
+                        data
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            commit("setFormFields", response.pqrFormFields);
                             resolve();
                         } else {
                             console.log(response)

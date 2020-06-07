@@ -230,7 +230,6 @@ export default {
         url: "views/modules/pqr/src/pqr/modals/formConfiguration.php",
         backdrop: "static",
         keyboard: false,
-        title: "Configuración adicional",
         buttons: {}
       };
       top.window.dataModal = paramsModal;
