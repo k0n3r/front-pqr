@@ -76,7 +76,6 @@ export default new Vuex.Store({
                     },
                     success: function (response) {
                         if (response.success) {
-                            commit("setPqrTypes", response.pqrTypes);
                             resolve();
                         } else {
                             console.log(response)

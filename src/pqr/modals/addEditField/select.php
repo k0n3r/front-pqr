@@ -55,7 +55,7 @@ include_once $rootPath . 'views/assets/librerias.php';
 
                 <div class="form-group" v-for="(option,index) in form.options" :key="index">
                     <div class="input-group">
-                        <input type="text" class="form-control" :value="option" readonly />
+                        <input type="text" class="form-control" :value="option.text" readonly />
                         <div class="input-group-append">
                             <span class="btn btn-danger" @click="deleteOption(index)">
                                 <i class="fa fa-trash"></i>
@@ -157,7 +157,9 @@ include_once $rootPath . 'views/assets/librerias.php';
                         if (!this.form.options) {
                             this.form.options = [];
                         }
-                        this.form.options.push(this.inputOption);
+                        this.form.options.push({
+                            text: this.inputOption
+                        });
                         this.inputOption = null;
                         $("#inputOption").focus();
                     }

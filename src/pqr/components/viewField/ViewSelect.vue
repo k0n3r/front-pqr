@@ -8,8 +8,8 @@
       :id="dataParams.name"
     >
       <option value selected>Por favor seleccione...</option>
-      <template v-for="(option,index) in dataParams.setting.options">
-        <option :value="option" :key="index">{{ option }}</option>
+      <template v-for="option in dataParams.setting.options">
+        <option :value="option.text" :key="option.id">{{ option.text }}</option>
       </template>
     </select>
   </div>

@@ -15,20 +15,19 @@
                 </tr>
               </thead>
               <tbody id="sortable">
-                <template v-for="type in pqrTypes">
+                <template v-for="(type,index) in pqrTypes">
                   <tr
-                    :key="type.id"
+                    :key="index"
                     class="sortable"
-                    :data-id="type.id"
+                    :data-id="index"
                     :data-text="type.text"
-                    data-order="0"
                     style="cursor:move"
                   >
                     <td scope="row">{{type.text}}</td>
                     <td class="text-center">
                       <input
                         class="form-group"
-                        :id="'type_'+type.id"
+                        :id="'type_'+index"
                         min="1"
                         type="number"
                         :value="type.dias"
@@ -61,12 +60,16 @@
                   <tr :key="field.id" v-if="showField(field)">
                     <td scope="row" class="text-uppercase">{{field.label}}</td>
                     <td class="text-center">
-                      <input
-                        type="checkbox"
-                        :value="field.id"
-                        v-model="showReport"
-                        @change="isCheck($event,field.id)"
-                      />
+                      <div class="checkbox check-success">
+                        <input
+                          type="checkbox"
+                          :value="field.id"
+                          v-model="showReport"
+                          @change="isCheck($event,field.id)"
+                          :id="'check_'+field.id"
+                        />
+                        <label :for="'check_'+field.id"></label>
+                      </div>
                     </td>
                   </tr>
                 </template>
@@ -227,8 +230,11 @@ export default {
       let types = [];
       $(".sortable").each(function(index, element) {
         let idtype = element.attributes["data-id"].value;
+        let def = +$("#type_" + idtype).val();
+        if (!def) {
+          $("#type_" + idtype).val(1);
+        }
         types.push({
-          id: idtype,
           text: element.attributes["data-text"].value,
           dias: +$("#type_" + idtype).val()
         });

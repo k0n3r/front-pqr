@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid h-100" style="overflow-y: auto">
     <div class="row">
-      <div class="col-3">
+      <div class="col-md-3 d-none d-sm-block">
         <div class="card">
           <div class="card-header">
             <div class="card-title">
@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <div class="col-9">
+      <div class="col-md-9">
         <div class="card">
           <div class="card-header">
             <div class="card-title">
