@@ -65,7 +65,6 @@
                           type="checkbox"
                           :value="field.id"
                           v-model="showReport"
-                          @change="isCheck($event,field.id)"
                           :id="'check_'+field.id"
                         />
                         <label :for="'check_'+field.id"></label>
@@ -112,6 +111,60 @@
 
         <div class="card card-default">
           <div class="card-header">
+            <div class="card-title">NOTIFICACIONES</div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label>FUNCIONARIOS</label>
+              <select class="full-width select2-hidden-accessible" id="person"></select>
+            </div>
+
+            <table class="table" v-show="personsNotifications.length">
+              <thead class="thead-light text-center">
+                <tr>
+                  <th scope="col">FUNCIONARIO</th>
+                  <th scope="col">NOTIFICACIÓN Y TRANSFERENCIA</th>
+                  <th scope="col">E-MAIL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-for="notification in personsNotifications">
+                  <tr :key="notification.id">
+                    <td scope="row" class="text-uppercase">{{notification.fk_funcionario.text}}</td>
+                    <td class="text-center">
+                      <div class="checkbox check-success">
+                        <input
+                          type="checkbox"
+                          :value="notification.id"
+                          v-model="notify"
+                          @input="isCheckNotify($event,notification.id)"
+                          :id="'checkNotify_'+notification.id"
+                        />
+                        <label :for="'checkNotify_'+notification.id"></label>
+                      </div>
+                    </td>
+
+                    <td class="text-center">
+                      <div class="checkbox check-success">
+                        <input
+                          type="checkbox"
+                          :value="notification.id"
+                          v-model="notifyEmail"
+                          @change="isCheckNotifyEmail($event,notification.id)"
+                          :id="'checkEmail_'+notification.id"
+                        />
+                        <label :for="'checkEmail_'+notification.id"></label>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card card-default">
+          <div class="card-header">
             <div class="card-title">Publicar en sitio web</div>
           </div>
           <div class="card-body">
@@ -144,6 +197,11 @@
 import "topAssets/node_modules/jquery-ui-dist/jquery-ui.min.js";
 import "topAssets/node_modules/jquery-ui-dist/jquery-ui.min.css";
 
+//select 2
+import "topAssets/node_modules/select2/dist/js/select2.min.js";
+import "topAssets/node_modules/select2/dist/js/i18n/es.js";
+import "topAssets/node_modules/select2/dist/css/select2.min.css";
+
 import { mapState, mapActions } from "vuex";
 export default {
   name: "Formulario",
@@ -151,7 +209,9 @@ export default {
     return {
       radEmail: null,
       radFast: null,
-      showReport: []
+      showReport: [],
+      notify: [],
+      notifyEmail: []
     };
   },
   created() {
@@ -166,6 +226,19 @@ export default {
           }
         });
         this.showReport = idsShowReport;
+
+        let idsNotify = new Array();
+        let idsNotifyEmail = new Array();
+        this.personsNotifications.forEach(row => {
+          if (+row.email) {
+            idsNotifyEmail.push(row.id);
+          }
+          if (+row.notify) {
+            idsNotify.push(row.id);
+          }
+        });
+        this.notifyEmail = idsNotifyEmail;
+        this.notify = idsNotify;
       })
       .catch(() => {
         top.notification({
@@ -175,10 +248,54 @@ export default {
       });
   },
   mounted() {
+    let _this = this;
+    var baseUrl = localStorage.getItem("baseUrl");
     $("#sortable").sortable();
+    $("#person").select2({
+      placeholder: "Ingrese el nombre del funcionario",
+      language: "es",
+      minimumInputLength: 3,
+      multiple: false,
+      ajax: {
+        delay: 400,
+        url: `${baseUrl}app/funcionario/autocompletar.php`,
+        dataType: "json",
+        data: function(params) {
+          var query = {
+            key: localStorage.getItem("key"),
+            token: localStorage.getItem("token"),
+            term: params.term
+          };
+          return query;
+        },
+        processResults: function(response) {
+          return response.success ? { results: response.data } : {};
+        }
+      }
+    });
+
+    $("#person")
+      .on("select2:selecting", function(e) {
+        $("#person")
+          .val(null)
+          .trigger("change");
+      })
+      .on("change", function(e) {
+        let element = $(e.currentTarget);
+        if (+element.val()) {
+          _this.addNotification(element.val());
+        }
+      });
   },
   computed: {
-    ...mapState(["urlWs", "publish", "pqrTypes", "form", "formFields"]),
+    ...mapState([
+      "urlWs",
+      "publish",
+      "pqrTypes",
+      "form",
+      "formFields",
+      "personsNotifications"
+    ]),
     getContentIframe() {
       let iframe = "EL FORMULARIO NO HA SIDO PUBLICADO";
       if (+this.publish) {
@@ -202,7 +319,10 @@ export default {
       "getDataSetting",
       "updatePqrTypes",
       "updateRadEmail",
-      "updateShowReport"
+      "updateShowReport",
+      "insertNotification",
+      "updateNotification",
+      "deleteNotification"
     ]),
     editRadEmail(e) {
       let data = {
@@ -265,15 +385,51 @@ export default {
         +field.active == 0
       );
     },
-    isCheck(e, id) {
+    isCheckNotify(e, id) {
       if (e.target.checked) {
-        if (!this.showReport.includes(id)) {
-          this.showReport.push(id);
-        }
+        this.editNotification({
+          id: id,
+          data: {
+            notify: 1
+          }
+        });
       } else {
-        let i = this.showReport.indexOf(id);
-        if (i !== -1) {
-          this.showReport.splice(i, 1);
+        let i = this.notifyEmail.indexOf(id);
+        if (i == -1) {
+          this.delNotification({
+            id: id
+          });
+        } else {
+          this.editNotification({
+            id: id,
+            data: {
+              notify: 0
+            }
+          });
+        }
+      }
+    },
+    isCheckNotifyEmail(e, id) {
+      if (e.target.checked) {
+        this.editNotification({
+          id: id,
+          data: {
+            email: 1
+          }
+        });
+      } else {
+        let i = this.notify.indexOf(id);
+        if (i == -1) {
+          this.delNotification({
+            id: id
+          });
+        } else {
+          this.editNotification({
+            id: id,
+            data: {
+              email: 0
+            }
+          });
         }
       }
     },
@@ -295,6 +451,48 @@ export default {
             message: "No fue posible guardar los cambios"
           });
         });
+    },
+    addNotification(id) {
+      let index = this.personsNotifications.findIndex(i => i.id == id);
+
+      if (index != -1) {
+        top.notification({
+          type: "error",
+          message: "No funcionario ya ha sido agregado"
+        });
+        return false;
+      }
+
+      let data = {
+        id: id
+      };
+
+      this.insertNotification(data)
+        .then(id => {
+          this.notify.push(id);
+        })
+        .catch(() => {
+          top.notification({
+            type: "error",
+            message: "No fue posible agregar al funcionario"
+          });
+        });
+    },
+    editNotification(data) {
+      this.updateNotification(data).catch(() => {
+        top.notification({
+          type: "error",
+          message: "No fue posible editar funcionario"
+        });
+      });
+    },
+    delNotification(id) {
+      this.deleteNotification(id).catch(() => {
+        top.notification({
+          type: "error",
+          message: "No fue posible retitar el funcionario"
+        });
+      });
     }
   }
 };
