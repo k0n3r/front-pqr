@@ -45,7 +45,13 @@
 
         <div class="card card-default">
           <div class="card-header">
-            <div class="card-title">CAMPOS A MOSTRAR EN EL REPORTE</div>
+            <div class="card-title">
+              CAMPOS A MOSTRAR EN EL REPORTE
+              <span
+                class="text-danger"
+                v-show="!+formFields.length"
+              >PRIMERO DEBE PUBLICAR EL FORMULARIO</span>
+            </div>
           </div>
           <div class="card-body">
             <table class="table">
@@ -382,7 +388,8 @@ export default {
         field.name == "sys_tratamiento" ||
         field.name == "sys_tipo" ||
         field.fk_pqr_html_field.type == "file" ||
-        +field.active == 0
+        +field.active == 0 ||
+        +field.fk_campos_formato == 0
       );
     },
     isCheckNotify(e, id) {
