@@ -21,6 +21,41 @@ include_once $rootPath . 'views/assets/librerias.php';
 
             <div class="form-group">
                 <div class="checkbox check-success input-group">
+                    <input type="checkbox" value="1" id="showInactive1" v-model="showInactive" />
+                    <label for="showInactive1">VER CAMPOS INACTIVOS</label>
+                </div>
+            </div>
+
+            <div class="table-responsive" v-show="+showInactive">
+                <table class="table">
+                    <thead class="thead-light text-center">
+                        <tr>
+                            <th scope="col">Etiqueta</th>
+                            <th scope="col">ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template v-for="field in formFields">
+                            <tr :key="'tr_'+field.id" v-if="!+field.active">
+                                <td scope="row" class="text-uppercase">{{field.label}}</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-xs btn-danger" @click="deleteField(field.id)" data-toggle="tooltip" title="Eliminar">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+
+                                    <button type="button" class="btn btn-xs btn-danger" @click="changeStatus(field.id)" data-toggle="tooltip" title="Activar">
+                                        <i class="fa fa-toggle-off"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <hr />
+            <div class="form-group">
+                <div class="checkbox check-success input-group">
                     <input type="checkbox" value="1" id="showFormName1" v-model="showFormName" />
                     <label for="showFormName1">MOSTRAR NOMBRE DEL FORMULARIO</label>
                 </div>
@@ -67,7 +102,8 @@ include_once $rootPath . 'views/assets/librerias.php';
                     </tbody>
                 </table>
             </div>
-            <div class="form-group float-right">
+
+            <div class="form-group mt-2 float-right">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-complete" @click="saveChanges">Guardar</button>
             </div>
@@ -89,6 +125,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                     name: null,
                     showFormName: null,
                     showAnonymous: null,
+                    showInactive: null,
                     showFieldsAnonymous: [],
                     requiredFieldsAnonymous: [],
                     formFields: []
@@ -144,8 +181,60 @@ include_once $rootPath . 'views/assets/librerias.php';
                         }
                     };
                     top.successModalEvent({
+                        option: 0,
                         data,
                     });
+                },
+                changeStatus(id) {
+                    top.successModalEvent({
+                        option: 1,
+                        id: id
+                    });
+
+                },
+                deleteField(id) {
+                    top.confirm({
+                        id: 'question',
+                        type: 'error',
+                        title: 'Eliminando!',
+                        message: '¿Está opción es irreversible, se borrará la información de la DB, desea continuar?',
+                        position: 'center',
+                        timeout: 0,
+                        overlay: true,
+                        overlayClose: true,
+                        closeOnEscape: true,
+                        closeOnClick: true,
+                        buttons: [
+                            [
+                                '<button>Continuar</button>',
+                                function(instance, toast) {
+                                    instance.hide({
+                                            transitionOut: 'fadeOut'
+                                        },
+                                        toast,
+                                        'button'
+                                    );
+                                    top.successModalEvent({
+                                        option: 2,
+                                        id: id
+                                    });
+                                },
+                                true
+                            ],
+                            [
+                                '<button>Cancelar</button>',
+                                function(instance, toast) {
+                                    instance.hide({
+                                            transitionOut: 'fadeOut'
+                                        },
+                                        toast,
+                                        'button'
+                                    );
+                                }
+                            ]
+                        ]
+                    });
+
                 }
 
             }

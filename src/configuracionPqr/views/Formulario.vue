@@ -49,7 +49,7 @@
               CAMPOS A MOSTRAR EN EL REPORTE
               <span
                 class="text-danger"
-                v-show="!+formFields.length"
+                v-show="!+form.fk_formato"
               >PRIMERO DEBE PUBLICAR EL FORMULARIO</span>
             </div>
           </div>

@@ -172,12 +172,19 @@ export default {
               },
               id: this.id
             };
-            this.updateTemplate(data).catch(() => {
-              top.notification({
-                type: "error",
-                message: "No fue posible actualizar la plantilla"
+            this.updateTemplate(data)
+              .then(() => {
+                top.notification({
+                  type: "success",
+                  message: "Plantilla actualizada"
+                });
+              })
+              .catch(() => {
+                top.notification({
+                  type: "error",
+                  message: "No fue posible actualizar la plantilla"
+                });
               });
-            });
           } else {
             this.insertTemplate(data)
               .then(() => {

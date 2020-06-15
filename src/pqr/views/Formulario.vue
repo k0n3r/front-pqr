@@ -224,7 +224,8 @@ export default {
     openFormConfig() {
       let paramsModal = {
         fields: this.formFields,
-        form: this.form
+        form: this.form,
+        refresh: this.refresh
       };
       let optionsModal = {
         url: "views/modules/pqr/src/pqr/modals/formConfiguration.php",
@@ -236,18 +237,37 @@ export default {
       this.openModalFormConfig(optionsModal);
     },
     openModalFormConfig(options) {
+      let _this = this;
       top.topModal({
         ...options,
         onSuccess: response => {
-          this.updateSetting(response.data).catch(() => {
-            top.notification({
-              type: "error",
-              message:
-                "No fue posible actualizar la configuración del formulario"
-            });
-          });
+          switch (response.option) {
+            case 1: //Activar
+              _this.changeStatus(response.id, 0);
+              break;
 
-          top.closeTopModal();
+            case 2: //Eliminar
+              _this.deleteField(response.id);
+              break;
+
+            case 0:
+            default:
+              this.updateSetting(response.data)
+                .then(() => {
+                  top.closeTopModal();
+                })
+                .catch(() => {
+                  top.notification({
+                    type: "error",
+                    message:
+                      "No fue posible actualizar la configuración del formulario"
+                  });
+                });
+              break;
+          }
+        },
+        afterHide() {
+          window.location.reload();
         }
       });
     },
@@ -391,8 +411,12 @@ export default {
     },
     isVisible(field) {
       let visible = true;
-      if (+this.checkAnonymous && +this.form.show_anonymous) {
-        visible = +field.anonymous;
+      if (!+field.active) {
+        visible = false;
+      } else {
+        if (+this.checkAnonymous && +this.form.show_anonymous) {
+          visible = +field.anonymous;
+        }
       }
       return visible;
     }
