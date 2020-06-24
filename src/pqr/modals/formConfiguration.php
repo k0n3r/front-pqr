@@ -39,7 +39,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                             <tr :key="'tr_'+field.id" v-if="!+field.active">
                                 <td scope="row" class="text-uppercase">{{field.label}}</td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-xs btn-danger" @click="deleteField(field.id)" data-toggle="tooltip" title="Eliminar">
+                                    <button type="button" v-if="isSystem(field.name)" class="btn btn-xs btn-danger" @click="deleteField(field.id)" data-toggle="tooltip" title="Eliminar">
                                         <i class="fa fa-trash"></i>
                                     </button>
 
@@ -235,6 +235,9 @@ include_once $rootPath . 'views/assets/librerias.php';
                         ]
                     });
 
+                },
+                isSystem(name) {
+                    return name.indexOf("sys_") != -1 ? false : true;
                 }
 
             }
