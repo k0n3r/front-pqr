@@ -1,8 +1,8 @@
 <template>
   <div class="form-group form-group-default" :class="isRequired">
     <label>{{dataParams.label}}</label>
-    <div class="dropzone" id="divDropzone"></div>
-    <input type="hidden" name="hiddenDropzone" />
+    <div :id="'divDropzone_'+dataParams.name"></div>
+    <input type="hidden" :name="'hiddenDropzone_'+dataParams.name" />
   </div>
 </template>
 
@@ -22,7 +22,9 @@ export default {
     let setting = this.dataParams.setting;
     let baseUrl = localStorage.getItem("baseUrl");
     let loadeddivDropzone = [];
-    let divDropzone = new Dropzone("#divDropzone", {
+
+    $("#divDropzone_" + this.dataParams.name).addClass("dropzone");
+    new Dropzone("#divDropzone_" + this.dataParams.name, {
       url: baseUrl + "app/temporal/cargar_anexos.php",
       dictDefaultMessage:
         "Haga clic para elegir un archivo o Arrastre acá el archivo.",
@@ -36,7 +38,7 @@ export default {
       params: {
         token: localStorage.getItem("token"),
         key: localStorage.getItem("key"),
-        dir: " solicitud_domicilio"
+        dir: "pqr"
       },
       paramName: "file",
       init: function() {
@@ -46,7 +48,9 @@ export default {
             response.data.forEach(e => {
               loadeddivDropzone.push(e);
             });
-            $("[name='hiddenDropzone']").val(loadeddivDropzone.join(","));
+            $("[name='hiddenDropzone_" + this.dataParams.name + "']").val(
+              loadeddivDropzone.join(",")
+            );
             // Download link
             var anchorEl = document.createElement("a");
             anchorEl.setAttribute("href", baseUrl + response.data[0]);
@@ -76,7 +80,9 @@ export default {
             );
           }
           loadeddivDropzone = loadeddivDropzone.filter((e, i) => i != index);
-          $("[name='hiddenDropzone']").val(loadeddivDropzone.join(","));
+          $("[name='hiddenDropzone_" + this.dataParams.name + "']").val(
+            loadeddivDropzone.join(",")
+          );
         });
         this.on("maxfilesexceeded", function() {
           $(".dz-error").remove();

@@ -179,7 +179,11 @@
                 <h5>Enlace</h5>
                 <p>
                   Enlace directo al formulario :
-                  <a :href="urlWs" v-show="+publish">Formulario</a>
+                  <a
+                    :href="urlWs"
+                    target="_blank"
+                    v-show="+publish"
+                  >Formulario</a>
                 </p>
                 <code>{{getUrl}}</code>
               </div>
