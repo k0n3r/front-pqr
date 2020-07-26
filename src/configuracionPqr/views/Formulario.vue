@@ -106,12 +106,12 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <div class="checkbox check-success input-group">
                 <input type="checkbox" value="1" id="radFast1" v-model="radFast" />
                 <label for="radFast1">HABILITAR PARA RADICACIÓN RÁPIDA</label>
               </div>
-            </div>
+            </div>-->
           </div>
         </div>
 
@@ -204,13 +204,13 @@
 
 <script>
 //jquery ui
-import "topAssets/node_modules/jquery-ui-dist/jquery-ui.min.js";
-import "topAssets/node_modules/jquery-ui-dist/jquery-ui.min.css";
+import "topViews/node_modules/jquery-ui-dist/jquery-ui.min.js";
+import "topViews/node_modules/jquery-ui-dist/jquery-ui.min.css";
 
 //select 2
-import "topAssets/node_modules/select2/dist/js/select2.min.js";
-import "topAssets/node_modules/select2/dist/js/i18n/es.js";
-import "topAssets/node_modules/select2/dist/css/select2.min.css";
+import "topViews/node_modules/select2/dist/js/select2.min.js";
+import "topViews/node_modules/select2/dist/js/i18n/es.js";
+import "topViews/node_modules/select2/dist/css/select2.min.css";
 
 import { mapState, mapActions } from "vuex";
 export default {
@@ -221,7 +221,7 @@ export default {
       radFast: null,
       showReport: [],
       notify: [],
-      notifyEmail: []
+      notifyEmail: [],
     };
   },
   created() {
@@ -230,7 +230,7 @@ export default {
         this.radEmail = +this.form.rad_email ? 1 : null;
 
         let idsShowReport = new Array();
-        this.formFields.forEach(row => {
+        this.formFields.forEach((row) => {
           if (+row.show_report) {
             idsShowReport.push(row.id);
           }
@@ -239,7 +239,7 @@ export default {
 
         let idsNotify = new Array();
         let idsNotifyEmail = new Array();
-        this.personsNotifications.forEach(row => {
+        this.personsNotifications.forEach((row) => {
           if (+row.email) {
             idsNotifyEmail.push(row.id);
           }
@@ -253,7 +253,7 @@ export default {
       .catch(() => {
         top.notification({
           type: "error",
-          message: "No fue posible obtener los datos"
+          message: "No fue posible obtener los datos",
         });
       });
   },
@@ -270,27 +270,25 @@ export default {
         delay: 400,
         url: `${baseUrl}app/funcionario/autocompletar.php`,
         dataType: "json",
-        data: function(params) {
+        data: function (params) {
           var query = {
             key: localStorage.getItem("key"),
             token: localStorage.getItem("token"),
-            term: params.term
+            term: params.term,
           };
           return query;
         },
-        processResults: function(response) {
+        processResults: function (response) {
           return response.success ? { results: response.data } : {};
-        }
-      }
+        },
+      },
     });
 
     $("#person")
-      .on("select2:selecting", function(e) {
-        $("#person")
-          .val(null)
-          .trigger("change");
+      .on("select2:selecting", function (e) {
+        $("#person").val(null).trigger("change");
       })
-      .on("change", function(e) {
+      .on("change", function (e) {
         let element = $(e.currentTarget);
         if (+element.val()) {
           _this.addNotification(element.val());
@@ -304,7 +302,7 @@ export default {
       "pqrTypes",
       "form",
       "formFields",
-      "personsNotifications"
+      "personsNotifications",
     ]),
     getContentIframe() {
       let iframe = "EL FORMULARIO NO HA SIDO PUBLICADO";
@@ -322,7 +320,7 @@ export default {
         url = '<a href="' + this.urlWs + '" target="_blank">Formulario</a>';
       }
       return url;
-    }
+    },
   },
   methods: {
     ...mapActions([
@@ -332,13 +330,13 @@ export default {
       "updateShowReport",
       "insertNotification",
       "updateNotification",
-      "deleteNotification"
+      "deleteNotification",
     ]),
     editRadEmail(e) {
       let data = {
         pqrForm: {
-          rad_email: e.target.checked ? 1 : 0
-        }
+          rad_email: e.target.checked ? 1 : 0,
+        },
       };
       this.updateRadEmail(data)
         .then(() => {
@@ -346,19 +344,19 @@ export default {
             type: "success",
             message: e.target.checked
               ? "Radicación habilitada"
-              : "Radicación deshabilitada"
+              : "Radicación deshabilitada",
           });
         })
         .catch(() => {
           top.notification({
             type: "error",
-            message: "No fue posible guardar los cambios"
+            message: "No fue posible guardar los cambios",
           });
         });
     },
     saveChange() {
       let types = [];
-      $(".sortable").each(function(index, element) {
+      $(".sortable").each(function (index, element) {
         let idtype = element.attributes["data-id"].value;
         let def = +$("#type_" + idtype).val();
         if (!def) {
@@ -366,24 +364,24 @@ export default {
         }
         types.push({
           text: element.attributes["data-text"].value,
-          dias: +$("#type_" + idtype).val()
+          dias: +$("#type_" + idtype).val(),
         });
       });
       let data = {
-        options: types
+        options: types,
       };
 
       this.updatePqrTypes(data)
         .then(() => {
           top.notification({
             type: "success",
-            message: "Cambios actualizados"
+            message: "Cambios actualizados",
           });
         })
         .catch(() => {
           top.notification({
             type: "error",
-            message: "No fue posible guardar los cambios"
+            message: "No fue posible guardar los cambios",
           });
         });
     },
@@ -401,21 +399,21 @@ export default {
         this.editNotification({
           id: id,
           data: {
-            notify: 1
-          }
+            notify: 1,
+          },
         });
       } else {
         let i = this.notifyEmail.indexOf(id);
         if (i == -1) {
           this.delNotification({
-            id: id
+            id: id,
           });
         } else {
           this.editNotification({
             id: id,
             data: {
-              notify: 0
-            }
+              notify: 0,
+            },
           });
         }
       }
@@ -425,67 +423,67 @@ export default {
         this.editNotification({
           id: id,
           data: {
-            email: 1
-          }
+            email: 1,
+          },
         });
       } else {
         let i = this.notify.indexOf(id);
         if (i == -1) {
           this.delNotification({
-            id: id
+            id: id,
           });
         } else {
           this.editNotification({
             id: id,
             data: {
-              email: 0
-            }
+              email: 0,
+            },
           });
         }
       }
     },
     editShowReport() {
       let data = {
-        ids: this.showReport
+        ids: this.showReport,
       };
 
       this.updateShowReport(data)
         .then(() => {
           top.notification({
             type: "success",
-            message: "Datos actualizados"
+            message: "Datos actualizados",
           });
         })
         .catch(() => {
           top.notification({
             type: "error",
-            message: "No fue posible guardar los cambios"
+            message: "No fue posible guardar los cambios",
           });
         });
     },
     addNotification(id) {
-      let index = this.personsNotifications.findIndex(i => i.id == id);
+      let index = this.personsNotifications.findIndex((i) => i.id == id);
 
       if (index != -1) {
         top.notification({
           type: "error",
-          message: "No funcionario ya ha sido agregado"
+          message: "No funcionario ya ha sido agregado",
         });
         return false;
       }
 
       let data = {
-        id: id
+        id: id,
       };
 
       this.insertNotification(data)
-        .then(id => {
+        .then((id) => {
           this.notify.push(id);
         })
         .catch(() => {
           top.notification({
             type: "error",
-            message: "No fue posible agregar al funcionario"
+            message: "No fue posible agregar al funcionario",
           });
         });
     },
@@ -493,7 +491,7 @@ export default {
       this.updateNotification(data).catch(() => {
         top.notification({
           type: "error",
-          message: "No fue posible editar funcionario"
+          message: "No fue posible editar funcionario",
         });
       });
     },
@@ -501,10 +499,10 @@ export default {
       this.deleteNotification(id).catch(() => {
         top.notification({
           type: "error",
-          message: "No fue posible retitar el funcionario"
+          message: "No fue posible retitar el funcionario",
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>

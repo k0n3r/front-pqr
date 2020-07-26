@@ -76,9 +76,9 @@ module.exports = {
         })
     ],
     resolve: {
-        modules: ['node_modules', '../../assets/node_modules'],
+        modules: ['node_modules', '../../node_modules'],
         alias: {
-            topAssets: path.resolve(__dirname, '../../assets/'),
+            topViews: path.resolve(__dirname, '../../'),
             src: path.resolve(__dirname, './src/'),
             pqr: path.resolve(__dirname, './src/pqr/'),
             respuesta: path.resolve(__dirname, './src/respuestaPqr/'),

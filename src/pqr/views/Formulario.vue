@@ -122,22 +122,22 @@
 
 <script>
 //jquery ui
-import "topAssets/node_modules/jquery-ui-dist/jquery-ui.min.js";
-import "topAssets/node_modules/jquery-ui-dist/jquery-ui.min.css";
+import "topViews/node_modules/jquery-ui-dist/jquery-ui.min.js";
+import "topViews/node_modules/jquery-ui-dist/jquery-ui.min.css";
 
 //select 2
-import "topAssets/node_modules/select2/dist/js/select2.min.js";
-import "topAssets/node_modules/select2/dist/js/i18n/es.js";
-import "topAssets/node_modules/select2/dist/css/select2.min.css";
+import "topViews/node_modules/select2/dist/js/select2.min.js";
+import "topViews/node_modules/select2/dist/js/i18n/es.js";
+import "topViews/node_modules/select2/dist/css/select2.min.css";
 
 //Dropzone
-import Dropzone from "topAssets/theme/assets/plugins/dropzone/min/dropzone.min.js";
-import "topAssets/theme/assets/plugins/dropzone/custom.css";
+import Dropzone from "topViews/assets/theme/assets/plugins/dropzone/min/dropzone.min.js";
+import "topViews/assets/theme/assets/plugins/dropzone/custom.css";
 window.Dropzone = Dropzone;
 
 //jquery validate
-import "topAssets/node_modules/jquery-validation/dist/jquery.validate.min.js";
-import "topAssets/node_modules/jquery-validation/dist/localization/messages_es.min.js";
+import "topViews/node_modules/jquery-validation/dist/jquery.validate.min.js";
+import "topViews/node_modules/jquery-validation/dist/localization/messages_es.min.js";
 
 import ViewFormField from "pqr/components/ViewFormField.vue";
 import { mapState, mapActions, mapMutations } from "vuex";
@@ -145,19 +145,19 @@ import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   name: "Formulario",
   components: {
-    ViewFormField
+    ViewFormField,
   },
   data() {
     return {
       modalTitle: "",
-      typeModal: ""
+      typeModal: "",
     };
   },
   created() {
     this.getAllData().catch(() => {
       top.notification({
         type: "error",
-        message: "No fue posible cargar la información"
+        message: "No fue posible cargar la información",
       });
     });
   },
@@ -165,7 +165,7 @@ export default {
     this.initSortable();
   },
   computed: {
-    ...mapState(["componentsHTML", "formFields", "form", "checkAnonymous"])
+    ...mapState(["componentsHTML", "formFields", "form", "checkAnonymous"]),
   },
   methods: {
     ...mapActions([
@@ -176,62 +176,62 @@ export default {
       "updateFormField",
       "updateSetting",
       "udpateOrderOfFormField",
-      "udpateActiveOfFormField"
+      "udpateActiveOfFormField",
     ]),
     ...mapMutations(["setCheckAnonymous"]),
     changeStatus(id, status) {
       let data = {
         id: id,
-        active: +!status
+        active: +!status,
       };
       this.udpateActiveOfFormField(data)
         .then(() => {
           let text = data.active ? "activo" : "inactivo";
           top.notification({
             type: "success",
-            message: "Campo " + text
+            message: "Campo " + text,
           });
         })
         .catch(() => {
           let text = data.active ? "activar" : "inactivar";
           top.notification({
             type: "error",
-            message: "No fue posible " + text + " el campo"
+            message: "No fue posible " + text + " el campo",
           });
         });
     },
     initSortable() {
       let _this = this;
       $("#sortable").sortable({
-        update: function(event, ui) {
+        update: function (event, ui) {
           let order = [];
-          $(".sortable").each(function(index, element) {
+          $(".sortable").each(function (index, element) {
             order.push({
               id: element.attributes["data-id"].value,
-              order: index
+              order: index,
             });
           });
 
           _this.udpateOrderOfFormField(order).catch(() => {
             top.notification({
               type: "error",
-              message: "No fue posible actualizar el orden de los campos"
+              message: "No fue posible actualizar el orden de los campos",
             });
           });
-        }
+        },
       });
     },
     openFormConfig() {
       let paramsModal = {
         fields: this.formFields,
         form: this.form,
-        refresh: this.refresh
+        refresh: this.refresh,
       };
       let optionsModal = {
         url: "views/modules/pqr/src/pqr/modals/formConfiguration.php",
         backdrop: "static",
         keyboard: false,
-        buttons: {}
+        buttons: {},
       };
       top.window.dataModal = paramsModal;
       this.openModalFormConfig(optionsModal);
@@ -240,7 +240,7 @@ export default {
       let _this = this;
       top.topModal({
         ...options,
-        onSuccess: response => {
+        onSuccess: (response) => {
           switch (response.option) {
             case 1: //Activar
               _this.changeStatus(response.id, 0);
@@ -260,7 +260,7 @@ export default {
                   top.notification({
                     type: "error",
                     message:
-                      "No fue posible actualizar la configuración del formulario"
+                      "No fue posible actualizar la configuración del formulario",
                   });
                 });
               break;
@@ -268,7 +268,7 @@ export default {
         },
         afterHide() {
           window.location.reload();
-        }
+        },
       });
     },
     getUrlAddEditField(type) {
@@ -305,7 +305,7 @@ export default {
     },
     validUniq(type) {
       let valid = true;
-      this.formFields.forEach(element => {
+      this.formFields.forEach((element) => {
         if (element.fk_pqr_html_field.type == type) {
           valid = false;
         }
@@ -321,7 +321,7 @@ export default {
       if (!allow) {
         top.notification({
           type: "error",
-          message: "Este campo solo se puede crear una sola vez"
+          message: "Este campo solo se puede crear una sola vez",
         });
         return false;
       }
@@ -329,7 +329,7 @@ export default {
       let paramsModal = {
         isEdit: false,
         fk_pqr_html_field: obj.id,
-        idFormField: 0
+        idFormField: 0,
       };
 
       let optionsModal = {
@@ -337,7 +337,7 @@ export default {
         backdrop: "static",
         keyboard: false,
         title: obj.label,
-        buttons: {}
+        buttons: {},
       };
 
       top.window.dataModal = paramsModal;
@@ -346,7 +346,7 @@ export default {
     editField(obj) {
       let paramsModal = {
         isEdit: true,
-        dataFormField: obj
+        dataFormField: obj,
       };
 
       let optionsModal = {
@@ -354,7 +354,7 @@ export default {
         title: "Actualizar : " + obj.label,
         backdrop: "static",
         keyboard: false,
-        buttons: {}
+        buttons: {},
       };
 
       top.window.dataModal = paramsModal;
@@ -363,31 +363,31 @@ export default {
     openModalAddEditField(options) {
       top.topModal({
         ...options,
-        onSuccess: response => {
+        onSuccess: (response) => {
           if (response.edit) {
             this.updateFormField(response.data).catch(() => {
               top.notification({
                 type: "error",
-                message: "No fue posible actualizar el campo"
+                message: "No fue posible actualizar el campo",
               });
             });
           } else {
             this.insertFormField(response.data).catch(() => {
               top.notification({
                 type: "error",
-                message: "No fue posible guardar el nuevo campo"
+                message: "No fue posible guardar el nuevo campo",
               });
             });
           }
           top.closeTopModal();
-        }
+        },
       });
     },
     deleteField(id) {
       this.deleteFormField(id).catch(() => {
         top.notification({
           type: "error",
-          message: "No fue posible eliminar el campo"
+          message: "No fue posible eliminar el campo",
         });
       });
     },
@@ -396,13 +396,13 @@ export default {
         .then(() => {
           top.notification({
             type: "success",
-            message: "Formulario generado"
+            message: "Formulario generado",
           });
         })
         .catch(() => {
           top.notification({
             type: "error",
-            message: "No fue posible generar el formulario"
+            message: "No fue posible generar el formulario",
           });
         });
     },
@@ -419,7 +419,7 @@ export default {
         }
       }
       return visible;
-    }
-  }
+    },
+  },
 };
 </script>
