@@ -1,75 +1,71 @@
 <template>
   <div class="container-fluid h-100" style="overflow-y: auto">
     <div class="row">
-      <div class="col-md-3 d-none d-sm-block">
+      <div class="col-sm-12">
         <div class="card">
           <div class="card-header">
             <div class="card-title">
-              <h6>PLANTILLAS</h6>
-            </div>
-          </div>
-
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item" data-toggle="tooltip" title="Adicionar plantilla">
-              Nueva plantilla
-              <span class="btn pull-right" @click="newTemplate()">
-                <i class="fa fa-plus"></i>
-              </span>
-            </li>
-            <li
-              class="list-group-item"
-              data-toggle="tooltip"
-              title="Adicionar componente"
-              v-for="(template,index) in templates"
-              :key="index"
-            >
-              {{template.name}}
-              <span class="btn pull-right" @click="loadTemplate(template)">
-                <i :class="+template.system ? 'fa fa-eye':'fa fa-edit'"></i>
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-md-9">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">
-              <h6>{{templateName ? templateName :'NUEVA PLANTILLA'}}</h6>
+              <h6>CAMPOS A CARGAR AL RESPONDER LA PQRSF</h6>
             </div>
           </div>
 
           <div class="modal-body">
-            <div class="form-group">
-              <ckeditor
-                :editor="editor"
-                v-model="editorData"
-                @ready="onReady"
-                :config="editorConfig"
-              ></ckeditor>
-            </div>
-            <hr />
+            <label>DESTINO:</label>
 
-            <div class="form-group form-group-default required">
-              <label>PLANTILLA</label>
-              <input
-                class="form-control required"
-                placeholder="Nombre de la plantilla"
-                type="text"
-                maxlength="250"
-                v-model.trim="templateName"
-              />
-            </div>
+            <table class="table">
+              <thead class="thead-light text-center">
+                <tr>
+                  <th scope="col">TERCERO</th>
+                  <th scope="col">CAMPO DE LA PQRSF</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="w-50">NOMBRE COMPLETO</td>
+                  <td class="w-50">
+                    <select data-vmodel="nombre" id="nombre" class="w-75"></select>
+                  </td>
+                </tr>
 
-            <div class="form-group float-right">
-              <button v-if="+id" type="button" class="btn btn-danger" @click="del">Eliminar</button>
+                <tr>
+                  <td class="w-50">IDENTIFICACIÓN</td>
+                  <td class="w-50">
+                    <select data-vmodel="identificacion" id="identificacion" class="w-75"></select>
+                  </td>
+                </tr>
 
-              <button
-                type="button"
-                class="btn btn-complete"
-                @click="save"
-              >{{+id ? 'Actualizar':'Guardar'}}</button>
+                <tr>
+                  <td class="w-50">CORREO ELECTRÓNICO</td>
+                  <td class="w-50">
+                    <select data-vmodel="correo" id="correo" class="w-75"></select>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="w-50">CARGO</td>
+                  <td class="w-50">
+                    <select data-vmodel="cargo" id="cargo" class="w-75"></select>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="w-50">DIRECCIÓN</td>
+                  <td class="w-50">
+                    <select data-vmodel="direccion" id="direccion" class="w-75"></select>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="w-50">TELÉFONO</td>
+                  <td class="w-50">
+                    <select data-vmodel="telefono" id="telefono" class="w-75"></select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="form-group float-sm-left float-lg-right mt-2">
+              <button type="button" class="btn btn-complete" @click="saveChange">Guardar</button>
             </div>
           </div>
         </div>
@@ -79,157 +75,94 @@
 </template>
 
 <script>
-import Vue from "vue";
-import CKEditor from "@ckeditor/ckeditor5-vue";
-Vue.use(CKEditor);
-
-import ckeditorDocument from "@ckeditor/ckeditor5-build-decoupled-document";
-import "@ckeditor/ckeditor5-build-decoupled-document/build/translations/es";
+//select 2
+import "topViews/node_modules/select2/dist/js/select2.min.js";
+import "topViews/node_modules/select2/dist/js/i18n/es.js";
+import "topViews/node_modules/select2/dist/css/select2.min.css";
 
 import { mapState, mapActions } from "vuex";
 
-const defaultData = {
-  editorData: "",
-  id: 0,
-  templateName: null
+const tercero = {
+  nombre: [],
+  identificacion: [],
+  correo: [],
+  direccion: [],
+  telefono: [],
 };
-
 export default {
   name: "Formulario",
-  components: {
-    ckeditor: CKEditor.component
-  },
   data() {
     return {
-      editor: ckeditorDocument,
-      editorData: defaultData.editorData,
-      editorConfig: {
-        language: "es"
-      },
-      id: defaultData.id,
-      templateName: defaultData.templateName
+      tercero: tercero,
+      data: null,
     };
   },
   created() {
-    this.getDataTemplate().catch(() => {
+    let _this = this;
+    this.getFieldOptions().catch(() => {
       top.notification({
         type: "error",
-        message: "No fue posible cargar los componentes HTML"
+        message: "No fue posible obtener los campos",
       });
     });
   },
+  mounted() {
+    let _this = this;
+    this.getFieldValues()
+      .then((data) => {
+        $("select")
+          .select2({
+            placeholder: "Seleccione los campos",
+            language: "es",
+            multiple: true,
+            data: _this.fieldOptions,
+          })
+          .on("change", function (e) {
+            let element = $(e.currentTarget);
+            let name = element.data("vmodel");
+            _this.tercero[name] = element.val();
+          });
+
+        data.tercero.forEach((element) => {
+          $("#" + element.name)
+            .val(element.value)
+            .trigger("change");
+        });
+      })
+      .catch(() => {
+        top.notification({
+          type: "error",
+          message: "No fue posible obtener los campos",
+        });
+      });
+  },
   computed: {
-    ...mapState(["templates"])
+    ...mapState(["fieldOptions"]),
   },
   methods: {
     ...mapActions([
-      "getDataTemplate",
-      "insertTemplate",
-      "updateTemplate",
-      "deleteTemplate"
+      "getFieldOptions",
+      "getFieldValues",
+      "saveResponseConfiguration",
     ]),
-    newTemplate() {
-      this.editorData = defaultData.editorData;
-      this.id = defaultData.id;
-      this.templateName = defaultData.templateName;
-    },
-    onReady(editor) {
-      editor.ui
-        .getEditableElement()
-        .parentElement.insertBefore(
-          editor.ui.view.toolbar.element,
-          editor.ui.getEditableElement()
-        );
-    },
-    loadTemplate(template) {
-      if (+template.system) {
-        this.clearForm();
-        this.editorData = template.content;
-      } else {
-        this.templateName = template.name;
-        this.id = template.id;
-        this.editorData = template.content;
-      }
-    },
-    clearForm() {
-      this.templateName = defaultData.templateName;
-      this.id = defaultData.id;
-      this.editorData = defaultData.editorData;
-    },
-    save() {
-      if (this.editorData) {
-        if (this.templateName) {
-          let data = {
-            name: this.templateName,
-            content: this.editorData
-          };
-
-          if (this.id) {
-            data = {
-              dataField: {
-                name: this.templateName,
-                content: this.editorData
-              },
-              id: this.id
-            };
-            this.updateTemplate(data)
-              .then(() => {
-                top.notification({
-                  type: "success",
-                  message: "Plantilla actualizada"
-                });
-              })
-              .catch(() => {
-                top.notification({
-                  type: "error",
-                  message: "No fue posible actualizar la plantilla"
-                });
-              });
-          } else {
-            this.insertTemplate(data)
-              .then(() => {
-                this.clearForm();
-                top.notification({
-                  type: "success",
-                  message: "Plantilla guardada!"
-                });
-              })
-              .catch(() => {
-                top.notification({
-                  type: "error",
-                  message: "No fue posible guardar la plantilla"
-                });
-              });
-          }
-        } else {
-          top.notification({
-            type: "error",
-            message: "Por favor ingrese el nombre de la plantilla"
-          });
-        }
-      } else {
-        top.notification({
-          type: "error",
-          message: "Por favor ingrese el contenido de la plantilla"
-        });
-      }
-    },
-    del() {
-      this.deleteTemplate(this.id)
+    saveChange() {
+      let data = {
+        tercero: this.tercero,
+      };
+      this.saveResponseConfiguration(data)
         .then(() => {
-          this.clearForm();
           top.notification({
             type: "success",
-            message: "Plantilla Eliminada"
+            message: "Datos actualizados!",
           });
         })
         .catch(() => {
           top.notification({
             type: "error",
-            message: "No fue posible eliminar la plantilla"
+            message: "No fue posible actualizar la informacion!",
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>

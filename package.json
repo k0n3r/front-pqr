@@ -36,9 +36,5 @@
     "vuex": "^3.1.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
-  },
-  "dependencies": {
-    "@ckeditor/ckeditor5-build-decoupled-document": "^17.0.0",
-    "@ckeditor/ckeditor5-vue": "^1.0.1"
   }
 }

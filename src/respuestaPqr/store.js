@@ -18,103 +18,78 @@ $.ajaxSetup({
 
 export default new Vuex.Store({
     state: {
-        templates: []
+        fieldOptions: []
     },
     mutations: {
-        setTemplates(state, data) {
-            state.templates = data;
-        },
-        addTemplate(state, data) {
-            state.templates.push(data);
-        },
-        editTemplate(state, data) {
-            let index = state.templates.findIndex(i => i.id == data.id);
-            state.templates.splice(index, 1, data);
-        },
-        delTemplate(state, id) {
-            let index = state.templates.findIndex(i => i.id == id);
-            state.templates.splice(index, 1);
+        setFieldOptions(state, data) {
+            state.fieldOptions = data;
         }
     },
     actions: {
-        getDataTemplate({ commit }) {
+        getFieldOptions({ commit }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
-                        class: 'PqrResponseTemplateController',
-                        method: 'index'
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("setTemplates", response.data);
-                            resolve();
-                        } else {
-                            console.log(response)
-                        }
+                        class: 'PqrFormFieldController',
+                        method: 'getTextFields'
                     }
-                })
+                }).done(response => {
+                    if (response.success) {
+                        commit("setFieldOptions", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject(response.message);
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
-        insertTemplate({ commit }, data) {
+        getFieldValues({ commit }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
-                        class: 'PqrResponseTemplateController',
-                        method: 'store',
-                        data
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("addTemplate", response.data);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                        class: 'PqrFormController',
+                        method: 'getResponseConfiguration'
                     }
-                })
+                }).done(response => {
+                    if (response.success) {
+                        resolve(response.data);
+                    } else {
+                        console.log(response)
+                        reject(response.message);
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
-        updateTemplate({ commit }, dataEdit) {
+        saveResponseConfiguration({ commit }, data) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     data: {
-                        class: 'PqrResponseTemplateController',
-                        method: 'update',
-                        data: dataEdit
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("editTemplate", response.data);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                        class: 'PqrFormController',
+                        method: 'updateResponseConfiguration',
+                        data: data
                     }
-                })
-            });
-        },
-        deleteTemplate({ commit }, id) {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    data: {
-                        class: 'PqrResponseTemplateController',
-                        method: 'destroy',
-                        data: {
-                            id: id
-                        }
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("delTemplate", id);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                }).done(response => {
+                    if (response.success) {
+                        commit("setFieldOptions", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject(response.message);
                     }
-                })
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         }
     }
