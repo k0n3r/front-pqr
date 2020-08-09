@@ -4,14 +4,13 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header">
-            <div class="card-title">
-              <h6>CAMPOS A CARGAR AL RESPONDER LA PQRSF</h6>
-            </div>
+            <div
+              class="card-title"
+            >CONFIGURACIÓN DEL DESTINATARIO EN LA COMUNICACIÓN EXTERNA (PQRSF)</div>
           </div>
 
           <div class="modal-body">
-            <label>DESTINO:</label>
-
+            <p>Solo se cargaran los campos de tipo: Linea de texto, Numérico y E-mail</p>
             <table class="table">
               <thead class="thead-light text-center">
                 <tr>
@@ -123,16 +122,18 @@ export default {
             _this.tercero[name] = element.val();
           });
 
-        data.tercero.forEach((element) => {
-          $("#" + element.name)
-            .val(element.value)
-            .trigger("change");
-        });
+        if (typeof data.tercero === "object") {
+          data.tercero.forEach((element) => {
+            $("#" + element.name)
+              .val(element.value)
+              .trigger("change");
+          });
+        }
       })
       .catch(() => {
         top.notification({
           type: "error",
-          message: "No fue posible obtener los campos",
+          message: "No fue posible obtener los valores",
         });
       });
   },
