@@ -1,7 +1,5 @@
 <?php
 
-use Saia\controllers\CryptController;
-
 $max_salida = 10;
 $rootPath = $ruta = "";
 while ($max_salida > 0) {
@@ -15,12 +13,6 @@ while ($max_salida > 0) {
 
 include_once $rootPath . "app/vendor/autoload.php";
 include_once $rootPath . "views/assets/librerias.php";
-
-
-$_REQUEST['baseUrl'] = $rootPath;
-$_REQUEST['data'] = json_decode(CryptController::decrypt($_REQUEST['data']));
-$params = json_encode($_REQUEST);
-
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +25,6 @@ $params = json_encode($_REQUEST);
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=10.0, shrink-to-fit=no' />
     <?= jquery() ?>
     <?= bootstrap() ?>
-    <link class="main-stylesheet" href="<?= $rootPath; ?>views/webservice/qr/css/info.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -67,7 +58,8 @@ $params = json_encode($_REQUEST);
             </tr>
         </tbody>
     </table>
-    <script id='info_script' src='<?= $rootPath ?>views/webservice/qr/js/info.js' data-params='<?= $params ?>'></script>
+
+    <script id='info_script' src='<?= $rootPath ?>views/modules/pqr/src/pqr/modals/infoQR/js/infoQr.js'></script>
 </body>
 
 </html>

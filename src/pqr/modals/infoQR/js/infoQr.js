@@ -1,4 +1,18 @@
 $(function () {
+
+    var d = getVariableFromUrl('d');
+    if (!d) {
+        window.notification({
+            title: 'Error!',
+            icon: 'fa fa-exclamation-circle',
+            timeout: 5000,
+            color: 'red',
+            message: 'Por favor ingrese nuevamente desde la URL que se le envio al e-mail registrado'
+        });
+        setTimeout(function () { window.location.href = "404.html" }, 5000);
+        return;
+    }
+
     let params = $('#info_script').data('params');
     $('#info_script').removeAttr('data-params');
 
