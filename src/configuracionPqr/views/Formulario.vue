@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid h-100" style="overflow-y: auto">
     <div class="row">
-      <div class="col">
+      <div class="col-md">
         <div class="card card-default">
           <div class="card-header">
             <div class="card-title">CONFIGURACIÓN DÍAS DE VENCIMIENTO (EN DÍAS HABILES)</div>
@@ -87,8 +87,8 @@
         </div>
       </div>
 
-      <div class="col">
-        <div class="card card-default">
+      <div class="col-md">
+        <!-- <div class="card card-default">
           <div class="card-header">
             <div class="card-title">OTRAS FUNCIONALIDADES</div>
           </div>
@@ -106,14 +106,14 @@
               </div>
             </div>
 
-            <!-- <div class="form-group">
+            <div class="form-group">
               <div class="checkbox check-success input-group">
                 <input type="checkbox" value="1" id="radFast1" v-model="radFast" />
                 <label for="radFast1">HABILITAR PARA RADICACIÓN RÁPIDA</label>
               </div>
-            </div>-->
+            </div>
           </div>
-        </div>
+        </div>-->
 
         <div class="card card-default">
           <div class="card-header">
