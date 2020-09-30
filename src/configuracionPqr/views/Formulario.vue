@@ -4,7 +4,9 @@
       <div class="col-md">
         <div class="card card-default">
           <div class="card-header">
-            <div class="card-title">CONFIGURACIÓN DÍAS DE VENCIMIENTO (EN DÍAS HABILES)</div>
+            <div class="card-title">
+              CONFIGURACIÓN DÍAS DE VENCIMIENTO (EN DÍAS HABILES)
+            </div>
           </div>
           <div class="card-body">
             <table class="table">
@@ -15,19 +17,19 @@
                 </tr>
               </thead>
               <tbody id="sortable">
-                <template v-for="(type,index) in pqrTypes">
+                <template v-for="(type, index) in pqrTypes">
                   <tr
                     :key="index"
                     class="sortable"
                     :data-id="index"
                     :data-text="type.text"
-                    style="cursor:move"
+                    style="cursor: move"
                   >
-                    <td scope="row">{{type.text}}</td>
+                    <td scope="row">{{ type.text }}</td>
                     <td class="text-center">
                       <input
                         class="form-group"
-                        :id="'type_'+index"
+                        :id="'type_' + index"
                         min="1"
                         type="number"
                         :value="type.dias"
@@ -38,7 +40,13 @@
               </tbody>
             </table>
             <div class="form-group float-md-left float-lg-right mt-2">
-              <button type="button" class="btn btn-complete" @click="saveChange">Guardar</button>
+              <button
+                type="button"
+                class="btn btn-complete"
+                @click="saveChange"
+              >
+                Guardar
+              </button>
             </div>
           </div>
         </div>
@@ -47,10 +55,9 @@
           <div class="card-header">
             <div class="card-title">
               CAMPOS A MOSTRAR EN EL REPORTE
-              <span
-                class="text-danger"
-                v-show="!+form.fk_formato"
-              >PRIMERO DEBE PUBLICAR EL FORMULARIO</span>
+              <span class="text-danger" v-show="!+form.fk_formato"
+                >PRIMERO DEBE PUBLICAR EL FORMULARIO</span
+              >
             </div>
           </div>
           <div class="card-body">
@@ -64,16 +71,18 @@
               <tbody>
                 <template v-for="field in formFields">
                   <tr :key="field.id" v-if="showField(field)">
-                    <td scope="row" class="text-uppercase">{{field.label}}</td>
+                    <td scope="row" class="text-uppercase">
+                      {{ field.label }}
+                    </td>
                     <td class="text-center">
                       <div class="checkbox check-success">
                         <input
                           type="checkbox"
                           :value="field.id"
                           v-model="showReport"
-                          :id="'check_'+field.id"
+                          :id="'check_' + field.id"
                         />
-                        <label :for="'check_'+field.id"></label>
+                        <label :for="'check_' + field.id"></label>
                       </div>
                     </td>
                   </tr>
@@ -81,7 +90,13 @@
               </tbody>
             </table>
             <div class="form-group float-md-left float-lg-right mt-2">
-              <button type="button" class="btn btn-complete" @click="editShowReport">Guardar</button>
+              <button
+                type="button"
+                class="btn btn-complete"
+                @click="editShowReport"
+              >
+                Guardar
+              </button>
             </div>
           </div>
         </div>
@@ -122,7 +137,10 @@
           <div class="card-body">
             <div class="form-group">
               <label>FUNCIONARIOS</label>
-              <select class="full-width select2-hidden-accessible" id="person"></select>
+              <select
+                class="full-width select2-hidden-accessible"
+                id="person"
+              ></select>
             </div>
 
             <table class="table" v-show="personsNotifications.length">
@@ -136,17 +154,19 @@
               <tbody>
                 <template v-for="notification in personsNotifications">
                   <tr :key="notification.id">
-                    <td scope="row" class="text-uppercase">{{notification.fk_funcionario.text}}</td>
+                    <td scope="row" class="text-uppercase">
+                      {{ notification.fk_funcionario.text }}
+                    </td>
                     <td class="text-center">
                       <div class="checkbox check-success">
                         <input
                           type="checkbox"
                           :value="notification.id"
                           v-model="notify"
-                          @input="isCheckNotify($event,notification.id)"
-                          :id="'checkNotify_'+notification.id"
+                          @input="isCheckNotify($event, notification.id)"
+                          :id="'checkNotify_' + notification.id"
                         />
-                        <label :for="'checkNotify_'+notification.id"></label>
+                        <label :for="'checkNotify_' + notification.id"></label>
                       </div>
                     </td>
 
@@ -156,16 +176,87 @@
                           type="checkbox"
                           :value="notification.id"
                           v-model="notifyEmail"
-                          @change="isCheckNotifyEmail($event,notification.id)"
-                          :id="'checkEmail_'+notification.id"
+                          @change="isCheckNotifyEmail($event, notification.id)"
+                          :id="'checkEmail_' + notification.id"
                         />
-                        <label :for="'checkEmail_'+notification.id"></label>
+                        <label :for="'checkEmail_' + notification.id"></label>
                       </div>
                     </td>
                   </tr>
                 </template>
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <div class="card card-default">
+          <div class="card-header">
+            <div class="card-title">Mensajes de Notificación/E-mail</div>
+          </div>
+
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Notificación/E-mail</label>
+                  <select v-model="noty_message" class="full-width">
+                    <option
+                      v-for="(option, index) in optionsNotyMessages"
+                      :key="index"
+                      :value="option.value"
+                    >
+                      {{ option.text }}
+                    </option>
+                  </select>
+                </div>
+                <p v-if="noty_message.description != ''">
+                  {{ noty_message.description }}
+                </p>
+                <template v-if="noty_message.type == 2">
+                  <div class="form-group">
+                    <label>ASUNTO:</label>
+                    <input
+                      name="subject"
+                      placeholder="Ingrese el asunto del e-mail"
+                      type="email"
+                      maxlength="250"
+                      class="form-control required"
+                      v-model="noty_message.subject"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>CUERPO DEL E-MAIL:</label>
+                    <textarea
+                      name="message_body"
+                      class="form-control required"
+                      v-model="noty_message.message_body"
+                    ></textarea>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="form-group">
+                    <label>MENSAJE:</label>
+                    <textarea
+                      name="message_body"
+                      class="form-control required"
+                      v-model="noty_message.message_body"
+                    ></textarea>
+                  </div>
+                </template>
+              </div>
+            </div>
+            <div
+              v-if="noty_message.id"
+              class="form-group float-md-left float-lg-right mt-2"
+            >
+              <button
+                type="button"
+                class="btn btn-complete"
+                @click="updateNotyMessage"
+              >
+                Guardar
+              </button>
+            </div>
           </div>
         </div>
 
@@ -179,20 +270,21 @@
                 <h5>Enlace</h5>
                 <p>
                   Enlace directo al formulario :
-                  <a
-                    :href="urlWs"
-                    target="_blank"
-                    v-show="+publish"
-                  >Formulario</a>
+                  <a :href="urlWs" target="_blank" v-show="+publish"
+                    >Formulario</a
+                  >
                 </p>
-                <code>{{getUrl}}</code>
+                <code>{{ getUrl }}</code>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <h5>HTML</h5>
-                <p>Utilice el siguiente contenido HTML si desea agregar el formulario a su sitio web</p>
-                <code>{{getContentIframe}}</code>
+                <p>
+                  Utilice el siguiente contenido HTML si desea agregar el
+                  formulario a su sitio web
+                </p>
+                <code>{{ getContentIframe }}</code>
               </div>
             </div>
           </div>
@@ -222,6 +314,13 @@ export default {
       showReport: [],
       notify: [],
       notifyEmail: [],
+      noty_message: {
+        id: 0,
+        description: "",
+        subject: "",
+        message_body: "",
+        type: 1,
+      },
     };
   },
   created() {
@@ -261,6 +360,7 @@ export default {
     let _this = this;
     var baseUrl = localStorage.getItem("baseUrl");
     $("#sortable").sortable();
+
     $("#person").select2({
       placeholder: "Ingrese el nombre del funcionario",
       language: "es",
@@ -303,6 +403,7 @@ export default {
       "form",
       "formFields",
       "personsNotifications",
+      "optionsNotyMessages",
     ]),
     getContentIframe() {
       let iframe = "EL FORMULARIO NO HA SIDO PUBLICADO";
@@ -332,6 +433,7 @@ export default {
       "updateNotification",
       "deleteNotification",
     ]),
+    updateNotyMessage() {},
     editRadEmail(e) {
       let data = {
         pqrForm: {

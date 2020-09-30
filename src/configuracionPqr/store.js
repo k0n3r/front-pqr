@@ -23,7 +23,8 @@ export default new Vuex.Store({
         form: {},
         formFields: [],
         pqrTypes: [],
-        personsNotifications: []
+        personsNotifications: [],
+        optionsNotyMessages: []
     },
     mutations: {
         setUrlWs(state, url) {
@@ -43,6 +44,9 @@ export default new Vuex.Store({
         },
         setPersonNotifications(state, data) {
             state.personsNotifications = data;
+        },
+        setOptionsNotyMessages(state, data) {
+            state.optionsNotyMessages = data;
         },
         addPersonsNotification(state, data) {
             state.personsNotifications.push(data);
@@ -73,6 +77,7 @@ export default new Vuex.Store({
                             commit("setUrlWs", data.urlWs);
                             commit("setPublish", data.publish);
                             commit("setPersonNotifications", data.pqrNotifications)
+                            commit("setOptionsNotyMessages", data.optionsNotyMessages)
                             resolve();
                         } else {
                             console.log(response)
