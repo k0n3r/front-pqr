@@ -58,7 +58,7 @@ export default new Vuex.Store({
         editPersonsNotification(state, data) {
             let index = state.personsNotifications.findIndex(i => i.id == data.id);
             state.personsNotifications.splice(index, 1, data);
-        }
+        },
     },
     actions: {
         getDataSetting({ commit }) {
@@ -205,6 +205,27 @@ export default new Vuex.Store({
                     }
                 })
             });
+        },
+        updateNotyMessage({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    data: {
+                        class: 'PqrNotyMessageController',
+                        method: 'update',
+                        data
+                    },
+                }).done(response => {
+                    if (response.success) {
+                        commit("setOptionsNotyMessages", response.data)
+                        resolve();
+                    } else {
+                        reject(response.message);
+                    }
+                }).fail(jqXHR => {
+                    console.error(jqXHR);
+                    reject();
+                });
+            })
         }
     }
 })

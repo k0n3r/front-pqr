@@ -199,6 +199,7 @@
               <div class="col">
                 <div class="form-group">
                   <label>Notificación/E-mail</label>
+                  <a href="#" @click="openModal">(clic ayuda)</a>
                   <select v-model="noty_message" class="full-width">
                     <option
                       v-for="(option, index) in optionsNotyMessages"
@@ -252,7 +253,7 @@
               <button
                 type="button"
                 class="btn btn-complete"
-                @click="updateNotyMessage"
+                @click="saveNotyMessage"
               >
                 Guardar
               </button>
@@ -361,30 +362,29 @@ export default {
     var baseUrl = localStorage.getItem("baseUrl");
     $("#sortable").sortable();
 
-    $("#person").select2({
-      placeholder: "Ingrese el nombre del funcionario",
-      language: "es",
-      minimumInputLength: 3,
-      multiple: false,
-      ajax: {
-        delay: 400,
-        url: `${baseUrl}app/funcionario/autocompletar.php`,
-        dataType: "json",
-        data: function (params) {
-          var query = {
-            key: localStorage.getItem("key"),
-            token: localStorage.getItem("token"),
-            term: params.term,
-          };
-          return query;
-        },
-        processResults: function (response) {
-          return response.success ? { results: response.data } : {};
-        },
-      },
-    });
-
     $("#person")
+      .select2({
+        placeholder: "Ingrese el nombre del funcionario",
+        language: "es",
+        minimumInputLength: 3,
+        multiple: false,
+        ajax: {
+          delay: 400,
+          url: `${baseUrl}app/funcionario/autocompletar.php`,
+          dataType: "json",
+          data: function (params) {
+            var query = {
+              key: localStorage.getItem("key"),
+              token: localStorage.getItem("token"),
+              term: params.term,
+            };
+            return query;
+          },
+          processResults: function (response) {
+            return response.success ? { results: response.data } : {};
+          },
+        },
+      })
       .on("select2:selecting", function (e) {
         $("#person").val(null).trigger("change");
       })
@@ -432,8 +432,36 @@ export default {
       "insertNotification",
       "updateNotification",
       "deleteNotification",
+      "updateNotyMessage",
     ]),
-    updateNotyMessage() {},
+    openModal() {
+      top.topModal({
+        url: "views/modules/pqr/src/configuracionPqr/modals/help.php",
+        buttons: {},
+      });
+    },
+    saveNotyMessage() {
+      let data = {
+        id: this.noty_message.id,
+        data: {
+          subject: this.noty_message.subject,
+          message_body: this.noty_message.message_body,
+        },
+      };
+      this.updateNotyMessage(data)
+        .then(() => {
+          top.notification({
+            type: "success",
+            message: "Notificación/Mensage actualizado!",
+          });
+        })
+        .catch(() => {
+          top.notification({
+            type: "error",
+            message: "No fue posible guardar los cambios",
+          });
+        });
+    },
     editRadEmail(e) {
       let data = {
         pqrForm: {
