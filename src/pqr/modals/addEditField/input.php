@@ -29,7 +29,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                     <input class="form-control" type="text" v-model.trim="form.placeholder" maxlength="250" />
                 </div>
 
-                <div v-if="system==0" class="form-group form-group-default required">
+                <div v-if="is_system==0" class="form-group form-group-default required">
                     <label>OBLIGATORIO?</label>
 
                     <div class="radio radio-success input-group">
@@ -70,7 +70,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                 return {
                     form: null,
                     dataParams: dataParams,
-                    system: 0
+                    is_system: 0
                 };
             },
             created() {
@@ -85,8 +85,8 @@ include_once $rootPath . 'views/assets/librerias.php';
                     };
                     if (this.dataParams.isEdit) {
                         let dataFormField = this.dataParams.dataFormField;
-                        this.system = this.dataParams.dataFormField.name == 'sys_email' ?
-                            0 : this.dataParams.dataFormField.system;
+                        this.is_system = this.dataParams.dataFormField.name == 'sys_email' ?
+                            0 : this.dataParams.dataFormField.is_system;
                         dataForm = {
                             label: dataFormField.label,
                             required: dataFormField.required,
