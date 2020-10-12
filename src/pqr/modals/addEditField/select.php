@@ -145,6 +145,9 @@ include_once $rootPath . 'views/assets/librerias.php';
                             options: this.form.options
                         }
                     };
+                    if (this.dataParams.type == 'subTypesPqr') {
+                        data.name = 'sys_subtipo';
+                    }
 
                     top.successModalEvent({
                         data,

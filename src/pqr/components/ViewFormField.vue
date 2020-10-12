@@ -1,23 +1,59 @@
 <template>
   <div class="col">
-    <ViewInputComponent v-if="data.fk_pqr_html_field.type=='text'" :dataParams="data" />
-    <ViewInputComponent v-if="data.fk_pqr_html_field.type=='number'" :dataParams="data" />
-    <ViewInputComponent v-if="data.fk_pqr_html_field.type=='email'" :dataParams="data" />
-    <ViewFileComponent v-if="data.fk_pqr_html_field.type=='file'" :dataParams="data" />
-
-    <ViewTextareaComponent v-if="data.fk_pqr_html_field.type=='textarea'" :dataParams="data" />
-
-    <ViewSelectComponent v-if="data.fk_pqr_html_field.type=='select'" :dataParams="data" />
-    <ViewRadioComponent v-if="data.fk_pqr_html_field.type=='radio'" :dataParams="data" />
-    <ViewCheckboxComponent v-if="data.fk_pqr_html_field.type=='checkbox'" :dataParams="data" />
-
-    <ViewTratamientoComponent v-if="data.fk_pqr_html_field.type=='tratamiento'" :dataParams="data" />
-
-    <ViewAutocompleteComponent
-      v-if="data.fk_pqr_html_field.type=='dependencia'"
+    <ViewInputComponent
+      v-if="data.fk_pqr_html_field.type == 'text'"
       :dataParams="data"
     />
-    <ViewAutocompleteComponent v-if="data.fk_pqr_html_field.type=='localidad'" :dataParams="data" />
+    <ViewInputComponent
+      v-if="data.fk_pqr_html_field.type == 'number'"
+      :dataParams="data"
+    />
+    <ViewInputComponent
+      v-if="data.fk_pqr_html_field.type == 'email'"
+      :dataParams="data"
+    />
+    <ViewFileComponent
+      v-if="data.fk_pqr_html_field.type == 'file'"
+      :dataParams="data"
+    />
+
+    <ViewTextareaComponent
+      v-if="data.fk_pqr_html_field.type == 'textarea'"
+      :dataParams="data"
+    />
+
+    <ViewSelectComponent
+      v-if="data.fk_pqr_html_field.type == 'select'"
+      :dataParams="data"
+    />
+    <ViewSelectComponent
+      v-if="data.fk_pqr_html_field.type == 'subTypesPqr'"
+      :dataParams="data"
+    />
+
+    <ViewRadioComponent
+      v-if="data.fk_pqr_html_field.type == 'radio'"
+      :dataParams="data"
+    />
+
+    <ViewCheckboxComponent
+      v-if="data.fk_pqr_html_field.type == 'checkbox'"
+      :dataParams="data"
+    />
+
+    <ViewTratamientoComponent
+      v-if="data.fk_pqr_html_field.type == 'tratamiento'"
+      :dataParams="data"
+    />
+
+    <ViewAutocompleteComponent
+      v-if="data.fk_pqr_html_field.type == 'dependencia'"
+      :dataParams="data"
+    />
+    <ViewAutocompleteComponent
+      v-if="data.fk_pqr_html_field.type == 'localidad'"
+      :dataParams="data"
+    />
   </div>
 </template>
 
@@ -41,16 +77,16 @@ export default {
     ViewCheckboxComponent,
     ViewTratamientoComponent,
     ViewAutocompleteComponent,
-    ViewFileComponent
+    ViewFileComponent,
   },
   props: {
     data: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   mounted() {
     this.$emit("refreshSortable");
-  }
+  },
 };
 </script>

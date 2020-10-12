@@ -14,10 +14,10 @@
               class="list-group-item"
               data-toggle="tooltip"
               title="Adicionar componente"
-              v-for="(htmlField,index) in componentsHTML"
+              v-for="(htmlField, index) in componentsHTML"
               :key="index"
             >
-              {{htmlField.label}}
+              {{ htmlField.label }}
               <span class="btn pull-right" @click="addField(htmlField)">
                 <i class="fa fa-plus"></i>
               </span>
@@ -29,11 +29,15 @@
         <div class="card">
           <div class="card-header text-center">
             <div class="card-title" v-show="+form.show_label">
-              <h5 class="text-black">{{form.label}}</h5>
+              <h5 class="text-black">{{ form.label }}</h5>
             </div>
             <div class="card-controls">
               <ul>
-                <li data-toggle="tooltip" title="Configuración" @click="openFormConfig">
+                <li
+                  data-toggle="tooltip"
+                  title="Configuración"
+                  @click="openFormConfig"
+                >
                   <a href="#">
                     <i class="fa fa-cogs fa-2x"></i>
                   </a>
@@ -46,7 +50,8 @@
               <div class="row form-group" v-show="+form.show_anonymous">
                 <div class="col">
                   <p>
-                    ¿DESEA REGISTRAR ESTA SOLICITUD COMO UNA PERSONA &nbsp; ANÓNIMA?
+                    ¿DESEA REGISTRAR ESTA SOLICITUD COMO UNA PERSONA &nbsp;
+                    ANÓNIMA?
                     <input
                       type="checkbox"
                       v-model="checkAnonymous"
@@ -61,14 +66,19 @@
                     class="sortable"
                     :key="field.id"
                     :data-id="field.id"
-                    style="cursor:move"
+                    style="cursor: move"
                     v-show="isVisible(field)"
                   >
                     <div class="row form-group">
                       <div class="col">
-                        <div class="btn-group btn-group-xs float-right" role="group">
+                        <div
+                          class="btn-group btn-group-xs float-right"
+                          role="group"
+                        >
                           <button
-                            v-if="+field.is_system==0 && !+field.fk_campos_formato"
+                            v-if="
+                              +field.is_system == 0 && !+field.fk_campos_formato
+                            "
                             type="button"
                             class="btn btn-xs btn-danger"
                             @click="deleteField(field.id)"
@@ -79,15 +89,25 @@
                           </button>
 
                           <button
-                            v-if="+field.is_system==0 && +field.fk_campos_formato"
+                            v-if="
+                              +field.is_system == 0 && +field.fk_campos_formato
+                            "
                             type="button"
                             class="btn btn-xs"
-                            :class="+field.active ? 'btn-success' : 'btn-danger'"
-                            @click="changeStatus(field.id,+field.active)"
+                            :class="
+                              +field.active ? 'btn-success' : 'btn-danger'
+                            "
+                            @click="changeStatus(field.id, +field.active)"
                             data-toggle="tooltip"
                             :title="+field.active ? 'Inactivar' : 'Activar'"
                           >
-                            <i :class="+field.active ? 'fa fa-toggle-on' : 'fa fa-toggle-off'"></i>
+                            <i
+                              :class="
+                                +field.active
+                                  ? 'fa fa-toggle-on'
+                                  : 'fa fa-toggle-off'
+                              "
+                            ></i>
                           </button>
 
                           <button
@@ -103,14 +123,19 @@
                       </div>
                     </div>
                     <div class="row">
-                      <ViewFormField :data="field" @refreshSortable="initSortable" />
+                      <ViewFormField
+                        :data="field"
+                        @refreshSortable="initSortable"
+                      />
                     </div>
                   </div>
                 </template>
               </div>
 
               <div class="form-group float-md-left float-lg-right">
-                <button type="button" class="btn btn-success" @click="publish">Publicar</button>
+                <button type="button" class="btn btn-success" @click="publish">
+                  Publicar
+                </button>
               </div>
             </form>
           </div>
@@ -277,6 +302,7 @@ export default {
         case "select":
         case "radio":
         case "checkbox":
+        case "subTypesPqr":
           url = "views/modules/pqr/src/pqr/modals/addEditField/select.php";
           break;
 
@@ -330,6 +356,7 @@ export default {
         isEdit: false,
         fk_pqr_html_field: obj.id,
         idFormField: 0,
+        type: obj.type,
       };
 
       let optionsModal = {
