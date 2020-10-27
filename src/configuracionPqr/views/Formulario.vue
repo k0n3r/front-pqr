@@ -520,7 +520,7 @@ export default {
         field.name == "sys_tratamiento" ||
         field.name == "sys_tipo" ||
         field.fk_pqr_html_field.type == "file" ||
-        +field.active == 0 ||
+        (+field.active == 0 && field.name != "sys_subtipo") ||
         +field.fk_campos_formato == 0
       );
     },

@@ -83,7 +83,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                     </thead>
                     <tbody>
                         <template v-for="field in formFields">
-                            <tr :key="field.id" v-if="showField(field.name)">
+                            <tr :key="field.id" v-if="showField(field)">
                                 <td scope="row" class="text-uppercase">{{field.label}}</td>
                                 <td class="text-center">
                                     <div class="checkbox check-success">
@@ -153,8 +153,9 @@ include_once $rootPath . 'views/assets/librerias.php';
                 this.requiredFieldsAnonymous = idsRequiredFields;
             },
             methods: {
-                showField(name) {
-                    return !(name == "sys_tratamiento" || name == "sys_tipo");
+                showField(field) {
+                    return !(!+field.active || field.name == "sys_tratamiento" ||
+                        field.name == "sys_tipo");
                 },
                 isCheck(e, type, id) {
                     if (e.target.checked && type == 2) {
