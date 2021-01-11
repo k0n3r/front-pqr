@@ -103,33 +103,6 @@
       </div>
 
       <div class="col-md">
-        <!-- <div class="card card-default">
-          <div class="card-header">
-            <div class="card-title">OTRAS FUNCIONALIDADES</div>
-          </div>
-          <div class="card-body">
-            <div class="form-group">
-              <div class="checkbox check-success input-group">
-                <input
-                  type="checkbox"
-                  value="1"
-                  id="radEmail1"
-                  v-model="radEmail"
-                  @change="editRadEmail($event)"
-                />
-                <label for="radEmail1">HABILITAR PARA RADICACIÓN EMAIL</label>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="checkbox check-success input-group">
-                <input type="checkbox" value="1" id="radFast1" v-model="radFast" />
-                <label for="radFast1">HABILITAR PARA RADICACIÓN RÁPIDA</label>
-              </div>
-            </div>
-          </div>
-        </div>-->
-
         <div class="card card-default">
           <div class="card-header">
             <div class="card-title">NOTIFICACIONES</div>
@@ -310,8 +283,6 @@ export default {
   name: "Formulario",
   data() {
     return {
-      radEmail: null,
-      radFast: null,
       showReport: [],
       notify: [],
       notifyEmail: [],
@@ -327,8 +298,6 @@ export default {
   created() {
     this.getDataSetting()
       .then(() => {
-        this.radEmail = +this.form.rad_email ? 1 : null;
-
         let idsShowReport = new Array();
         this.formFields.forEach((row) => {
           if (+row.show_report) {
@@ -427,7 +396,6 @@ export default {
     ...mapActions([
       "getDataSetting",
       "updatePqrTypes",
-      "updateRadEmail",
       "updateShowReport",
       "insertNotification",
       "updateNotification",
@@ -453,28 +421,6 @@ export default {
           top.notification({
             type: "success",
             message: "Notificación/Mensage actualizado!",
-          });
-        })
-        .catch(() => {
-          top.notification({
-            type: "error",
-            message: "No fue posible guardar los cambios",
-          });
-        });
-    },
-    editRadEmail(e) {
-      let data = {
-        pqrForm: {
-          rad_email: e.target.checked ? 1 : 0,
-        },
-      };
-      this.updateRadEmail(data)
-        .then(() => {
-          top.notification({
-            type: "success",
-            message: e.target.checked
-              ? "Radicación habilitada"
-              : "Radicación deshabilitada",
           });
         })
         .catch(() => {

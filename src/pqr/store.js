@@ -4,8 +4,7 @@ import Vuex from "vuex"
 Vue.use(Vuex)
 
 $.ajaxSetup({
-    url: `${process.env.URL_BACK}app/modules/back_pqr/app/request.php`,
-    method: "post",
+    method: "get",
     dataType: "json",
     data: {
         key: localStorage.getItem('key'),
@@ -15,6 +14,7 @@ $.ajaxSetup({
         console.error(args);
     }
 });
+var baseUrl = localStorage.getItem('baseUrl');
 
 export default new Vuex.Store({
     state: {
@@ -51,172 +51,190 @@ export default new Vuex.Store({
     actions: {
         getAllData({ commit }) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
-                    data: {
-                        class: 'RequestProcessorController',
-                        method: 'getAllData'
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            let data = response.data;
-                            commit("setComponentsHTML", data.pqrHtmlFields);
-                            commit("setForm", data.pqrForm);
-                            commit("setFormFields", data.pqrFormFields);
-                            resolve();
-                        } else {
-                            console.log(response);
-                            reject();
-                        }
+                    url: `${baseUrl}api/pqr/components/allData`,
+                }).done(response => {
+                    if (response.success) {
+                        let data = response.data;
+                        commit("setComponentsHTML", data.pqrHtmlFields);
+                        commit("setForm", data.pqrForm);
+                        commit("setFormFields", data.pqrFormFields);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject(response.message);
                     }
-                })
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         updateSetting({ commit }, data) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
+                    url: `${baseUrl}api/pqr/form/updateSetting`,
+                    method: "put",
                     data: {
-                        class: 'PqrFormController',
-                        method: 'updateSetting',
                         data: data
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            let data = response.data;
-                            commit("setCheckAnonymous", false);
-                            commit("setFormFields", data.pqrFormFields);
-                            commit("setForm", data.pqrForm);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
                     }
-                })
+                }).done(response => {
+                    if (response.success) {
+                        let data = response.data;
+                        commit("setCheckAnonymous", false);
+                        commit("setFormFields", data.pqrFormFields);
+                        commit("setForm", data.pqrForm);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject(response.message);
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         insertFormField({ commit, state }, dataField) {
             dataField.fk_pqr_form = state.form.id;
 
             return new Promise((resolve, reject) => {
+
                 $.ajax({
+                    url: `${baseUrl}api/pqr/formField`,
+                    method: "post",
                     data: {
-                        class: 'PqrFormFieldController',
-                        method: 'store',
                         data: dataField
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("addFormField", response.data);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
                     }
-                })
+                }).done(response => {
+                    if (response.success) {
+                        commit("addFormField", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         updateFormField({ commit }, dataEdit) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
+                    url: `${baseUrl}api/pqr/formField/${dataEdit.id}`,
+                    method: "put",
                     data: {
-                        class: 'PqrFormFieldController',
-                        method: 'update',
-                        data: dataEdit
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("editFormField", response.data);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                        data: dataEdit.dataField
                     }
-                })
+                }).done(response => {
+                    if (response.success) {
+                        commit("editFormField", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         deleteFormField({ commit }, id) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
-                    data: {
-                        class: 'PqrFormFieldController',
-                        method: 'destroy',
-                        data: {
-                            id: id
-                        }
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("delFormField", id);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                    url: `${baseUrl}api/pqr/formField/${id}`,
+                    method: "delete"
+                }).done(response => {
+                    if (response.success) {
+                        commit("delFormField", id);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
                     }
-                })
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         publishForm({ commit }) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
-                    data: {
-                        class: 'PqrFormController',
-                        method: 'publish'
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("setForm", response.data.pqrForm);
-                            commit("setFormFields", response.data.pqrFormFields);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                    url: `${baseUrl}api/pqr/form/publish`
+                }).done(response => {
+                    if (response.success) {
+                        commit("setForm", response.data.pqrForm);
+                        commit("setFormFields", response.data.pqrFormFields);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
                     }
-                })
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         udpateOrderOfFormField({ commit }, fieldOrder) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
+                    url: `${baseUrl}api/pqr/formField/updateOrder`,
+                    method: "put",
                     data: {
-                        class: 'PqrFormFieldController',
-                        method: 'updateOrder',
-                        data: {
-                            params: fieldOrder
-                        }
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                        fieldOrder: fieldOrder
                     }
-                })
+                }).done(response => {
+                    if (response.success) {
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         udpateActiveOfFormField({ commit }, data) {
             return new Promise((resolve, reject) => {
+                let url = data.active ? `api/pqr/formField/${data.id}/active`
+                    : `api/pqr/formField/${data.id}/inactive`;
+
                 $.ajax({
-                    data: {
-                        class: 'PqrFormFieldController',
-                        method: 'updateActive',
-                        data
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("editFormField", response.data);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                    url: `${baseUrl}${url}`,
+                    method: "put"
+                }).done(response => {
+                    if (response.success) {
+                        commit("editFormField", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
                     }
-                })
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         }
     }

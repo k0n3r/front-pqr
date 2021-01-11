@@ -4,8 +4,7 @@ import Vuex from "vuex"
 Vue.use(Vuex)
 
 $.ajaxSetup({
-    url: `${process.env.URL_BACK}app/modules/back_pqr/app/request.php`,
-    method: "post",
+    method: "get",
     dataType: "json",
     data: {
         key: localStorage.getItem('key'),
@@ -15,6 +14,7 @@ $.ajaxSetup({
         console.error(args);
     }
 });
+var baseUrl = localStorage.getItem('baseUrl');
 
 export default new Vuex.Store({
     state: {
@@ -63,157 +63,153 @@ export default new Vuex.Store({
     actions: {
         getDataSetting({ commit }) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
-                    data: {
-                        class: 'PqrFormController',
-                        method: 'getSetting'
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            let data = response.data;
-                            commit("setForm", data.pqrForm);
-                            commit("setFormFields", data.pqrFormFields);
-                            commit("setPqrTypes", data.pqrTypes);
-                            commit("setUrlWs", data.urlWs);
-                            commit("setPublish", data.publish);
-                            commit("setPersonNotifications", data.pqrNotifications)
-                            commit("setOptionsNotyMessages", data.optionsNotyMessages)
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                    url: `${baseUrl}api/pqr/form/setting`,
+                }).done(response => {
+                    if (response.success) {
+                        let data = response.data;
+                        commit("setForm", data.pqrForm);
+                        commit("setFormFields", data.pqrFormFields);
+                        commit("setPqrTypes", data.pqrTypes);
+                        commit("setUrlWs", data.urlWs);
+                        commit("setPublish", data.publish);
+                        commit("setPersonNotifications", data.pqrNotifications)
+                        commit("setOptionsNotyMessages", data.optionsNotyMessages)
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
                     }
-                })
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         updatePqrTypes({ commit }, data) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
+                    url: `${baseUrl}api/pqr/form/updatePqrTypes`,
+                    method: 'put',
                     data: {
-                        class: 'PqrFormController',
-                        method: 'updatePqrTypes',
                         data
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
                     }
-                })
-            });
-        },
-        updateRadEmail({ commit }, data) {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    data: {
-                        class: 'PqrFormController',
-                        method: 'updatePqrForm',
-                        data
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("setForm", response.pqrForm);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                }).done(response => {
+                    if (response.success) {
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
                     }
-                })
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         updateShowReport({ commit }, data) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
-                    data: {
-                        class: 'PqrFormFieldController',
-                        method: 'updateShowReport',
-                        data
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("setFormFields", response.pqrFormFields);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                    url: `${baseUrl}api/pqr/formField/updateShowReport`,
+                    method: 'put',
+                    data
+                }).done(response => {
+                    if (response.success) {
+                        commit("setFormFields", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
                     }
-                })
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         insertNotification({ commit }, data) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
-                    data: {
-                        class: 'PqrNotificationController',
-                        method: 'store',
-                        data
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("addPersonsNotification", response.data);
-                            resolve(response.data.id);
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                    url: `${baseUrl}api/pqr/notification`,
+                    method: 'post',
+                    data
+                }).done(response => {
+                    if (response.success) {
+                        commit("addPersonsNotification", response.data);
+                        resolve(response.data.id);
+                    } else {
+                        console.log(response)
+                        reject();
                     }
-                })
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         updateNotification({ commit }, data) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
+                    url: `${baseUrl}api/pqr/notification/${data.id}`,
+                    method: 'put',
                     data: {
-                        class: 'PqrNotificationController',
-                        method: 'update',
-                        data
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("editPersonsNotification", response.data);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                        data: data.data
                     }
-                })
+                }).done(response => {
+                    if (response.success) {
+                        commit("editPersonsNotification", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         deleteNotification({ commit }, data) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
-                    data: {
-                        class: 'PqrNotificationController',
-                        method: 'destroy',
-                        data
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            commit("delPersonsNotification", data.id);
-                            resolve();
-                        } else {
-                            console.log(response)
-                            reject();
-                        }
+                    url: `${baseUrl}api/pqr/notification/${data.id}`,
+                    method: 'delete',
+                    data
+                }).done(response => {
+                    if (response.success) {
+                        commit("delPersonsNotification", data.id);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
                     }
-                })
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
             });
         },
         updateNotyMessage({ commit }, data) {
             return new Promise((resolve, reject) => {
+
                 $.ajax({
+                    url: `${baseUrl}api/pqr/notyMessage/${data.id}`,
+                    method: 'put',
                     data: {
-                        class: 'PqrNotyMessageController',
-                        method: 'update',
-                        data
-                    },
+                        data: data.data
+                    }
                 }).done(response => {
                     if (response.success) {
                         commit("setOptionsNotyMessages", response.data)
@@ -221,10 +217,11 @@ export default new Vuex.Store({
                     } else {
                         reject(response.message);
                     }
-                }).fail(jqXHR => {
-                    console.error(jqXHR);
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
                     reject();
                 });
+
             })
         }
     }

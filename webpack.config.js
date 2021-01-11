@@ -1,7 +1,6 @@
 const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 const path = require('path');
 
 module.exports = {
@@ -51,7 +50,6 @@ module.exports = {
     },
     plugins: [
         new VueLoaderPlugin(),
-        new Dotenv(),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"

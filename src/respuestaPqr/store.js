@@ -4,8 +4,7 @@ import Vuex from "vuex"
 Vue.use(Vuex)
 
 $.ajaxSetup({
-    url: `${process.env.URL_BACK}app/modules/back_pqr/app/request.php`,
-    method: "post",
+    method: "get",
     dataType: "json",
     data: {
         key: localStorage.getItem('key'),
@@ -15,6 +14,7 @@ $.ajaxSetup({
         console.error(args);
     }
 });
+var baseUrl = localStorage.getItem('baseUrl');
 
 export default new Vuex.Store({
     state: {
@@ -29,10 +29,7 @@ export default new Vuex.Store({
         getFieldOptions({ commit }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    data: {
-                        class: 'PqrFormFieldController',
-                        method: 'getTextFields'
-                    }
+                    url: `${baseUrl}api/pqr/formField/textFields`,
                 }).done(response => {
                     if (response.success) {
                         commit("setFieldOptions", response.data);
@@ -51,10 +48,7 @@ export default new Vuex.Store({
         getFieldValues({ commit }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    data: {
-                        class: 'PqrFormController',
-                        method: 'getResponseConfiguration'
-                    }
+                    url: `${baseUrl}api/pqr/form/responseSetting`,
                 }).done(response => {
                     if (response.success) {
                         resolve(response.data);
@@ -72,14 +66,13 @@ export default new Vuex.Store({
         saveResponseConfiguration({ commit }, data) {
             return new Promise((resolve, reject) => {
                 $.ajax({
+                    url: `${baseUrl}api/pqr/form/updateResponseSetting`,
+                    method: "put",
                     data: {
-                        class: 'PqrFormController',
-                        method: 'updateResponseConfiguration',
                         data: data
                     }
                 }).done(response => {
                     if (response.success) {
-                        commit("setFieldOptions", response.data);
                         resolve();
                     } else {
                         console.log(response)
