@@ -112,16 +112,14 @@ include_once $rootPath . 'views/assets/librerias.php';
                     multiple: false,
                     ajax: {
                         delay: 400,
-                        url: `${baseUrl}app/modules/back_pqr/app/request.php`,
+                        url: `${baseUrl}api/pqr/components/autocomplete/find`,
                         dataType: 'json',
                         data: function(p) {
                             var query = {
                                 key: localStorage.getItem('key'),
                                 token: localStorage.getItem('token'),
-                                class: 'PqrFormFieldController',
-                                method: 'getList',
+                                type: 'pais',
                                 data: {
-                                    type: 'pais',
                                     term: p.term
                                 }
                             };

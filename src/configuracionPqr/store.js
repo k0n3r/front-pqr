@@ -115,7 +115,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/formField/updateShowReport`,
+                    url: `${baseUrl}api/pqr/form/updateShowReport`,
                     method: 'put',
                     data
                 }).done(response => {

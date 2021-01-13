@@ -1,47 +1,58 @@
 //evento ejecutado en el adicionar
 function add(data) {
-  console.log(data);
-  $.post(
-    `${data.baseUrl}app/modules/back_pqr/app/request.php`,
-    {
-      class: 'FtPqrRespuestaController',
-      method: 'loadField',
+  console.log(data.padre);
+
+  $.ajax({
+    method: 'post',
+    url: `${data.baseUrl}app/formato/consulta_ft_padre.php`,
+    data: {
       key: localStorage.getItem('key'),
       token: localStorage.getItem('token'),
-      data: {
-        iddocPadre: data.padre
-      }
-    },
-    function (response) {
-      if (response.success) {
-        let data = response.data;
+      padre: data.padre
+    }
+  }).done(response => {
 
-        if (typeof data.destino === 'object') {
-          $("#destino").select2('close');
-          let option = new Option(data.destino.text, data.destino.id, true, true);
-          $("#destino").append(option).trigger('change');
+    $.get(
+      `${data.baseUrl}api/pqr/${response.data.parentFtId}/dataToLoadResponse`,
+      {
+        key: localStorage.getItem('key'),
+        token: localStorage.getItem('token')
+      },
+      function (response) {
+        if (response.success) {
+          let data = response.data;
+
+          if (typeof data.destino === 'object') {
+            $("#destino").select2('close');
+            let option = new Option(data.destino.text, data.destino.id, true, true);
+            $("#destino").append(option).trigger('change');
+          }
+
+          if (data.tipo_distribucion) {
+            $("#tipo_distribucion").val(data.tipo_distribucion)
+              .trigger('change');
+          }
+
+          if (data.despedida) {
+            $("#despedida").val(data.despedida)
+              .trigger('change');
+          }
+
+          if (data.asunto) {
+            $("#asunto").val(data.asunto);
+          }
+
+        } else {
+          console.error(response)
         }
+      },
+      'json'
+    );
 
-        if (data.tipo_distribucion) {
-          $("#tipo_distribucion").val(data.tipo_distribucion)
-            .trigger('change');
-        }
-
-        if (data.despedida) {
-          $("#despedida").val(data.despedida)
-            .trigger('change');
-        }
-
-        if (data.asunto) {
-          $("#asunto").val(data.asunto);
-        }
-
-      } else {
-        console.error(response)
-      }
-    },
-    'json'
-  );
+  }).fail((jqXHR) => {
+    console.error(jqXHR)
+    reject();
+  });
 
   addEdit(data);
 }

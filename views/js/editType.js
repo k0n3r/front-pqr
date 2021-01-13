@@ -14,7 +14,7 @@ $(function () {
 
     $.ajax({
         type: 'get',
-        url: `${baseUrl}api/pqr/components/dataForEditTypes`,
+        url: `${baseUrl}api/pqr/structure/dataModalViewEditType`,
         data: {
             key: localStorage.getItem('key'),
             token: localStorage.getItem('token')

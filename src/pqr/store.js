@@ -53,7 +53,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/components/allData`,
+                    url: `${baseUrl}api/pqr/structure/dataViewIndex`,
                 }).done(response => {
                     if (response.success) {
                         let data = response.data;
@@ -195,7 +195,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/formField/updateOrder`,
+                    url: `${baseUrl}api/pqr/form/sortFields`,
                     method: "put",
                     data: {
                         fieldOrder: fieldOrder

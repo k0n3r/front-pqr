@@ -1,6 +1,9 @@
 <template>
-  <div class="form-group form-group-default form-group-default-select2" :class="isRequired">
-    <label>{{dataParams.label}}</label>
+  <div
+    class="form-group form-group-default form-group-default-select2"
+    :class="isRequired"
+  >
+    <label>{{ dataParams.label }}</label>
     <select
       class="full-width select2-hidden-accessible"
       :class="isRequired"
@@ -19,8 +22,8 @@ export default {
   props: {
     dataParams: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   mounted() {
     let baseUrl = localStorage.getItem("baseUrl");
@@ -32,23 +35,23 @@ export default {
       multiple: false,
       ajax: {
         delay: 400,
-        url: `${baseUrl}api/pqr/components/listForField`,
+        url: `${baseUrl}api/pqr/components/autocomplete/list`,
         dataType: "json",
-        data: function(p) {
+        data: function (p) {
           var query = {
             key: localStorage.getItem("key"),
             token: localStorage.getItem("token"),
+            name: _this.dataParams.name,
             data: {
-              name: _this.dataParams.name,
-              term: p.term
-            }
+              term: p.term,
+            },
           };
           return query;
-        }
-      }
+        },
+      },
     };
 
     $("#" + this.dataParams.name).select2(options);
-  }
+  },
 };
 </script>

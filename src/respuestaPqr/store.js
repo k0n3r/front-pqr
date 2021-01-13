@@ -29,7 +29,7 @@ export default new Vuex.Store({
         getFieldOptions({ commit }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: `${baseUrl}api/pqr/formField/textFields`,
+                    url: `${baseUrl}api/pqr/form/textFields`,
                 }).done(response => {
                     if (response.success) {
                         commit("setFieldOptions", response.data);

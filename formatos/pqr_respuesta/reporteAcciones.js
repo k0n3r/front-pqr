@@ -38,16 +38,11 @@ $(function () {
                         );
 
                         $.ajax({
-                            type: 'POST',
-                            url: `${baseUrl}app/modules/back_pqr/app/request.php`,
+                            method: 'get',
+                            url: `${baseUrl}api/pqr/answers/${idft}/requestSurveyByEmail`,
                             data: {
                                 key: localStorage.getItem('key'),
-                                token: localStorage.getItem('token'),
-                                class: 'FtPqrRespuestaController',
-                                method: 'requestSurveyByEmail',
-                                data: {
-                                    idft: idft
-                                }
+                                token: localStorage.getItem('token')
                             },
                             dataType: 'json',
                             success: function (response) {
