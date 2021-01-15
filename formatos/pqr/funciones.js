@@ -28,14 +28,14 @@ function addEdit(data) {
       multiple: false,
       ajax: {
         delay: 400,
-        url: `${baseUrl}api/pqr/components/listForField`,
+        url: `${baseUrl}api/pqr/components/autocomplete/list`,
         dataType: "json",
         data: function (p) {
           var query = {
             key: localStorage.getItem("key"),
             token: localStorage.getItem("token"),
+            name: element.id,
             data: {
-              name: element.id,
               term: p.term
             }
           };

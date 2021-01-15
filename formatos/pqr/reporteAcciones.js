@@ -192,7 +192,7 @@ $(function () {
             key: localStorage.getItem('key'),
             token: localStorage.getItem('token'),
             formatName: "pqr_respuesta",
-            padre: documentId
+            anterior: documentId
         },
             function (response) {
                 if (response.success) {

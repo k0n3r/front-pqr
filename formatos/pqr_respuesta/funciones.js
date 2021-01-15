@@ -1,17 +1,15 @@
 //evento ejecutado en el adicionar
 function add(data) {
-  console.log(data.padre);
-
   $.ajax({
     method: 'post',
+    dataType: 'json',
     url: `${data.baseUrl}app/formato/consulta_ft_padre.php`,
     data: {
       key: localStorage.getItem('key'),
       token: localStorage.getItem('token'),
-      padre: data.padre
+      documentId: data.anterior
     }
   }).done(response => {
-
     $.get(
       `${data.baseUrl}api/pqr/${response.data.parentFtId}/dataToLoadResponse`,
       {
