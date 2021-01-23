@@ -6,7 +6,7 @@ $(function () {
         createPicker();
 
         $.get(`${baseUrl}views/modules/pqr/formatos/pqr/buscar.php`, function (html) {
-            let res = html.replace(/d\./g, "v.");
+            let res = (html.replace(/d\./g, "v.")).replace(/_ft@/g, "_v@");
             $("#morefields").empty().append(res);
         });
     })();
@@ -25,12 +25,14 @@ $(function () {
             .clear();
     });
 
-    let request = $('#find_document_form').serialize() + "&" + $.param({
-        key: localStorage.getItem('key'),
-        token: localStorage.getItem('token'),
-    });
-
     $('#btn_success').on('click', function () {
+
+        let request = $('#find_document_form').serialize() + "&" + $.param({
+            key: localStorage.getItem('key'),
+            token: localStorage.getItem('token'),
+        });
+
+
         $.post(`${baseUrl}app/busquedas/procesa_filtro_busqueda.php`,
             request,
             function (data) {
