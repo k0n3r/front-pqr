@@ -5,3 +5,9 @@ formatos/*/adicionar.php
 formatos/*/editar.php
 formatos/*/mostrar.php
 formatos/*/buscar.php
+
+formatos/*/add.js
+formatos/*/adicionar.html
+formatos/*/buscar.html
+formatos/*/edit.js
+formatos/*/editar.html
