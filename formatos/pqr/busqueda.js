@@ -5,7 +5,7 @@ $(function () {
         $('#filtro_fecha').select2();
         createPicker();
 
-        $.get(`${baseUrl}views/modules/pqr/formatos/pqr/buscar.php`, function (html) {
+        $.get(`${baseUrl}views/modules/pqr/formatos/pqr/buscar.html`, function (html) {
             let res = (html.replace(/d\./g, "v.")).replace(/_ft@/g, "_v@");
             $("#morefields").empty().append(res);
         });

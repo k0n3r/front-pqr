@@ -49,14 +49,13 @@ function add(data) {
 function edit(data) {
     top.notification({
         type: 'error',
-        message: 'El documento ya se encuentra radicado, NO se puede editar'
+        message: 'No se permite editar el documento'
     });
     window.history.back();
 }
 
 //evento ejecutado en el mostrar
 function show(data) {
-    let baseUrl = window.getBaseUrl();
 }
 
 //evento ejecutado anterior al adicionar
