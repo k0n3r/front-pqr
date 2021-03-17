@@ -4,7 +4,8 @@ $(function () {
     $(document).on('click', '.addTask', function () {
         let paramsTarea = {
             className: 'App\\Bundles\\pqr\\Services\\controllers\\TaskEvents',
-            documentId: $(this).data('id'),
+            relationId: $(this).data('id'),
+            relation: 1,
             modalName: 'tarea'
         };
         let iframe = $('<iframe>', {
@@ -74,8 +75,8 @@ $(function () {
                     '<button><b>SI</b></button>',
                     function (instance, toast) {
                         instance.hide({
-                            transitionOut: 'fadeOut'
-                        },
+                                transitionOut: 'fadeOut'
+                            },
                             toast,
                             'button'
                         );
@@ -113,8 +114,8 @@ $(function () {
                     '<button>NO</button>',
                     function (instance, toast) {
                         instance.hide({
-                            transitionOut: 'fadeOut'
-                        },
+                                transitionOut: 'fadeOut'
+                            },
                             toast,
                             'button'
                         );
@@ -189,11 +190,11 @@ $(function () {
     function answerPqr(documentId) {
         $.post(
             `${baseUrl}app/formato/consulta_rutas.php`, {
-            key: localStorage.getItem('key'),
-            token: localStorage.getItem('token'),
-            formatName: "pqr_respuesta",
-            anterior: documentId
-        },
+                key: localStorage.getItem('key'),
+                token: localStorage.getItem('token'),
+                formatName: "pqr_respuesta",
+                anterior: documentId
+            },
             function (response) {
                 if (response.success) {
                     let route = baseUrl + response.data.ruta_adicionar;
