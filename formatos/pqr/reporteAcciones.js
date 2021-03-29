@@ -3,7 +3,6 @@ $(function () {
 
     $(document).on('click', '.addTask', function () {
         let paramsTarea = {
-            className: 'App\\Bundles\\pqr\\Services\\controllers\\TaskEvents',
             relationId: $(this).data('id'),
             relation: 1,
             modalName: 'tarea'
@@ -182,18 +181,18 @@ $(function () {
 
 
     $(document).on('click', '.answer', function () {
-        let documentId = $(this).data('id');
-        answerPqr(documentId);
+        let idft = $(this).data('idft');
+        answerPqr(idft);
     });
 
 
-    function answerPqr(documentId) {
+    function answerPqr(idft) {
         $.post(
             `${baseUrl}app/formato/consulta_rutas.php`, {
                 key: localStorage.getItem('key'),
                 token: localStorage.getItem('token'),
                 formatName: "pqr_respuesta",
-                anterior: documentId
+                padre: idft
             },
             function (response) {
                 if (response.success) {
