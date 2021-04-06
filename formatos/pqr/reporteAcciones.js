@@ -82,12 +82,10 @@ $(function () {
 
                         $.ajax({
                             type: 'POST',
-                            url: `${baseUrl}app/documento/anular.php`,
+                            url: `${baseUrl}api/document/${iddocumento}/cancel`,
                             data: {
                                 key: localStorage.getItem('key'),
-                                token: localStorage.getItem('token'),
-                                documentId: iddocumento,
-                                observation: 'Se anula la PQR'
+                                token: localStorage.getItem('token')
                             },
                             dataType: 'json',
                             success: function (response) {
