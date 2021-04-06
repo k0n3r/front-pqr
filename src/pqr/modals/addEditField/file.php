@@ -25,7 +25,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                 </div>
 
                 <div class="form-group form-group-default">
-                    <label>CANTIDAD MAXIMA A PERMIR</label>
+                    <label>CANTIDAD MÁXIMA A PERMITIR</label>
                     <input class="form-control" type="number" name="numberFiles" min="1" max="10" v-model="form.numberFiles" data-rule-number="true" maxlength="2" />
                 </div>
 
