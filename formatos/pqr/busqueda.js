@@ -25,7 +25,7 @@ $(function () {
             .clear();
     });
 
-    $('#btn_success').on('click', function () {
+    $('#btn_success').off('click', '#btn_success').on('click', function () {
 
         let request = $('#find_document_form').serialize() + "&" + $.param({
             key: localStorage.getItem('key'),

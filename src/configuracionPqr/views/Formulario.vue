@@ -339,15 +339,14 @@ export default {
         multiple: false,
         ajax: {
           delay: 400,
-          url: `${baseUrl}app/funcionario/autocompletar.php`,
+          url: `${baseUrl}api/user/0/autocomplete`,
           dataType: "json",
           data: function (params) {
-            var query = {
+            return {
               key: localStorage.getItem("key"),
               token: localStorage.getItem("token"),
               term: params.term,
             };
-            return query;
           },
           processResults: function (response) {
             return response.success ? { results: response.data } : {};
