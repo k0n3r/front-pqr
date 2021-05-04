@@ -26,7 +26,8 @@ include_once $rootPath . 'views/assets/librerias.php';
 
                 <div class="form-group form-group-default">
                     <label>URL CONDICIONES DE USO Y POLÍTICAS DE PRIVACIDAD</label>
-                    <input class="form-control" type="url" id="url" placeholder="http://example.com" v-model.trim="form.url" maxlength="250" />
+                    <input class="form-control" type="url" id="url" placeholder="http://example.com"
+                           v-model.trim="form.url" maxlength="250"/>
                 </div>
 
                 <div class="float-right">
@@ -47,7 +48,7 @@ include_once $rootPath . 'views/assets/librerias.php';
 <script src="../../views/modules/pqr/src/pqr/modals/addEditField/js/mixin.js"></script>
 
 <script>
-    $(function() {
+    $(function () {
         const dataParams = top.window.dataModal;
 
         new Vue({
@@ -97,6 +98,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                         label: 'Tratamiento de datos',
                         fk_pqr_html_field: this.dataParams.fk_pqr_html_field,
                         required: 1,
+                        anonymous: 1,
                         setting: {
                             tratamiento: this.form.text,
                             url: this.form.url
