@@ -1,12 +1,14 @@
 var baseUrl = localStorage.getItem('baseUrl');
+var key = localStorage.getItem('key');
+var token = localStorage.getItem('token');
 
 function add(data) {
     let idft = $("[name='ft_pqr']").val();
     $.get(
         `${baseUrl}api/pqr/${idft}/dataToLoadResponse`,
         {
-            key: localStorage.getItem('key'),
-            token: localStorage.getItem('token')
+            key,
+            token
         },
         function (response) {
             if (response.success) {
@@ -43,13 +45,26 @@ function add(data) {
 }
 
 function edit(data) {
-    if (data.numero) {
-        top.notification({
-            type: 'error',
-            message: 'El documento ya se encuentra radicado, NO se puede editar'
-        });
-        window.history.back();
-    }
+
+    $.ajax({
+        method: 'get',
+        dataType: 'json',
+        url: `${baseUrl}api/document/${data.documento_iddocumento}`,
+        async: false,
+        data: {
+            key,
+            token,
+            getAttributes: 1
+        }
+    }).done(response => {
+        if (+response.numero) {
+            top.notification({
+                type: 'error',
+                message: 'El documento ya se encuentra radicado, NO se puede editar'
+            });
+            window.history.back();
+        }
+    });
     addEdit(data);
 }
 
@@ -65,8 +80,8 @@ function addEdit(data) {
             data: function (params) {
                 return {
                     term: params.term,
-                    key: localStorage.getItem('key'),
-                    token: localStorage.getItem('token')
+                    key,
+                    token
                 };
             },
             processResults: function (response) {
@@ -95,12 +110,15 @@ function addEdit(data) {
     $("#tipo_distribucion").on('select2:select', function (e) {
         let key = e.params.data.element.dataset.key;
         if (+key == 4) {//Enviar por email
-            $("#group_sol_encuesta").show();
-            $("#sol_encuesta").val(1);
+            $("#group_sol_encuesta").removeClass('d-none');
         } else {
-            $("#sol_encuesta").val(0);
-            $("#group_sol_encuesta").hide();
+            $("#group_sol_encuesta").addClass('d-none');
         }
+    });
+
+    $('#sol_encuesta1').change(function () {
+        let val = $(this).is(':checked') ? 1 : 0;
+        $('#sol_encuesta').val(val);
     });
 
 }
