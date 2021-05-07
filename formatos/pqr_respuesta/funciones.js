@@ -1,14 +1,10 @@
-var baseUrl = localStorage.getItem('baseUrl');
-var key = localStorage.getItem('key');
-var token = localStorage.getItem('token');
-
 function add(data) {
     let idft = $("[name='ft_pqr']").val();
     $.get(
-        `${baseUrl}api/pqr/${idft}/dataToLoadResponse`,
+        `/api/pqr/${idft}/dataToLoadResponse`,
         {
-            key,
-            token
+            key: localStorage.getItem('key'),
+            token: localStorage.getItem('token')
         },
         function (response) {
             if (response.success) {
@@ -49,11 +45,11 @@ function edit(data) {
     $.ajax({
         method: 'get',
         dataType: 'json',
-        url: `${baseUrl}api/document/${data.documento_iddocumento}`,
+        url: `/api/document/${data.documento_iddocumento}`,
         async: false,
         data: {
-            key,
-            token,
+            key: localStorage.getItem('key'),
+            token: localStorage.getItem('token'),
             getAttributes: 1
         }
     }).done(response => {
@@ -76,12 +72,12 @@ function addEdit(data) {
         ajax: {
             type: 'POST',
             dataType: 'json',
-            url: `${baseUrl}app/configuracion/autocompletar_municipios.php`,
+            url: `/app/configuracion/autocompletar_municipios.php`,
             data: function (params) {
                 return {
                     term: params.term,
-                    key,
-                    token
+                    key: localStorage.getItem('key'),
+                    token: localStorage.getItem('token')
                 };
             },
             processResults: function (response) {
