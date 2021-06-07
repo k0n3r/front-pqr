@@ -9,41 +9,63 @@
             </div>
           </div>
           <div class="card-body">
+            <p>
+              Seleccione el campo :
+              <select v-model="responseTimeField" id="responseTimeField">
+                <option
+                    v-for="(option, index) in responseTimeOptions"
+                    :key="index"
+                    :value="option.id"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+
+              <select v-model="valresponseTimeField"
+                      id="valresponseTimeField" v-if="valresponseTimeField>0">
+                <option
+                    v-for="(option, index) in optionsResponseTimeField"
+                    :key="index"
+                    :value="option.id"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+            </p>
             <table class="table">
               <thead class="thead-light text-center">
-                <tr>
-                  <th scope="col">Tipo</th>
-                  <th scope="col">Días</th>
-                </tr>
+              <tr>
+                <th scope="col">Tipo</th>
+                <th scope="col">Días</th>
+              </tr>
               </thead>
               <tbody id="sortable">
-                <template v-for="(type, index) in pqrTypes">
-                  <tr
+              <template v-for="(type, index) in pqrTypes">
+                <tr
                     :key="index"
                     class="sortable"
-                    :data-id="index"
-                    :data-text="type.text"
+                    :data-id="type.id"
                     style="cursor: move"
-                  >
-                    <td scope="row">{{ type.text }}</td>
-                    <td class="text-center">
-                      <input
+                >
+                  <td scope="row">{{ type.text }}</td>
+                  <td class="text-center">
+                    <input
                         class="form-group"
-                        :id="'type_' + index"
+                        :id="'type_' + type.id"
                         min="1"
                         type="number"
                         :value="type.dias"
-                      />
-                    </td>
-                  </tr>
-                </template>
+                    />
+                  </td>
+                </tr>
+              </template>
               </tbody>
             </table>
             <div class="form-group float-md-left float-lg-right mt-2">
               <button
-                type="button"
-                class="btn btn-complete"
-                @click="saveChange"
+                  type="button"
+                  class="btn btn-complete"
+                  @click="saveChange"
               >
                 Guardar
               </button>
@@ -56,44 +78,44 @@
             <div class="card-title">
               CAMPOS A MOSTRAR EN EL REPORTE
               <span class="text-danger" v-show="!+form.fk_formato"
-                >PRIMERO DEBE PUBLICAR EL FORMULARIO</span
+              >PRIMERO DEBE PUBLICAR EL FORMULARIO</span
               >
             </div>
           </div>
           <div class="card-body">
             <table class="table">
               <thead class="thead-light text-center">
-                <tr>
-                  <th scope="col">ETIQUETA</th>
-                  <th scope="col">MOSTRAR</th>
-                </tr>
+              <tr>
+                <th scope="col">ETIQUETA</th>
+                <th scope="col">MOSTRAR</th>
+              </tr>
               </thead>
               <tbody>
-                <template v-for="field in formFields">
-                  <tr :key="field.id" v-if="showField(field)">
-                    <td scope="row" class="text-uppercase">
-                      {{ field.label }}
-                    </td>
-                    <td class="text-center">
-                      <div class="checkbox check-success">
-                        <input
+              <template v-for="field in formFields">
+                <tr :key="field.id" v-if="showField(field)">
+                  <td scope="row" class="text-uppercase">
+                    {{ field.label }}
+                  </td>
+                  <td class="text-center">
+                    <div class="checkbox check-success">
+                      <input
                           type="checkbox"
                           :value="field.id"
                           v-model="showReport"
                           :id="'check_' + field.id"
-                        />
-                        <label :for="'check_' + field.id"></label>
-                      </div>
-                    </td>
-                  </tr>
-                </template>
+                      />
+                      <label :for="'check_' + field.id"></label>
+                    </div>
+                  </td>
+                </tr>
+              </template>
               </tbody>
             </table>
             <div class="form-group float-md-left float-lg-right mt-2">
               <button
-                type="button"
-                class="btn btn-complete"
-                @click="editShowReport"
+                  type="button"
+                  class="btn btn-complete"
+                  @click="editShowReport"
               >
                 Guardar
               </button>
@@ -111,52 +133,52 @@
             <div class="form-group">
               <label>FUNCIONARIOS</label>
               <select
-                class="full-width select2-hidden-accessible"
-                id="person"
+                  class="full-width select2-hidden-accessible"
+                  id="person"
               ></select>
             </div>
 
             <table class="table" v-show="personsNotifications.length">
               <thead class="thead-light text-center">
-                <tr>
-                  <th scope="col">FUNCIONARIO</th>
-                  <th scope="col">NOTIFICACIÓN Y TRANSFERENCIA</th>
-                  <th scope="col">E-MAIL</th>
-                </tr>
+              <tr>
+                <th scope="col">FUNCIONARIO</th>
+                <th scope="col">NOTIFICACIÓN Y TRANSFERENCIA</th>
+                <th scope="col">E-MAIL</th>
+              </tr>
               </thead>
               <tbody>
-                <template v-for="notification in personsNotifications">
-                  <tr :key="notification.id">
-                    <td scope="row" class="text-uppercase">
-                      {{ notification.fk_funcionario.text }}
-                    </td>
-                    <td class="text-center">
-                      <div class="checkbox check-success">
-                        <input
+              <template v-for="notification in personsNotifications">
+                <tr :key="notification.id">
+                  <td scope="row" class="text-uppercase">
+                    {{ notification.fk_funcionario.text }}
+                  </td>
+                  <td class="text-center">
+                    <div class="checkbox check-success">
+                      <input
                           type="checkbox"
                           :value="notification.id"
                           v-model="notify"
                           @input="isCheckNotify($event, notification.id)"
                           :id="'checkNotify_' + notification.id"
-                        />
-                        <label :for="'checkNotify_' + notification.id"></label>
-                      </div>
-                    </td>
+                      />
+                      <label :for="'checkNotify_' + notification.id"></label>
+                    </div>
+                  </td>
 
-                    <td class="text-center">
-                      <div class="checkbox check-success">
-                        <input
+                  <td class="text-center">
+                    <div class="checkbox check-success">
+                      <input
                           type="checkbox"
                           :value="notification.id"
                           v-model="notifyEmail"
                           @change="isCheckNotifyEmail($event, notification.id)"
                           :id="'checkEmail_' + notification.id"
-                        />
-                        <label :for="'checkEmail_' + notification.id"></label>
-                      </div>
-                    </td>
-                  </tr>
-                </template>
+                      />
+                      <label :for="'checkEmail_' + notification.id"></label>
+                    </div>
+                  </td>
+                </tr>
+              </template>
               </tbody>
             </table>
           </div>
@@ -175,9 +197,9 @@
                   <a href="#" @click="openModal">(clic ayuda)</a>
                   <select v-model="noty_message" class="full-width">
                     <option
-                      v-for="(option, index) in optionsNotyMessages"
-                      :key="index"
-                      :value="option.value"
+                        v-for="(option, index) in optionsNotyMessages"
+                        :key="index"
+                        :value="option.value"
                     >
                       {{ option.text }}
                     </option>
@@ -190,20 +212,20 @@
                   <div class="form-group">
                     <label>ASUNTO:</label>
                     <input
-                      name="subject"
-                      placeholder="Ingrese el asunto del e-mail"
-                      type="email"
-                      maxlength="250"
-                      class="form-control required"
-                      v-model="noty_message.subject"
+                        name="subject"
+                        placeholder="Ingrese el asunto del e-mail"
+                        type="email"
+                        maxlength="250"
+                        class="form-control required"
+                        v-model="noty_message.subject"
                     />
                   </div>
                   <div class="form-group">
                     <label>CUERPO DEL E-MAIL:</label>
                     <textarea
-                      name="message_body"
-                      class="form-control required"
-                      v-model="noty_message.message_body"
+                        name="message_body"
+                        class="form-control required"
+                        v-model="noty_message.message_body"
                     ></textarea>
                   </div>
                 </template>
@@ -211,22 +233,22 @@
                   <div class="form-group">
                     <label>MENSAJE:</label>
                     <textarea
-                      name="message_body"
-                      class="form-control required"
-                      v-model="noty_message.message_body"
+                        name="message_body"
+                        class="form-control required"
+                        v-model="noty_message.message_body"
                     ></textarea>
                   </div>
                 </template>
               </div>
             </div>
             <div
-              v-if="noty_message.id"
-              class="form-group float-md-left float-lg-right mt-2"
+                v-if="noty_message.id"
+                class="form-group float-md-left float-lg-right mt-2"
             >
               <button
-                type="button"
-                class="btn btn-complete"
-                @click="saveNotyMessage"
+                  type="button"
+                  class="btn btn-complete"
+                  @click="saveNotyMessage"
               >
                 Guardar
               </button>
@@ -245,7 +267,7 @@
                 <p>
                   Enlace directo al formulario :
                   <a :href="urlWs" target="_blank" v-show="+publish"
-                    >Formulario</a
+                  >Formulario</a
                   >
                 </p>
                 <code>{{ getUrl }}</code>
@@ -278,7 +300,8 @@ import "topViews/node_modules/select2/dist/js/select2.min.js";
 import "topViews/node_modules/select2/dist/js/i18n/es.js";
 import "topViews/node_modules/select2/dist/css/select2.min.css";
 
-import { mapState, mapActions } from "vuex";
+import {mapState, mapActions} from "vuex";
+
 export default {
   name: "Formulario",
   data() {
@@ -293,75 +316,99 @@ export default {
         message_body: "",
         type: 1,
       },
+      responseTimeField: 0,
+      valresponseTimeField: 0,
+      optionsResponseTimeField: []
     };
+  },
+  watch: {
+    responseTimeField(val) {
+      let index = this.responseTimeOptions.findIndex(i => i.id == val);
+      this.optionsResponseTimeField = this.responseTimeOptions[index].options;
+      if (this.optionsResponseTimeField.length) {
+        this.valresponseTimeField = this.optionsResponseTimeField[0].id;
+      } else {
+        this.valresponseTimeField = -1;
+      }
+    },
+    valresponseTimeField(val) {
+      this.refreshPqrTypes(val).catch(() => {
+        top.notification({
+          type: "error",
+          message: "No fue posible obtener los dias",
+        });
+      });
+    }
   },
   created() {
     this.getDataSetting()
-      .then(() => {
-        let idsShowReport = new Array();
-        this.formFields.forEach((row) => {
-          if (+row.show_report) {
-            idsShowReport.push(row.id);
-          }
-        });
-        this.showReport = idsShowReport;
+        .then(() => {
+          let idsShowReport = [];
+          this.formFields.forEach((row) => {
+            if (+row.show_report) {
+              idsShowReport.push(row.id);
+            }
+          });
+          this.showReport = idsShowReport;
 
-        let idsNotify = new Array();
-        let idsNotifyEmail = new Array();
-        this.personsNotifications.forEach((row) => {
-          if (+row.email) {
-            idsNotifyEmail.push(row.id);
-          }
-          if (+row.notify) {
-            idsNotify.push(row.id);
-          }
+          let idsNotify = [];
+          let idsNotifyEmail = [];
+          this.personsNotifications.forEach((row) => {
+            if (+row.email) {
+              idsNotifyEmail.push(row.id);
+            }
+            if (+row.notify) {
+              idsNotify.push(row.id);
+            }
+          });
+          this.notifyEmail = idsNotifyEmail;
+          this.notify = idsNotify;
+          this.responseTimeField = this.form.fk_field_time;
+          this.valresponseTimeField = -1;
+        })
+        .catch(() => {
+          top.notification({
+            type: "error",
+            message: "No fue posible obtener los datos",
+          });
         });
-        this.notifyEmail = idsNotifyEmail;
-        this.notify = idsNotify;
-      })
-      .catch(() => {
-        top.notification({
-          type: "error",
-          message: "No fue posible obtener los datos",
-        });
-      });
   },
   mounted() {
     let _this = this;
-    var baseUrl = localStorage.getItem("baseUrl");
+    let baseUrl = localStorage.getItem("baseUrl");
     $("#sortable").sortable();
 
     $("#person")
-      .select2({
-        placeholder: "Ingrese el nombre del funcionario",
-        language: "es",
-        minimumInputLength: 3,
-        multiple: false,
-        ajax: {
-          delay: 400,
-          url: `${baseUrl}api/user/0/autocomplete`,
-          dataType: "json",
-          data: function (params) {
-            return {
-              key: localStorage.getItem("key"),
-              token: localStorage.getItem("token"),
-              term: params.term,
-            };
+        .select2({
+          placeholder: "Ingrese el nombre del funcionario",
+          language: "es",
+          minimumInputLength: 3,
+          multiple: false,
+          ajax: {
+            delay: 400,
+            url: `${baseUrl}api/user/0/autocomplete`,
+            dataType: "json",
+            data: function (params) {
+              return {
+                key: localStorage.getItem("key"),
+                token: localStorage.getItem("token"),
+                term: params.term,
+              };
+            },
+            processResults: function (response) {
+              return response.success ? {results: response.data} : {};
+            },
           },
-          processResults: function (response) {
-            return response.success ? { results: response.data } : {};
-          },
-        },
-      })
-      .on("select2:selecting", function (e) {
-        $("#person").val(null).trigger("change");
-      })
-      .on("change", function (e) {
-        let element = $(e.currentTarget);
-        if (+element.val()) {
-          _this.addNotification(element.val());
-        }
-      });
+        })
+        .on("select2:selecting", function (e) {
+          $("#person").val(null).trigger("change");
+        })
+        .on("change", function (e) {
+          let element = $(e.currentTarget);
+          if (+element.val()) {
+            _this.addNotification(element.val());
+          }
+        });
   },
   computed: {
     ...mapState([
@@ -372,14 +419,15 @@ export default {
       "formFields",
       "personsNotifications",
       "optionsNotyMessages",
+      "responseTimeOptions"
     ]),
     getContentIframe() {
       let iframe = "EL FORMULARIO NO HA SIDO PUBLICADO";
       if (+this.publish) {
         iframe =
-          '<iframe src="' +
-          this.urlWs +
-          '" style="border:none;width:100%;height:500px;"></iframe>';
+            '<iframe src="' +
+            this.urlWs +
+            '" style="border:none;width:100%;height:500px;"></iframe>';
       }
       return iframe;
     },
@@ -393,6 +441,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      "refreshPqrTypes",
       "getDataSetting",
       "updatePqrTypes",
       "updateShowReport",
@@ -416,20 +465,21 @@ export default {
         },
       };
       this.updateNotyMessage(data)
-        .then(() => {
-          top.notification({
-            type: "success",
-            message: "Notificación/Mensage actualizado!",
+          .then(() => {
+            top.notification({
+              type: "success",
+              message: "Notificación/Mensage actualizado!",
+            });
+          })
+          .catch(() => {
+            top.notification({
+              type: "error",
+              message: "No fue posible guardar los cambios",
+            });
           });
-        })
-        .catch(() => {
-          top.notification({
-            type: "error",
-            message: "No fue posible guardar los cambios",
-          });
-        });
     },
     saveChange() {
+      let _this=this;
       let types = [];
       $(".sortable").each(function (index, element) {
         let idtype = element.attributes["data-id"].value;
@@ -438,37 +488,38 @@ export default {
           $("#type_" + idtype).val(1);
         }
         types.push({
-          text: element.attributes["data-text"].value,
+          id: idtype,
           dias: +$("#type_" + idtype).val(),
         });
       });
       let data = {
+        fk_field_time: _this.responseTimeField,
         options: types,
       };
 
       this.updatePqrTypes(data)
-        .then(() => {
-          top.notification({
-            type: "success",
-            message: "Cambios actualizados",
+          .then(() => {
+            top.notification({
+              type: "success",
+              message: "Cambios actualizados",
+            });
+          })
+          .catch(() => {
+            top.notification({
+              type: "error",
+              message: "No fue posible guardar los cambios",
+            });
           });
-        })
-        .catch(() => {
-          top.notification({
-            type: "error",
-            message: "No fue posible guardar los cambios",
-          });
-        });
     },
     showField(field) {
       return !(
-        field.name == "sys_tratamiento" ||
-        field.name == "sys_tipo" ||
-        field.fk_pqr_html_field.type == "file" ||
-        +field.fk_campos_formato == 0 ||
-        (+field.active == 0 &&
-          field.name != "sys_subtipo" &&
-          field.name != "sys_dependencia")
+          field.name == "sys_tratamiento" ||
+          field.name == "sys_tipo" ||
+          field.fk_pqr_html_field.type == "file" ||
+          +field.fk_campos_formato == 0 ||
+          (+field.active == 0 &&
+              field.name != "sys_subtipo" &&
+              field.name != "sys_dependencia")
       );
     },
     isCheckNotify(e, id) {
@@ -525,18 +576,18 @@ export default {
       };
 
       this.updateShowReport(data)
-        .then(() => {
-          top.notification({
-            type: "success",
-            message: "Datos actualizados",
+          .then(() => {
+            top.notification({
+              type: "success",
+              message: "Datos actualizados",
+            });
+          })
+          .catch(() => {
+            top.notification({
+              type: "error",
+              message: "No fue posible guardar los cambios",
+            });
           });
-        })
-        .catch(() => {
-          top.notification({
-            type: "error",
-            message: "No fue posible guardar los cambios",
-          });
-        });
     },
     addNotification(id) {
       let index = this.personsNotifications.findIndex((i) => i.id == id);
@@ -554,15 +605,15 @@ export default {
       };
 
       this.insertNotification(data)
-        .then((id) => {
-          this.notify.push(id);
-        })
-        .catch(() => {
-          top.notification({
-            type: "error",
-            message: "No fue posible agregar al funcionario",
+          .then((id) => {
+            this.notify.push(id);
+          })
+          .catch(() => {
+            top.notification({
+              type: "error",
+              message: "No fue posible agregar al funcionario",
+            });
           });
-        });
     },
     editNotification(data) {
       this.updateNotification(data).catch(() => {

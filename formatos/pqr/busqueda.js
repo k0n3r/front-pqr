@@ -36,7 +36,7 @@ $(function () {
         $.post(`${baseUrl}app/busquedas/procesa_filtro_busqueda.php`,
             request,
             function (data) {
-                if (data.exito) {
+                if (data.success) {
                     top.successModalEvent(data);
                 } else {
                     top.notification({
