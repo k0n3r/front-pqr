@@ -83,7 +83,9 @@ include_once $rootPath . 'views/assets/librerias.php';
                             setting: {
                                 tratamiento: this.form.text,
                                 url: this.form.url
-                            }
+                            },
+                            required: 1,
+                            anonymous: 1
                         },
                         id: this.dataParams.dataFormField.id
                     };

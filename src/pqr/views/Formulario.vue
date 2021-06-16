@@ -11,11 +11,11 @@
 
           <ul class="list-group list-group-flush">
             <li
-              class="list-group-item"
-              data-toggle="tooltip"
-              title="Adicionar componente"
-              v-for="(htmlField, index) in componentsHTML"
-              :key="index"
+                class="list-group-item"
+                data-toggle="tooltip"
+                title="Adicionar componente"
+                v-for="(htmlField, index) in componentsHTML"
+                :key="index"
             >
               {{ htmlField.label }}
               <span class="btn pull-right" @click="addField(htmlField)">
@@ -34,13 +34,18 @@
             <div class="card-controls">
               <ul>
                 <li
-                  data-toggle="tooltip"
-                  title="Configuración"
-                  @click="openFormConfig"
+                    data-toggle="tooltip"
+                    title="Configuración"
+                    @click="openFormConfig"
                 >
-                  <a href="#">
-                    <i class="fa fa-cogs fa-2x"></i>
-                  </a>
+                  <button
+                      type="button"
+                      class="btn btn-small btn-complete"
+                      data-toggle="tooltip"
+                      title="Configuración"
+                  >
+                    <i class="fa fa-cogs"></i>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -53,9 +58,9 @@
                     ¿DESEA REGISTRAR ESTA SOLICITUD COMO UNA PERSONA &nbsp;
                     ANÓNIMA?
                     <input
-                      type="checkbox"
-                      v-model="checkAnonymous"
-                      @change="updatecheckAnonymous"
+                        type="checkbox"
+                        v-model="checkAnonymous"
+                        @change="updatecheckAnonymous"
                     />
                   </p>
                 </div>
@@ -63,46 +68,46 @@
               <div id="sortable">
                 <template v-for="field in formFields">
                   <div
-                    class="sortable"
-                    :key="field.id"
-                    :data-id="field.id"
-                    style="cursor: move"
-                    v-show="isVisible(field)"
+                      class="sortable"
+                      :key="field.id"
+                      :data-id="field.id"
+                      style="cursor: move"
+                      v-show="isVisible(field)"
                   >
                     <div class="row form-group">
                       <div class="col">
                         <div
-                          class="btn-group btn-group-xs float-right"
-                          role="group"
+                            class="btn-group btn-group-xs float-right"
+                            role="group"
                         >
                           <button
-                            v-if="
+                              v-if="
                               +field.is_system == 0 && !+field.fk_campos_formato
                             "
-                            type="button"
-                            class="btn btn-xs btn-danger"
-                            @click="deleteField(field.id)"
-                            data-toggle="tooltip"
-                            title="Eliminar"
+                              type="button"
+                              class="btn btn-xs btn-danger"
+                              @click="deleteField(field.id)"
+                              data-toggle="tooltip"
+                              title="Eliminar"
                           >
                             <i class="fa fa-trash"></i>
                           </button>
 
                           <button
-                            v-if="
+                              v-if="
                               +field.is_system == 0 && +field.fk_campos_formato
                             "
-                            type="button"
-                            class="btn btn-xs"
-                            :class="
+                              type="button"
+                              class="btn btn-xs"
+                              :class="
                               +field.active ? 'btn-success' : 'btn-danger'
                             "
-                            @click="changeStatus(field.id, +field.active)"
-                            data-toggle="tooltip"
-                            :title="+field.active ? 'Inactivar' : 'Activar'"
+                              @click="changeStatus(field.id, +field.active)"
+                              data-toggle="tooltip"
+                              :title="+field.active ? 'Inactivar' : 'Activar'"
                           >
                             <i
-                              :class="
+                                :class="
                                 +field.active
                                   ? 'fa fa-toggle-on'
                                   : 'fa fa-toggle-off'
@@ -111,11 +116,11 @@
                           </button>
 
                           <button
-                            type="button"
-                            class="btn btn-xs btn-warning"
-                            @click="editField(field)"
-                            data-toggle="tooltip"
-                            title="Editar"
+                              type="button"
+                              class="btn btn-xs btn-warning"
+                              @click="editField(field)"
+                              data-toggle="tooltip"
+                              title="Editar"
                           >
                             <i class="fa fa-edit"></i>
                           </button>
@@ -124,8 +129,8 @@
                     </div>
                     <div class="row">
                       <ViewFormField
-                        :data="field"
-                        @refreshSortable="initSortable"
+                          :data="field"
+                          @refreshSortable="initSortable"
                       />
                     </div>
                   </div>
@@ -158,6 +163,7 @@ import "topViews/node_modules/select2/dist/css/select2.min.css";
 //Dropzone
 import Dropzone from "topViews/assets/theme/assets/plugins/dropzone/min/dropzone.min.js";
 import "topViews/assets/theme/assets/plugins/dropzone/custom.css";
+
 window.Dropzone = Dropzone;
 
 //jquery validate
@@ -165,7 +171,7 @@ import "topViews/node_modules/jquery-validation/dist/jquery.validate.min.js";
 import "topViews/node_modules/jquery-validation/dist/localization/messages_es.min.js";
 
 import ViewFormField from "pqr/components/ViewFormField.vue";
-import { mapState, mapActions, mapMutations } from "vuex";
+import {mapState, mapActions, mapMutations} from "vuex";
 
 export default {
   name: "Formulario",
@@ -210,20 +216,20 @@ export default {
         active: +!status,
       };
       this.udpateActiveOfFormField(data)
-        .then(() => {
-          let text = data.active ? "activo" : "inactivo";
-          top.notification({
-            type: "success",
-            message: "Campo " + text,
+          .then(() => {
+            let text = data.active ? "activo" : "inactivo";
+            top.notification({
+              type: "success",
+              message: "Campo " + text,
+            });
+          })
+          .catch(() => {
+            let text = data.active ? "activar" : "inactivar";
+            top.notification({
+              type: "error",
+              message: "No fue posible " + text + " el campo",
+            });
           });
-        })
-        .catch(() => {
-          let text = data.active ? "activar" : "inactivar";
-          top.notification({
-            type: "error",
-            message: "No fue posible " + text + " el campo",
-          });
-        });
     },
     initSortable() {
       let _this = this;
@@ -278,16 +284,16 @@ export default {
             case 0:
             default:
               this.updateSetting(response.data)
-                .then(() => {
-                  top.closeTopModal();
-                })
-                .catch(() => {
-                  top.notification({
-                    type: "error",
-                    message:
-                      "No fue posible actualizar la configuración del formulario",
+                  .then(() => {
+                    top.closeTopModal();
+                  })
+                  .catch(() => {
+                    top.notification({
+                      type: "error",
+                      message:
+                          "No fue posible actualizar la configuración del formulario",
+                    });
                   });
-                });
               break;
           }
         },
@@ -420,18 +426,18 @@ export default {
     },
     publish() {
       this.publishForm()
-        .then(() => {
-          top.notification({
-            type: "success",
-            message: "Formulario generado",
+          .then(() => {
+            top.notification({
+              type: "success",
+              message: "Formulario generado",
+            });
+          })
+          .catch(() => {
+            top.notification({
+              type: "error",
+              message: "No fue posible generar el formulario",
+            });
           });
-        })
-        .catch(() => {
-          top.notification({
-            type: "error",
-            message: "No fue posible generar el formulario",
-          });
-        });
     },
     updatecheckAnonymous(e) {
       this.setCheckAnonymous(e.target.checked);
