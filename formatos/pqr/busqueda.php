@@ -64,7 +64,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                             <div class="form-group form-group-default input-group">
                                 <div class="form-input-group">
                                     <label>Fecha inicial:</label>
-                                    <input name="bqCampo_fecha_x" type="text" class="form-control" placeholder="Seleccione.." id="fecha_inicial">
+                                    <input name="bqCampo_v@fecha_x" type="text" class="form-control" placeholder="Seleccione.." id="fecha_inicial">
                                     <input name="bqComparador_fecha_x" type="hidden" value="y" />
                                     <input name="bqTipo_fecha_x" type="hidden" value="date">
                                 </div>
