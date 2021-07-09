@@ -37,7 +37,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                         <div class="col-12">
                             <div class="form-group form-group-default">
                                 <label>Radicado:</label>
-                                <input class="form-control" name="bqCampo_numero" type="number">
+                                <input class="form-control" name="bqCampo_v@numero" type="number">
                                 <input type="hidden" name="bqCondicional_numero" value="like">
                             </div>
                         </div>
