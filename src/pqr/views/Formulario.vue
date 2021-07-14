@@ -166,6 +166,11 @@ import "topViews/assets/theme/assets/plugins/dropzone/custom.css";
 
 window.Dropzone = Dropzone;
 
+//datetimepicker
+import "topViews/assets/theme/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js";
+import "topViews/assets/theme/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css";
+
+
 //jquery validate
 import "topViews/node_modules/jquery-validation/dist/jquery.validate.min.js";
 import "topViews/node_modules/jquery-validation/dist/localization/messages_es.min.js";
@@ -330,6 +335,9 @@ export default {
           break;
         case "file":
           url = "views/modules/pqr/src/pqr/modals/addEditField/file.php";
+          break;
+        case "date":
+          url = "views/modules/pqr/src/pqr/modals/addEditField/date.php";
           break;
       }
 

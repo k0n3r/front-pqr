@@ -54,6 +54,11 @@
       v-if="data.fk_pqr_html_field.type == 'localidad'"
       :dataParams="data"
     />
+
+    <ViewDateComponent
+        v-if="data.fk_pqr_html_field.type == 'date'"
+        :dataParams="data"
+    />
   </div>
 </template>
 
@@ -66,6 +71,7 @@ import ViewCheckboxComponent from "pqr/components/viewField/ViewCheckbox.vue";
 import ViewTratamientoComponent from "pqr/components/viewField/ViewTratamiento.vue";
 import ViewAutocompleteComponent from "pqr/components/viewField/ViewAutocomplete.vue";
 import ViewFileComponent from "pqr/components/viewField/ViewFile.vue";
+import ViewDateComponent from "pqr/components/viewField/ViewDate.vue";
 
 export default {
   name: "ViewFormField",
@@ -78,6 +84,7 @@ export default {
     ViewTratamientoComponent,
     ViewAutocompleteComponent,
     ViewFileComponent,
+    ViewDateComponent
   },
   props: {
     data: {
