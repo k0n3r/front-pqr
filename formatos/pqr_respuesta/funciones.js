@@ -1,3 +1,22 @@
+function showHideEncuesta(key) {
+    if (+key == 4) {//Enviar por email
+        $("#group_sol_encuesta").removeClass('d-none');
+    } else {
+        $("#group_sol_encuesta").addClass('d-none');
+    }
+}
+
+function showHideDespedida(key) {
+    if (+key == 3) {
+        $("#otra_despedida").addClass("required");
+        $("#group_otra_despedida").show();
+    } else {
+        $("#otra_despedida").removeClass("required");
+        $("#otra_despedida").val('');
+        $("#group_otra_despedida").hide();
+    }
+}
+
 function add(data) {
     let idft = $("[name='ft_pqr']").val();
     $.get(
@@ -19,11 +38,17 @@ function add(data) {
                 if (data.tipo_distribucion) {
                     $("#tipo_distribucion").val(data.tipo_distribucion)
                         .trigger('change');
+
+                    let key = $("#tipo_distribucion").select2('data')[0].element.dataset.key;
+                    showHideEncuesta(key);
                 }
 
                 if (data.despedida) {
                     $("#despedida").val(data.despedida)
                         .trigger('change');
+
+                    let key = $("#despedida").select2('data')[0].element.dataset.key;
+                    showHideDespedida(key);
                 }
 
                 if (data.asunto) {
@@ -93,23 +118,13 @@ function addEdit(data) {
 
     $("#despedida").on('select2:select', function (e) {
         let key = e.params.data.element.dataset.key;
-        if (+key == 3) {
-            $("#otra_despedida").addClass("required");
-            $("#group_otra_despedida").show();
-        } else {
-            $("#otra_despedida").removeClass("required");
-            $("#otra_despedida").val('');
-            $("#group_otra_despedida").hide();
-        }
+        showHideDespedida(key);
+
     });
 
     $("#tipo_distribucion").on('select2:select', function (e) {
         let key = e.params.data.element.dataset.key;
-        if (+key == 4) {//Enviar por email
-            $("#group_sol_encuesta").removeClass('d-none');
-        } else {
-            $("#group_sol_encuesta").addClass('d-none');
-        }
+        showHideEncuesta(key);
     });
 
     $('#sol_encuesta1').change(function () {
