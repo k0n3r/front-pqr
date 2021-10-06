@@ -1,10 +1,10 @@
 $(function () {
-    let params = $('#scriptEditType').data('params');
-    $('#scriptEditType').removeAttr('data-params');
+    let scriptEditType = $('#scriptEditType')
+    let params = scriptEditType.data('params');
+    scriptEditType.removeAttr('data-params');
 
-    var baseUrl = localStorage.getItem('baseUrl');
-    var subtypeExist = 0;
-    var dependencyExist = 0;
+    let subtypeExist = 0;
+    let dependencyExist = 0;
 
     $('#sys_fecha_vencimiento').datetimepicker({
         locale: 'es',
@@ -12,9 +12,11 @@ $(function () {
         minDate: moment()
     });
 
+    $('#sys_frecuencia,#sys_impacto,#sys_severidad').select2();
+
     $.ajax({
-        type: 'get',
-        url: `${baseUrl}api/pqr/structure/dataModalViewEditType`,
+        type: 'GET',
+        url: `/api/pqr/structure/dataModalViewEditType`,
         data: {
             key: localStorage.getItem('key'),
             token: localStorage.getItem('token')
@@ -24,7 +26,7 @@ $(function () {
             if (+response.data.dataType.length) {
                 initSelect('sys_tipo', response.data.dataType);
 
-                $('#sys_tipo').on('change', function (e) {
+                $('#sys_tipo').on('change', function () {
                     let sys_tipo = this.value;
                     if (!sys_tipo) {
                         $("#sys_fecha_vencimiento").val('');
@@ -34,7 +36,7 @@ $(function () {
                     $.ajax({
                         type: 'get',
                         dataType: 'json',
-                        url: `${baseUrl}api/pqr/${params.idft}/dateForType`,
+                        url: `/api/pqr/${params.idft}/dateForType`,
                         data: {
                             key: localStorage.getItem('key'),
                             token: localStorage.getItem('token'),
@@ -86,10 +88,10 @@ $(function () {
             multiple: false,
             ajax: {
                 delay: 400,
-                url: `${baseUrl}api/pqr/components/autocomplete/list`,
+                url: `/api/pqr/components/autocomplete/list`,
                 dataType: "json",
                 data: function (p) {
-                    var query = {
+                    return {
                         key: localStorage.getItem("key"),
                         token: localStorage.getItem("token"),
                         name: 'sys_dependencia',
@@ -97,7 +99,6 @@ $(function () {
                             term: p.term
                         }
                     };
-                    return query;
                 }
             }
         };
@@ -124,7 +125,7 @@ $(function () {
         $.ajax({
             type: 'get',
             dataType: 'json',
-            url: `${baseUrl}api/pqr/${params.idft}/valuesForType`,
+            url: `/api/pqr/${params.idft}/valuesForType`,
             data: {
                 key: localStorage.getItem('key'),
                 token: localStorage.getItem('token')
@@ -141,10 +142,22 @@ $(function () {
 
                 if (response.data.sys_dependencia) {
                     let u = response.data.optionsDependency;
-                    var option = new Option(u.text, u.id, true, true);
+                    let option = new Option(u.text, u.id, true, true);
                     $('#sys_dependencia')
                         .append(option)
                         .trigger('change');
+                }
+
+                if (+response.data.sys_frecuencia) {
+                    $('#sys_frecuencia').val(response.data.sys_frecuencia).trigger('change');
+                }
+
+                if (+response.data.sys_impacto) {
+                    $('#sys_impacto').val(response.data.sys_impacto).trigger('change');
+                }
+
+                if (+response.data.sys_severidad) {
+                    $('#sys_severidad').val(response.data.sys_severidad).trigger('change');
                 }
 
             } else {
@@ -166,7 +179,7 @@ $(function () {
         });
 
     $("#formChangeType").validate({
-        submitHandler: function (form) {
+        submitHandler: function () {
             let type = $("#sys_tipo").val();
             let expiration = $("#sys_fecha_vencimiento").val();
             let subtype = 0;
@@ -183,7 +196,7 @@ $(function () {
             $.ajax({
                 type: 'put',
                 dataType: 'json',
-                url: `${baseUrl}api/pqr/${params.idft}/updateType`,
+                url: `/api/pqr/${params.idft}/updateType`,
                 data: {
                     key: localStorage.getItem('key'),
                     token: localStorage.getItem('token'),
@@ -191,13 +204,16 @@ $(function () {
                         expirationDate: expiration,
                         type: type,
                         subtype: subtype,
-                        dependency: dependency
+                        dependency: dependency,
+                        sys_frecuencia: $("#sys_frecuencia").val(),
+                        sys_impacto: $("#sys_impacto").val(),
+                        sys_severidad: $("#sys_severidad").val(),
                     }
                 }
             }).done(response => {
                 if (response.success) {
                     top.notification({
-                        message: 'Se ha actualizado el tipo',
+                        message: 'Datos actualizados!',
                         type: 'success'
                     });
                     top.successModalEvent();

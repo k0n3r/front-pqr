@@ -1,6 +1,4 @@
 $(function () {
-    let baseUrl = localStorage.getItem('baseUrl');
-
     $(document).on('click', '.addTask', function () {
         let paramsTarea = {
             relationId: $(this).data('id'),
@@ -8,7 +6,7 @@ $(function () {
             modalName: 'tarea'
         };
         let iframe = $('<iframe>', {
-            src: baseUrl + 'views/tareas/crear.php?' + $.param(paramsTarea)
+            src: '/views/tareas/crear.php?' + $.param(paramsTarea)
         }).css({
             width: '100%',
             height: '100%',
@@ -82,7 +80,7 @@ $(function () {
 
                         $.ajax({
                             type: 'POST',
-                            url: `${baseUrl}api/document/${iddocumento}/cancel`,
+                            url: `/api/document/${iddocumento}/cancel`,
                             data: {
                                 key: localStorage.getItem('key'),
                                 token: localStorage.getItem('token')
@@ -152,6 +150,16 @@ $(function () {
             onSuccess() {
                 top.closeTopModal()
                 $('#table').bootstrapTable('refresh');
+            },
+            buttons: {
+                success: {
+                    label: 'Guardar',
+                    class: 'btn btn-complete'
+                },
+                cancel: {
+                    label: 'Cancelar',
+                    class: 'btn btn-danger'
+                }
             }
         });
 
@@ -167,11 +175,21 @@ $(function () {
                 idft: idft
             },
             size: 'modal-md',
-            title: 'Actualizar tipo',
+            title: 'Validar PQRSF',
             backdrop: 'static',
             onSuccess() {
                 top.closeTopModal()
                 $('#table').bootstrapTable('refresh');
+            },
+            buttons: {
+                success: {
+                    label: 'Guardar',
+                    class: 'btn btn-complete'
+                },
+                cancel: {
+                    label: 'Cancelar',
+                    class: 'btn btn-danger'
+                }
             }
         });
 
@@ -186,7 +204,7 @@ $(function () {
 
     function answerPqr(idft) {
         $.post(
-            `${baseUrl}app/formato/consulta_rutas.php`, {
+            `/app/formato/consulta_rutas.php`, {
                 key: localStorage.getItem('key'),
                 token: localStorage.getItem('token'),
                 formatName: "pqr_respuesta",
@@ -194,7 +212,7 @@ $(function () {
             },
             function (response) {
                 if (response.success) {
-                    let route = baseUrl + response.data.ruta_adicionar;
+                    let route = "/" + response.data.ruta_adicionar;
                     let iframe = $('<iframe>', {
                         src: route
                     }).css({

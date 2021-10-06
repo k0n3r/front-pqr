@@ -127,6 +127,26 @@
       <div class="col-md">
         <div class="card card-default">
           <div class="card-header">
+            <div class="card-title">OTRAS FUNCIONALIDADES</div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="checkbox check-success input-group">
+                <input
+                    type="checkbox"
+                    value="1"
+                    id="showEmpty1"
+                    v-model="showEmpty"
+                    @change="editShowEmpty($event)"
+                />
+                <label for="showEmpty1">MOSTRAR VALORES VACIOS AL GENERAR EL DOCUMENTO</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-default">
+          <div class="card-header">
             <div class="card-title">NOTIFICACIONES</div>
           </div>
           <div class="card-body">
@@ -306,6 +326,7 @@ export default {
   name: "Formulario",
   data() {
     return {
+      showEmpty: 1,
       showReport: [],
       notify: [],
       notifyEmail: [],
@@ -365,6 +386,9 @@ export default {
           this.notify = idsNotify;
           this.responseTimeField = this.form.fk_field_time;
           this.valresponseTimeField = -1;
+
+          this.showEmpty = +this.form.show_empty ? 1 : null;
+
         })
         .catch(() => {
           top.notification({
@@ -386,7 +410,7 @@ export default {
           multiple: false,
           ajax: {
             delay: 400,
-            url: `${baseUrl}api/user/0/autocomplete`,
+            url: `/api/user/autocomplete`,
             dataType: "json",
             data: function (params) {
               return {
@@ -449,6 +473,7 @@ export default {
       "updateNotification",
       "deleteNotification",
       "updateNotyMessage",
+      "updateShowEmpty"
     ]),
     openModal() {
       top.topModal({
@@ -479,7 +504,7 @@ export default {
           });
     },
     saveChange() {
-      let _this=this;
+      let _this = this;
       let types = [];
       $(".sortable").each(function (index, element) {
         let idtype = element.attributes["data-id"].value;
@@ -631,6 +656,17 @@ export default {
         });
       });
     },
-  },
-};
+    editShowEmpty(e) {
+      this.updateShowEmpty(e.target.checked ? 1 : 0)
+          .then(() => {
+            top.notification({
+              type: "success",
+              message: e.target.checked
+                  ? "Se mostrarán los campos vacios!"
+                  : "Se ocultarán los campos vacios!",
+            });
+          });
+    }
+  }
+}
 </script>

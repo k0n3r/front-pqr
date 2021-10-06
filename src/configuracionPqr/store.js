@@ -14,7 +14,6 @@ $.ajaxSetup({
         console.error(args);
     }
 });
-var baseUrl = localStorage.getItem('baseUrl');
 
 export default new Vuex.Store({
     state: {
@@ -69,7 +68,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/form/setting`,
+                    url: `/api/pqr/form/setting`,
                 }).done(response => {
                     if (response.success) {
                         let data = response.data;
@@ -96,7 +95,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/responseTimes/field/${id}`,
+                    url: `/api/pqr/responseTimes/field/${id}`,
                 }).done(response => {
                     if (response.success) {
                         commit("setPqrTypes", response.data);
@@ -116,7 +115,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/responseTimes`,
+                    url: `/api/pqr/responseTimes`,
                     method: 'put',
                     data
                 }).done(response => {
@@ -137,7 +136,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/form/updateShowReport`,
+                    url: `/api/pqr/form/updateShowReport`,
                     method: 'put',
                     data
                 }).done(response => {
@@ -159,7 +158,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/notification`,
+                    url: `/api/pqr/notification`,
                     method: 'post',
                     data
                 }).done(response => {
@@ -181,7 +180,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/notification/${data.id}`,
+                    url: `/api/pqr/notification/${data.id}`,
                     method: 'put',
                     data: {
                         data: data.data
@@ -205,7 +204,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/notification/${data.id}`,
+                    url: `/api/pqr/notification/${data.id}`,
                     method: 'delete',
                     data
                 }).done(response => {
@@ -227,7 +226,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/notyMessage/${data.id}`,
+                    url: `/api/pqr/notyMessage/${data.id}`,
                     method: 'put',
                     data: {
                         data: data.data
@@ -245,6 +244,30 @@ export default new Vuex.Store({
                 });
 
             })
-        }
+        },
+        updateShowEmpty({commit}, val) {
+            return new Promise((resolve, reject) => {
+
+                $.ajax({
+                    url: `/api/pqr/form/showEmpty`,
+                    method: 'put',
+                    data: {
+                        show_empty: val
+                    }
+                }).done(response => {
+                    if (response.success) {
+                        commit("setForm", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
+            });
+        },
     }
 })

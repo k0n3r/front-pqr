@@ -1,18 +1,4 @@
 <?php
-$max_salida = 10;
-$rootPath = $ruta = '';
-
-while ($max_salida > 0) {
-    if (is_file($ruta . 'index.php')) {
-        $rootPath = $ruta;
-        break;
-    }
-
-    $ruta .= '../';
-    $max_salida--;
-}
-
-include_once $rootPath . 'views/assets/librerias.php';
 $params = json_encode($_REQUEST);
 ?>
 
@@ -36,7 +22,8 @@ $params = json_encode($_REQUEST);
                     <label for='sys_fecha_vencimiento'>
                         FECHA VENCIMIENTO
                     </label>
-                    <input type="text" class="form-control required" id="sys_fecha_vencimiento" name="sys_fecha_vencimiento">
+                    <input type="text" class="form-control required" id="sys_fecha_vencimiento"
+                           name="sys_fecha_vencimiento">
                 </div>
                 <div class='input-group-append'>
                     <span class='input-group-text'>
@@ -50,9 +37,55 @@ $params = json_encode($_REQUEST);
                     <option value="">Seleccione ...</option>
                 </select>
             </div>
+
+            <div class="form-group form-group-default form-group-default-select2 required">
+                <label class="my-0">FRECUENCIA:</label>
+                <select class="form-control full-width required" name="sys_frecuencia" id="sys_frecuencia">
+                    <option value="">Seleccione ...</option>
+                    <option value="1">Bajo</option>
+                    <option value="2">Medio</option>
+                    <option value="3">Alto</option>
+                </select>
+            </div>
+
+            <div class="form-group form-group-default form-group-default-select2 required">
+                <label class="my-0">IMPACTO:</label>
+                <select class="form-control full-width required" name="sys_impacto" id="sys_impacto">
+                    <option value="">Seleccione ...</option>
+                    <option value="1">Bajo</option>
+                    <option value="2">Medio</option>
+                    <option value="3">Alto</option>
+                </select>
+            </div>
+
+            <div class="form-group form-group-default form-group-default-select2 required">
+                <label class="my-0">SEVERIDAD:</label>
+                <select class="form-control full-width required" name="sys_severidad" id="sys_severidad">
+                    <option value="">Seleccione ...</option>
+                    <option value="1">Bajo</option>
+                    <option value="2">Medio</option>
+                    <option value="3">Alto</option>
+                </select>
+            </div>
         </form>
     </div>
 </div>
-<?= dateTimePicker() ?>
-<?= validate() ?>
-<script id="scriptEditType" src="../../views/modules/pqr/views/js/editType.js" data-params='<?= $params ?>'></script>
+<link class="main-stylesheet"
+      href="/views/assets/theme/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css"
+      rel="stylesheet" type="text/css"/>
+
+<script type="text/javascript"
+        src="/views/assets/theme/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+
+<script type="text/javascript"
+        src="/views/assets/theme/assets/plugins/bootstrap-datetimepicker/js/locales/es.js"></script>
+
+<script type="text/javascript" src="/views/node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
+
+<script type="text/javascript"
+        src="/views/assets/theme/assets/js/cerok_libraries/ui/global_jquery_validate.js"></script>
+
+<script type="text/javascript"
+        src="/views/node_modules/jquery-validation/dist/localization/messages_es.min.js"></script>
+
+<script id="scriptEditType" src="/views/modules/pqr/views/js/editType.js" data-params='<?= $params ?>'></script>

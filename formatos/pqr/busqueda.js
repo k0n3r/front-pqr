@@ -1,28 +1,26 @@
 $(function () {
-    let baseUrl = localStorage.getItem('baseUrl');
     (function init() {
 
-        $('#filtro_fecha').select2();
+        $('#filtro_fecha,#sys_frecuencia,#sys_impacto,#sys_severidad').select2();
         createPicker();
 
-        $.get(`${baseUrl}views/modules/pqr/formatos/pqr/buscar.html`, function (html) {
+        $.get(`/views/modules/pqr/formatos/pqr/buscar.html`, function (html) {
             let res = (html.replace(/d\./g, "v.")).replace(/_ft@/g, "_v@");
             $("#morefields").empty().append(res);
         });
     })();
 
 
-    $('#clear').on('click', function () {
+    $('#btn_clear').on('click', function () {
         $('#filtro_fecha')
             .val(1)
             .trigger('change');
 
-        $('#fecha_inicial')
-            .data('DateTimePicker')
-            .clear();
-        $('#fecha_final')
-            .data('DateTimePicker')
-            .clear();
+        $('#sys_frecuencia,#sys_impacto,#sys_severidad')
+            .val('')
+            .trigger('change');
+
+        $('input').val('');
     });
 
     $('#btn_success').off('click', '#btn_success').on('click', function () {
@@ -33,7 +31,7 @@ $(function () {
         });
 
 
-        $.post(`${baseUrl}app/busquedas/procesa_filtro_busqueda.php`,
+        $.post(`/app/busquedas/procesa_filtro_busqueda.php`,
             request,
             function (data) {
                 if (data.success) {
