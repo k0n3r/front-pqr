@@ -142,6 +142,20 @@
                 <label for="showEmpty1">MOSTRAR VALORES VACIOS AL GENERAR EL DOCUMENTO</label>
               </div>
             </div>
+
+            <div class="form-group">
+              <div class="checkbox check-success input-group">
+                <input
+                    type="checkbox"
+                    value="1"
+                    id="radEmail1"
+                    v-model="radEmail"
+                    @change="editRadEmail($event)"
+                />
+                <label for="radEmail1">HABILITAR PARA RADICACIÓN EMAIL</label>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -327,6 +341,7 @@ export default {
   data() {
     return {
       showEmpty: 1,
+      radEmail: null,
       showReport: [],
       notify: [],
       notifyEmail: [],
@@ -344,7 +359,12 @@ export default {
   },
   watch: {
     responseTimeField(val) {
+
       let index = this.responseTimeOptions.findIndex(i => i.id == val);
+      if (index == -1) {
+        return;
+      }
+
       this.optionsResponseTimeField = this.responseTimeOptions[index].options;
       if (this.optionsResponseTimeField.length) {
         this.valresponseTimeField = this.optionsResponseTimeField[0].id;
@@ -388,6 +408,7 @@ export default {
           this.valresponseTimeField = -1;
 
           this.showEmpty = +this.form.show_empty ? 1 : null;
+          this.radEmail = +this.form.rad_email ? 1 : null;
 
         })
         .catch(() => {
@@ -399,7 +420,6 @@ export default {
   },
   mounted() {
     let _this = this;
-    let baseUrl = localStorage.getItem("baseUrl");
     $("#sortable").sortable();
 
     $("#person")
@@ -473,7 +493,8 @@ export default {
       "updateNotification",
       "deleteNotification",
       "updateNotyMessage",
-      "updateShowEmpty"
+      "updateShowEmpty",
+      "updateRadEmail"
     ]),
     openModal() {
       top.topModal({
@@ -666,7 +687,18 @@ export default {
                   : "Se ocultarán los campos vacios!",
             });
           });
-    }
+    },
+    editRadEmail(e) {
+      this.updateRadEmail(e.target.checked ? 1 : 0)
+          .then(() => {
+            top.notification({
+              type: "success",
+              message: e.target.checked
+                  ? "Radicación por correo habilitada"
+                  : "Radicación por correo deshabilitada"
+            });
+          });
+    },
   }
 }
 </script>

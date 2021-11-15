@@ -55,11 +55,11 @@ export default new Vuex.Store({
             state.personsNotifications.push(data);
         },
         delPersonsNotification(state, id) {
-            let index = state.personsNotifications.findIndex(i => i.id == id);
+            let index = state.personsNotifications.findIndex(i => i.id === id);
             state.personsNotifications.splice(index, 1);
         },
         editPersonsNotification(state, data) {
-            let index = state.personsNotifications.findIndex(i => i.id == data.id);
+            let index = state.personsNotifications.findIndex(i => i.id === data.id);
             state.personsNotifications.splice(index, 1, data);
         },
     },
@@ -253,6 +253,30 @@ export default new Vuex.Store({
                     method: 'put',
                     data: {
                         show_empty: val
+                    }
+                }).done(response => {
+                    if (response.success) {
+                        commit("setForm", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
+            });
+        },
+        updateRadEmail({commit}, val) {
+            return new Promise((resolve, reject) => {
+
+                $.ajax({
+                    url: `/api/pqr/form/radEmail`,
+                    method: 'put',
+                    data: {
+                        rad_email: val
                     }
                 }).done(response => {
                     if (response.success) {

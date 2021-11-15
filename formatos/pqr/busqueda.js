@@ -46,14 +46,19 @@ $(function () {
             'json');
     });
 
+    let fechaInitial = $('#fecha_inicial');
+    let fechaFinal = $('#fecha_final');
+    let containerDate = $('#date_container');
+
     $('#filtro_fecha').on('select2:select', function (e) {
-        $('#fecha_inicial')
+        fechaInitial
             .data('DateTimePicker')
             .clear();
-        $('#fecha_final')
+
+        fechaFinal
             .data('DateTimePicker')
             .clear();
-        $('#date_container').hide();
+        containerDate.hide();
 
         let today = moment().set({
             hour: 0,
@@ -62,37 +67,40 @@ $(function () {
             millisecond: 0
         });
 
+        let initial = null;
+        let final = null;
         switch (e.params.data.id) {
             case '2':
-                var initial = today.clone();
-                var final = today.clone();
+                initial = today.clone();
+                final = today.clone();
                 break;
             case '3':
-                var initial = today.clone().subtract(1, 'days');
-                var final = today.clone().subtract(1, 'days');
+                initial = today.clone().subtract(1, 'days');
+                final = today.clone().subtract(1, 'days');
                 break;
             case '4':
-                var initial = today.clone().subtract(7, 'days');
-                var final = today.clone();
+                initial = today.clone().subtract(7, 'days');
+                final = today.clone();
                 break;
             case '5':
-                var initial = today.clone().subtract(30, 'days');
-                var final = today.clone();
+                initial = today.clone().subtract(30, 'days');
+                final = today.clone();
                 break;
             case '6':
-                var initial = today.clone().subtract(90, 'days');
-                var final = today.clone();
+                initial = today.clone().subtract(90, 'days');
+                final = today.clone();
                 break;
             default:
-                $('#date_container').show();
+                containerDate.show();
                 break;
         }
 
         if (initial && final) {
-            $('#fecha_inicial')
+            fechaInitial
                 .data('DateTimePicker')
                 .defaultDate(initial);
-            $('#fecha_final')
+
+            fechaFinal
                 .data('DateTimePicker')
                 .defaultDate(final);
         }

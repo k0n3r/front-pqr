@@ -95,7 +95,7 @@
 
                           <button
                               v-if="
-                              +field.is_system == 0 && +field.fk_campos_formato
+                              (+field.is_system == 0 && +field.fk_campos_formato) || field.name=='sys_anexos'
                             "
                               type="button"
                               class="btn btn-xs"
