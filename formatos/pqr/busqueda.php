@@ -20,6 +20,7 @@
     <div class="row">
         <div class="col-12">
             <form id="find_document_form">
+                <input type="hidden" name="_csrf" value="">
                 <input type="hidden" id="variable_busqueda" name="variable_busqueda">
                 <input type="hidden" name="idbusqueda_componente" id="component"
                        value="<?= $_REQUEST['idbusqueda_componente'] ?>">

@@ -19,6 +19,7 @@ include_once $rootPath . 'views/assets/librerias.php';
     <div class="row">
         <div class="col">
             <form id="form" name="form">
+                <input type="hidden" name="_csrf" value="">
                 <div class="form-group form-group-default required">
                     <label>ETIQUETA</label>
                     <input class="form-control required" v-model.trim="form.label" type="text" maxlength="250"/>
