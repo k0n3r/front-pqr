@@ -22,6 +22,7 @@ $(function () {
                 height: () => Math.min(500, window.innerHeight * 0.9)
             },
             onbeforeclose: function () {
+                delete top.topJsPanelData.panels['tarea'];
                 $('#table').bootstrapTable("refresh");
                 return true;
             }
