@@ -17,10 +17,6 @@ $(function () {
             id: 'tarea',
             headerTitle: 'Tarea o Recordatorio',
             content: iframe.prop('outerHTML'),
-            contentSize: {
-                width: () => Math.min(730, window.innerWidth * 0.9),
-                height: () => Math.min(500, window.innerHeight * 0.9)
-            },
             onbeforeclose: function () {
                 delete top.topJsPanelData.panels['tarea'];
                 $('#table').bootstrapTable("refresh");
@@ -224,7 +220,7 @@ $(function () {
 
                     top.topJsPanel({
                         headerTitle: 'Documento',
-                        contentSize: {
+                        panelSize: {
                             width: $(window).width() * 0.8,
                             height: $(window).height() * 0.9
                         },
