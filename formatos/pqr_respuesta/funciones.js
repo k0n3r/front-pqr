@@ -1,5 +1,5 @@
 function showHideEncuesta(key) {
-    if (+key == 4) {//Enviar por email
+    if (+key === 4) {//Enviar por email
         $("#group_sol_encuesta").removeClass('d-none');
     } else {
         $("#group_sol_encuesta").addClass('d-none');
@@ -7,18 +7,21 @@ function showHideEncuesta(key) {
 }
 
 function showHideDespedida(key) {
-    if (+key == 3) {
-        $("#otra_despedida").addClass("required");
-        $("#group_otra_despedida").show();
+    const sOtraDespedida = $("#otra_despedida");
+    const sGOtraDespedida = $("#group_otra_despedida");
+
+    if (+key === 3) {
+        sOtraDespedida.addClass("required");
+        sGOtraDespedida.show();
     } else {
-        $("#otra_despedida").removeClass("required");
-        $("#otra_despedida").val('');
-        $("#group_otra_despedida").hide();
+        sOtraDespedida.removeClass("required");
+        sOtraDespedida.val('');
+        sGOtraDespedida.hide();
     }
 }
 
 function add(data) {
-    let idft = $("[name='ft_pqr']").val();
+    const idft = $("[name='ft_pqr']").val();
     $.get(
         `/api/pqr/${idft}/dataToLoadResponse`,
         {
@@ -27,27 +30,31 @@ function add(data) {
         },
         function (response) {
             if (response.success) {
-                let data = response.data;
+                const data = response.data;
 
                 if (typeof data.destino === 'object') {
-                    $("#destino").select2('close');
-                    let option = new Option(data.destino.text, data.destino.id, true, true);
-                    $("#destino").append(option).trigger('change');
+                    const sDestino = $("#destino");
+                    sDestino.select2('close');
+
+                    const option = new Option(data.destino.text, data.destino.id, true, true);
+                    sDestino.append(option).trigger('change');
                 }
 
                 if (data.tipo_distribucion) {
-                    $("#tipo_distribucion").val(data.tipo_distribucion)
+                    const sTipoDistribucion = $("#tipo_distribucion");
+                    sTipoDistribucion.val(data.tipo_distribucion)
                         .trigger('change');
 
-                    let key = $("#tipo_distribucion").select2('data')[0].element.dataset.key;
+                    const key = sTipoDistribucion.select2('data')[0].element.dataset.key;
                     showHideEncuesta(key);
                 }
 
                 if (data.despedida) {
-                    $("#despedida").val(data.despedida)
+                    const sDespedida = $("#despedida");
+                    sDespedida.val(data.despedida)
                         .trigger('change');
 
-                    let key = $("#despedida").select2('data')[0].element.dataset.key;
+                    const key = sDespedida.select2('data')[0].element.dataset.key;
                     showHideDespedida(key);
                 }
 
@@ -89,7 +96,7 @@ function edit(data) {
     addEdit(data);
 }
 
-function addEdit(data) {
+function addEdit() {
 
     $('#ciudad_origen').select2({
         minimumInputLength: 2,
@@ -111,24 +118,24 @@ function addEdit(data) {
         }
     });
 
-    $("#group_otra_despedida").hide();
+    const sGroupOtraDespedida = $("#group_otra_despedida");
+    sGroupOtraDespedida.hide();
     if ($("#otra_despedida").val() != "") {
-        $("#group_otra_despedida").show();
+        sGroupOtraDespedida.show();
     }
 
     $("#despedida").on('select2:select', function (e) {
-        let key = e.params.data.element.dataset.key;
+        const key = e.params.data.element.dataset.key;
         showHideDespedida(key);
-
     });
 
     $("#tipo_distribucion").on('select2:select', function (e) {
-        let key = e.params.data.element.dataset.key;
+        const key = e.params.data.element.dataset.key;
         showHideEncuesta(key);
     });
 
     $('#sol_encuesta1').change(function () {
-        let val = $(this).is(':checked') ? 1 : 0;
+        const val = $(this).is(':checked') ? 1 : 0;
         $('#sol_encuesta').val(val);
     });
 
