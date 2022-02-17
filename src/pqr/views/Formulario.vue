@@ -82,7 +82,7 @@
                         >
                           <button
                               v-if="
-                              +field.is_system == 0 && !+field.fk_campos_formato
+                              +field.is_system === 0 && !+field.fk_campos_formato
                             "
                               type="button"
                               class="btn btn-xs btn-danger"
@@ -95,7 +95,7 @@
 
                           <button
                               v-if="
-                              (+field.is_system == 0 && +field.fk_campos_formato) || field.name=='sys_anexos'
+                              (+field.is_system === 0 && +field.fk_campos_formato) ||  field.name==='sys_anexos' || field.name==='sys_folios'
                             "
                               type="button"
                               class="btn btn-xs"
@@ -239,7 +239,7 @@ export default {
     initSortable() {
       let _this = this;
       $("#sortable").sortable({
-        update: function (event, ui) {
+        update: function () {
           let order = [];
           $(".sortable").each(function (index, element) {
             order.push({
@@ -346,7 +346,7 @@ export default {
     validUniq(type) {
       let valid = true;
       this.formFields.forEach((element) => {
-        if (element.fk_pqr_html_field.type == type) {
+        if (element.fk_pqr_html_field.type === type) {
           valid = false;
         }
       });
@@ -354,7 +354,7 @@ export default {
     },
     addField(obj) {
       let allow = true;
-      if (+obj.uniq == 1) {
+      if (+obj.uniq === 1) {
         allow = this.validUniq(obj.type);
       }
 

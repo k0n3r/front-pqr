@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 module.exports = {
@@ -18,7 +19,7 @@ module.exports = {
         rules: [
             {
                 test: /\.m?js$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /(node_modules)/,
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -29,6 +30,14 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader',
+                ],
             },
             {
                 test: /\.css$/i,
@@ -71,6 +80,9 @@ module.exports = {
             filename: "configuracionPqr/index.html",
             chunks: ["configuracionPqr"],
             hash: true
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].css',
         })
     ],
     resolve: {
