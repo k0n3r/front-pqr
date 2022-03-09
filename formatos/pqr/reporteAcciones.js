@@ -200,8 +200,8 @@ $(function () {
 
 
     function answerPqr(idft) {
-        $.post(
-            `/app/formato/consulta_rutas.php`, {
+        $.get(
+            `/api/format/routes`, {
                 key: localStorage.getItem('key'),
                 token: localStorage.getItem('token'),
                 formatName: "pqr_respuesta",

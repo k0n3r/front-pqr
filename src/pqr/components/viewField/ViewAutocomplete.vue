@@ -35,18 +35,15 @@ export default {
       multiple: false,
       ajax: {
         delay: 400,
-        url: `${baseUrl}api/pqr/components/autocomplete/list`,
+        url: `/api/pqr/components/autocomplete/list`,
         dataType: "json",
         data: function (p) {
-          var query = {
-            key: localStorage.getItem("key"),
-            token: localStorage.getItem("token"),
+          return {
             name: _this.dataParams.name,
             data: {
               term: p.term,
             },
           };
-          return query;
         },
       },
     };

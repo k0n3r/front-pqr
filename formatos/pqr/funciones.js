@@ -16,7 +16,7 @@ function loadAnexosPqr(anexos) {
 
 //evento ejecutado en el adicionar
 function add(data) {
-    let rcmailDataId = +window.getUrlParam('rcmailDataId');
+    let rcmailDataId = +top.getUrlParam('rcmailDataId',location.href);
     if (rcmailDataId) {
         $.ajax({
             url: `/api/roundcube/rcmail`,
