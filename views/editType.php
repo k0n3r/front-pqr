@@ -83,7 +83,7 @@ $params = json_encode($_REQUEST);
 <script type="text/javascript" src="/views/node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
 
 <script type="text/javascript"
-        src="/views/assets/theme/assets/js/cerok_libraries/ui/global_jquery_validate.js"></script>
+        src="/views/assets/theme/assets/js/cerok_libraries/ui/globalJqueryValidate.js"></script>
 
 <script type="text/javascript"
         src="/views/node_modules/jquery-validation/dist/localization/messages_es.min.js"></script>
