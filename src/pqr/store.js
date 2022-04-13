@@ -4,7 +4,7 @@ import Vuex from "vuex"
 Vue.use(Vuex)
 
 $.ajaxSetup({
-    method: "get",
+    method: "GET",
     dataType: "json",
     data: {
         key: localStorage.getItem('key'),
@@ -14,7 +14,6 @@ $.ajaxSetup({
         console.error(args);
     }
 });
-var baseUrl = localStorage.getItem('baseUrl');
 
 export default new Vuex.Store({
     state: {
@@ -37,11 +36,11 @@ export default new Vuex.Store({
             state.formFields.push(data);
         },
         editFormField(state, data) {
-            let index = state.formFields.findIndex(i => i.id == data.id);
+            let index = state.formFields.findIndex(i => +i.id === +data.id);
             state.formFields.splice(index, 1, data);
         },
         delFormField(state, id) {
-            let index = state.formFields.findIndex(i => i.id == id);
+            let index = state.formFields.findIndex(i => +i.id === +id);
             state.formFields.splice(index, 1);
         },
         setCheckAnonymous(state, value) {
@@ -49,11 +48,11 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        getAllData({ commit }) {
+        getAllData({commit}) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/structure/dataViewIndex`,
+                    url: `/api/pqr/structure/dataViewIndex`,
                 }).done(response => {
                     if (response.success) {
                         let data = response.data;
@@ -72,12 +71,12 @@ export default new Vuex.Store({
 
             });
         },
-        updateSetting({ commit }, data) {
+        updateSetting({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/form/updateSetting`,
-                    method: "put",
+                    url: `/api/pqr/form/updateSetting`,
+                    method: "PUT",
                     data: {
                         data: data
                     }
@@ -99,14 +98,14 @@ export default new Vuex.Store({
 
             });
         },
-        insertFormField({ commit, state }, dataField) {
+        insertFormField({commit, state}, dataField) {
             dataField.fk_pqr_form = state.form.id;
 
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/formField`,
-                    method: "post",
+                    url: `/api/pqr/formField`,
+                    method: "POST",
                     data: {
                         data: dataField
                     }
@@ -125,12 +124,12 @@ export default new Vuex.Store({
 
             });
         },
-        updateFormField({ commit }, dataEdit) {
+        updateFormField({commit}, dataEdit) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/formField/${dataEdit.id}`,
-                    method: "put",
+                    url: `/api/pqr/formField/${dataEdit.id}`,
+                    method: "PUT",
                     data: {
                         data: dataEdit.dataField
                     }
@@ -149,12 +148,12 @@ export default new Vuex.Store({
 
             });
         },
-        deleteFormField({ commit }, id) {
+        deleteFormField({commit}, id) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/formField/${id}`,
-                    method: "delete"
+                    url: `/api/pqr/formField/${id}`,
+                    method: "DELETE"
                 }).done(response => {
                     if (response.success) {
                         commit("delFormField", id);
@@ -170,11 +169,12 @@ export default new Vuex.Store({
 
             });
         },
-        publishForm({ commit }) {
+        publishForm({commit}) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/form/publish`
+                    url: `/api/pqr/form/publish`,
+                    method: 'PUT',
                 }).done(response => {
                     if (response.success) {
                         commit("setForm", response.data.pqrForm);
@@ -191,12 +191,12 @@ export default new Vuex.Store({
 
             });
         },
-        udpateOrderOfFormField({ commit }, fieldOrder) {
+        udpateOrderOfFormField({commit}, fieldOrder) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `${baseUrl}api/pqr/form/sortFields`,
-                    method: "put",
+                    url: `/api/pqr/form/sortFields`,
+                    method: "PUT",
                     data: {
                         fieldOrder: fieldOrder
                     }
@@ -214,14 +214,14 @@ export default new Vuex.Store({
 
             });
         },
-        udpateActiveOfFormField({ commit }, data) {
+        udpateActiveOfFormField({commit}, data) {
             return new Promise((resolve, reject) => {
-                let url = data.active ? `api/pqr/formField/${data.id}/active`
-                    : `api/pqr/formField/${data.id}/inactive`;
+                let url = data.active ? `/api/pqr/formField/${data.id}/active`
+                    : `/api/pqr/formField/${data.id}/inactive`;
 
                 $.ajax({
-                    url: `${baseUrl}${url}`,
-                    method: "put"
+                    url,
+                    method: "PUT"
                 }).done(response => {
                     if (response.success) {
                         commit("editFormField", response.data);
