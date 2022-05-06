@@ -5,14 +5,8 @@ $(function () {
             relation: 1,
             modalName: 'tarea'
         };
-        let iframe = $('<iframe>', {
-            src: '/views/tareas/crear.php?' + $.param(paramsTarea)
-        }).css({
-            width: '100%',
-            height: '100%',
-            border: 'none'
-        });
 
+        const iframe = top.getIframeJsPanel('/views/tareas/crear.php?' + $.param(paramsTarea));
         top.topJsPanel({
             id: 'tarea',
             headerTitle: 'Tarea o Recordatorio',
@@ -210,14 +204,7 @@ $(function () {
             function (response) {
                 if (response.success) {
                     let route = "/" + response.data.ruta_adicionar;
-                    let iframe = $('<iframe>', {
-                        src: route
-                    }).css({
-                        width: '100%',
-                        height: '100%',
-                        border: 'none'
-                    });
-
+                    const iframe = top.getIframeJsPanel(route);
                     top.topJsPanel({
                         headerTitle: 'Documento',
                         panelSize: {
