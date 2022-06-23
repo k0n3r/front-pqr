@@ -1,8 +1,8 @@
 function loadAnexosPqr(anexos) {
-    var myDropzone = Dropzone.forElement("#dropzone_sys_anexos");
+    const myDropzone = Dropzone.forElement("#dropzone_sys_anexos");
     anexos.forEach(mockFile => {
-        var thumbnail = mockFile.thumbnail || mockFile.route;
-        var stringify = JSON.stringify({
+        const thumbnail = mockFile.thumbnail || mockFile.route;
+        const stringify = JSON.stringify({
             success: 1,
             data: [mockFile.route]
         });
@@ -18,13 +18,9 @@ function loadAnexosPqr(anexos) {
 function add(data) {
     let rcmailDataId = +top.getUrlParam('rcmailDataId',location.href);
     if (rcmailDataId) {
-        $.ajax({
+        top.$.ajax({
             url: `/api/roundcube/rcmail`,
-            type: 'GET',
-            dataType: 'json',
             data: {
-                key: localStorage.getItem("key"),
-                token: localStorage.getItem("token"),
                 id: rcmailDataId
             },
             success: function (response) {
