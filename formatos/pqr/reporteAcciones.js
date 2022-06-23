@@ -1,6 +1,6 @@
 $(function () {
     $(document).on('click', '.addTask', function () {
-        let paramsTarea = {
+        const paramsTarea = {
             relationId: $(this).data('id'),
             relation: 1,
             modalName: 'tarea'
@@ -22,9 +22,9 @@ $(function () {
 
     $(document).on('click', '.viewTask', function () {
 
-        let documentId = $(this).data('id');
+        const documentId = $(this).data('id');
 
-        let options = {
+        const options = {
             url: `views/tareas/lista_documento.php`,
             params: {
                 documentId: documentId
@@ -114,7 +114,7 @@ $(function () {
     });
 
     $(document).on('click', '.history', function () {
-        let idft = $(this).data('idft');
+        const idft = $(this).data('idft');
         top.topModal({
             url: `views/modules/pqr/views/viewHistory.php`,
             params: {
@@ -128,7 +128,7 @@ $(function () {
 
     $(document).on('click', '.finish', function () {
 
-        let idft = $(this).data('idft');
+        const idft = $(this).data('idft');
 
         top.topModal({
             url: `views/modules/pqr/views/finish.php`,
@@ -158,37 +158,28 @@ $(function () {
 
     $(document).on('click', '.edit', function () {
 
-        let idft = $(this).data('idft');
-
-        top.topModal({
-            url: `views/modules/pqr/views/editType.php`,
-            params: {
-                idft: idft
+        const idft = $(this).data('idft');
+        const iframe = top.getIframeJsPanel(`/views/modules/pqr/views/editType.html?idft=${idft}`);
+        top.topJsPanel({
+            id: 'editTypes',
+            theme: 'light',
+            content: iframe[0],
+            headerControls: 'closeonly',
+            closeOnBackdrop: false,
+            panelSize: {
+                width: () => (window.innerWidth * 0.7),
+                height: () => (window.innerHeight * 0.7)
             },
-            size: 'modal-md',
-            title: 'Validar PQRSF',
-            backdrop: 'static',
-            onSuccess() {
-                top.closeTopModal()
+            successModalEvent: function () {
                 $('#table').bootstrapTable('refresh');
-            },
-            buttons: {
-                success: {
-                    label: 'Guardar',
-                    class: 'btn btn-complete'
-                },
-                cancel: {
-                    label: 'Cancelar',
-                    class: 'btn btn-danger'
-                }
+                top.closePanel('editTypes');
             }
-        });
-
+        }, 'modal');
     });
 
 
     $(document).on('click', '.answer', function () {
-        let idft = $(this).data('idft');
+        const idft = $(this).data('idft');
         answerPqr(idft);
     });
 
@@ -203,7 +194,7 @@ $(function () {
             },
             function (response) {
                 if (response.success) {
-                    let route = "/" + response.data.ruta_adicionar;
+                    const route = "/" + response.data.ruta_adicionar;
                     const iframe = top.getIframeJsPanel(route);
                     top.topJsPanel({
                         headerTitle: 'Documento',

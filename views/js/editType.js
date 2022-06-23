@@ -1,85 +1,10 @@
 $(function () {
-    let scriptEditType = $('#scriptEditType')
-    let params = scriptEditType.data('params');
-    scriptEditType.removeAttr('data-params');
+    const params = {
+        idft: top.getUrlParam('idft', location.href) ?? 0,
+    };
 
     let subtypeExist = 0;
     let dependencyExist = 0;
-
-    $('#sys_fecha_vencimiento').datetimepicker({
-        locale: 'es',
-        format: 'YYYY-MM-DD',
-        minDate: moment()
-    });
-
-    $('#sys_frecuencia,#sys_impacto,#sys_severidad').select2();
-
-    $.ajax({
-        type: 'GET',
-        url: `/api/pqr/structure/dataModalViewEditType`,
-        data: {
-            key: localStorage.getItem('key'),
-            token: localStorage.getItem('token')
-        },
-        dataType: 'json',
-        success: function (response) {
-            if (+response.data.dataType.length) {
-                initSelect('sys_tipo', response.data.dataType);
-
-                $('#sys_tipo').on('change', function () {
-                    let sys_tipo = this.value;
-                    if (!sys_tipo) {
-                        $("#sys_fecha_vencimiento").val('');
-                        return false;
-                    }
-
-                    $.ajax({
-                        type: 'get',
-                        dataType: 'json',
-                        url: `/api/pqr/${params.idft}/dateForType`,
-                        data: {
-                            key: localStorage.getItem('key'),
-                            token: localStorage.getItem('token'),
-                            type: sys_tipo
-                        }
-                    }).done(response => {
-                        if (response.success) {
-                            $("#sys_fecha_vencimiento").val(response.data.date);
-                        } else {
-                            $("#sys_fecha_vencimiento").val('');
-                        }
-                    }).fail((jqXHR) => {
-                        console.error(jqXHR)
-                    });
-
-                });
-
-
-            } else {
-                top.notification({
-                    message: 'No fue posible cargar los tipos',
-                    type: 'error'
-                });
-            }
-
-            if (+response.data.dataSubType.length) {
-                subtypeExist = 1;
-                initSelect('sys_subtipo', response.data.dataSubType);
-            } else {
-                $("#divSubType").remove();
-            }
-
-
-            if (+response.data.activeDependency) {
-                dependencyExist = 1;
-                initSelectDependency();
-            } else {
-                $("#divDependency").remove();
-            }
-
-            getValues()
-        }
-    });
 
     function initSelectDependency() {
         let options = {
@@ -115,21 +40,14 @@ $(function () {
         $("#" + id).select2({
             language: "es",
             placeholder: "Seleccione",
-            multiple: false,
-            dropdownParent: "#dinamic_modal"
+            multiple: false
         });
     }
 
     function getValues() {
 
-        $.ajax({
-            type: 'get',
-            dataType: 'json',
+        top.$.ajax({
             url: `/api/pqr/${params.idft}/valuesForType`,
-            data: {
-                key: localStorage.getItem('key'),
-                token: localStorage.getItem('token')
-            }
         }).done(response => {
             if (response.success) {
                 if (+response.data.sys_tipo) {
@@ -138,7 +56,9 @@ $(function () {
                 if (+response.data.sys_subtipo) {
                     $('#sys_subtipo').val(response.data.sys_subtipo).trigger('change');
                 }
-                $("#sys_fecha_vencimiento").val(response.data.sys_fecha_vencimiento);
+                setTimeout(() => {
+                    $("#sys_fecha_vencimiento").val(response.data.sys_fecha_vencimiento);
+                }, 1500);
 
                 if (response.data.sys_dependencia) {
                     let u = response.data.optionsDependency;
@@ -172,16 +92,12 @@ $(function () {
         });
     }
 
-    $(document)
-        .off('click', '#btn_success')
-        .on('click', '#btn_success', function () {
-            $("#formChangeType").trigger('submit');
-        });
-
     $("#formChangeType").validate({
         submitHandler: function () {
-            let type = $("#sys_tipo").val();
-            let expiration = $("#sys_fecha_vencimiento").val();
+            $("#btn_success").attr("disabled", true);
+
+            const type = $("#sys_tipo").val();
+            const expiration = $("#sys_fecha_vencimiento").val();
             let subtype = 0;
             let dependency = 0;
 
@@ -193,18 +109,15 @@ $(function () {
                 dependency = $("#sys_dependencia").val();
             }
 
-            $.ajax({
-                type: 'put',
-                dataType: 'json',
+            top.$.ajax({
+                type: 'PUT',
                 url: `/api/pqr/${params.idft}/updateType`,
                 data: {
-                    key: localStorage.getItem('key'),
-                    token: localStorage.getItem('token'),
                     data: {
                         expirationDate: expiration,
-                        type: type,
-                        subtype: subtype,
-                        dependency: dependency,
+                        type,
+                        subtype,
+                        dependency,
                         sys_frecuencia: $("#sys_frecuencia").val(),
                         sys_impacto: $("#sys_impacto").val(),
                         sys_severidad: $("#sys_severidad").val(),
@@ -216,7 +129,8 @@ $(function () {
                         message: 'Datos actualizados!',
                         type: 'success'
                     });
-                    top.successModalEvent();
+                    const jsPanel = top.getPanel('editTypes');
+                    jsPanel.options.successModalEvent();
 
                 } else {
                     top.notification({
@@ -226,9 +140,75 @@ $(function () {
                 }
             }).fail((jqXHR) => {
                 console.error(jqXHR)
+            }).always(() => {
+                $("#btn_success").attr("disabled", false);
             });
 
             return false;
+        }
+    });
+
+
+    $('#sys_fecha_vencimiento').datetimepicker({
+        locale: 'es',
+        format: 'YYYY-MM-DD',
+        minDate: moment()
+    });
+
+    $('#sys_frecuencia,#sys_impacto,#sys_severidad').select2();
+
+    top.$.ajax({
+        url: `/api/pqr/structure/dataModalViewEditType`,
+        success: function (response) {
+            if (+response.data.dataType.length) {
+                initSelect('sys_tipo', response.data.dataType);
+
+                $('#sys_tipo').on('change', function () {
+                    let sys_tipo = this.value;
+                    if (!sys_tipo) {
+                        $("#sys_fecha_vencimiento").val('');
+                        return false;
+                    }
+
+                    top.$.ajax({
+                        url: `/api/pqr/${params.idft}/dateForType`,
+                        data: {
+                            type: sys_tipo
+                        }
+                    }).done(response => {
+                        if (response.success) {
+                            $("#sys_fecha_vencimiento").val(response.data.date);
+                        } else {
+                            $("#sys_fecha_vencimiento").val('');
+                        }
+                    }).fail((jqXHR) => {
+                        console.error(jqXHR)
+                    });
+
+                });
+
+            } else {
+                top.notification({
+                    message: 'No fue posible cargar los tipos',
+                    type: 'error'
+                });
+            }
+
+            if (+response.data.dataSubType.length) {
+                subtypeExist = 1;
+                initSelect('sys_subtipo', response.data.dataSubType);
+            } else {
+                $("#divSubType").remove();
+            }
+
+
+            if (+response.data.activeDependency) {
+                dependencyExist = 1;
+                initSelectDependency();
+            } else {
+                $("#divDependency").remove();
+            }
+            getValues()
         }
     });
 
