@@ -1,15 +1,10 @@
 $(function () {
-    (function init() {
-
-        $('#filtro_fecha,#sys_frecuencia,#sys_impacto,#sys_severidad').select2();
-        createPicker();
-
-        $.get(`/views/modules/pqr/formatos/pqr/buscar.html`, function (html) {
-            let res = (html.replace(/d\./g, "v.")).replace(/_ft@/g, "_v@");
-            $("#morefields").empty().append(res);
+    function createPicker() {
+        $('#fecha_inicial,#fecha_final').datetimepicker({
+            locale: 'es',
+            format: 'YYYY-MM-DD'
         });
-    })();
-
+    }
 
     $('#btn_clear').on('click', function () {
         $('#filtro_fecha')
@@ -46,9 +41,9 @@ $(function () {
             'json');
     });
 
-    let fechaInitial = $('#fecha_inicial');
-    let fechaFinal = $('#fecha_final');
-    let containerDate = $('#date_container');
+    const fechaInitial = $('#fecha_inicial');
+    const fechaFinal = $('#fecha_final');
+    const containerDate = $('#date_container');
 
     $('#filtro_fecha').on('select2:select', function (e) {
         fechaInitial
@@ -60,7 +55,7 @@ $(function () {
             .clear();
         containerDate.hide();
 
-        let today = moment().set({
+        const today = moment().set({
             hour: 0,
             minute: 0,
             second: 0,
@@ -106,10 +101,21 @@ $(function () {
         }
     });
 
-    function createPicker() {
-        $('#fecha_inicial,#fecha_final').datetimepicker({
-            locale: 'es',
-            format: 'YYYY-MM-DD'
+    (function init() {
+
+        $('#filtro_fecha,#sys_frecuencia,#sys_impacto,#sys_severidad').select2();
+        createPicker();
+
+        $.ajax({
+            url: `/views/modules/pqr/formatos/pqr/buscar.html`,
+            dataType: 'html',
+        }).done((html) => {
+            const res = (html.replace(/d\./g, "v.")).replace(/_ft@/g, "_v@");
+            $("#morefields").empty().append(res);
+        }).fail(function () {
+            console.error(...arguments)
         });
-    }
+
+    })();
+
 });
