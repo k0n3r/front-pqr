@@ -156,6 +156,19 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <div class="checkbox check-success input-group">
+                <input
+                    type="checkbox"
+                    value="1"
+                    id="enableFilter1"
+                    v-model="enableFilter"
+                    @change="editEnableFilter($event)"
+                />
+                <label for="enableFilter1">FILTRAR REPORTES (DEPENDENCIAS)</label>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -342,6 +355,7 @@ export default {
     return {
       showEmpty: 1,
       radEmail: null,
+      enableFilter: null,
       showReport: [],
       notify: [],
       notifyEmail: [],
@@ -409,6 +423,7 @@ export default {
 
           this.showEmpty = +this.form.show_empty ? 1 : null;
           this.radEmail = +this.form.rad_email ? 1 : null;
+          this.enableFilter = +this.form.enable_filter_dep ? 1 : null;
 
         })
         .catch(() => {
@@ -494,7 +509,8 @@ export default {
       "deleteNotification",
       "updateNotyMessage",
       "updateShowEmpty",
-      "updateRadEmail"
+      "updateRadEmail",
+      "updateEnableFilter"
     ]),
     openModal() {
       top.topModal({
@@ -696,6 +712,17 @@ export default {
               message: e.target.checked
                   ? "Radicación por correo habilitada"
                   : "Radicación por correo deshabilitada"
+            });
+          });
+    },
+    editEnableFilter(e) {
+      this.updateEnableFilter(e.target.checked ? 1 : 0)
+          .then(() => {
+            top.notification({
+              type: "success",
+              message: e.target.checked
+                  ? "Filtros de reporte habilitado"
+                  : "Filtros de reporte deshabilitado"
             });
           });
     },

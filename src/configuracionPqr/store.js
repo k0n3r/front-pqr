@@ -293,5 +293,29 @@ export default new Vuex.Store({
 
             });
         },
+        updateEnableFilter({commit}, val) {
+            return new Promise((resolve, reject) => {
+
+                $.ajax({
+                    url: `/api/pqr/form/filterReport`,
+                    method: 'put',
+                    data: {
+                        enable_filter_dep: val
+                    }
+                }).done(response => {
+                    if (response.success) {
+                        commit("setForm", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
+            });
+        },
     }
 })
