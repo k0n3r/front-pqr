@@ -308,7 +308,7 @@ export default new Vuex.Store({
                         resolve();
                     } else {
                         console.log(response)
-                        reject();
+                        reject(response.message);
                     }
                 }).fail((jqXHR) => {
                     console.error(jqXHR)

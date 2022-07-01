@@ -724,6 +724,12 @@ export default {
                   ? "Filtros de reporte habilitado"
                   : "Filtros de reporte deshabilitado"
             });
+          })
+          .catch((message) => {
+            top.notification({
+              type: "error",
+              message
+            });
           });
     },
   }
