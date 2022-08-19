@@ -16,7 +16,7 @@ function loadAnexosPqr(anexos) {
 
 //evento ejecutado en el adicionar
 function add(data) {
-    let rcmailDataId = +top.getUrlParam('rcmailDataId',location.href);
+    const rcmailDataId = +top.getUrlParam('rcmailDataId', location.href);
     if (rcmailDataId) {
         top.$.ajax({
             url: `/api/roundcube/rcmail`,
@@ -57,7 +57,9 @@ function add(data) {
 
     });
 
-
+    // $.getScript('/views/modules/client/pqr/additionalValidations.js', function () {
+    //     additionalValidations(data);
+    // });
 }
 
 //evento ejecutado en el editar
