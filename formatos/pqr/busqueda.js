@@ -1,4 +1,6 @@
 $(function () {
+    const containerDate = $('#date_container');
+
     function createPicker() {
         $('#fecha_inicial,#fecha_final').datetimepicker({
             locale: 'es',
@@ -11,9 +13,14 @@ $(function () {
             .val(1)
             .trigger('change');
 
-        $('#sys_frecuencia,#sys_impacto,#sys_severidad')
+        containerDate.hide();
+
+        $('select').not('#filtro_fecha')
             .val('')
             .trigger('change');
+
+        $('input[type="radio"]').prop('checked', false);
+        $('input[type="checkbox"]').prop('checked', false);
 
         $('input').val('');
     });
@@ -43,7 +50,7 @@ $(function () {
 
     const fechaInitial = $('#fecha_inicial');
     const fechaFinal = $('#fecha_final');
-    const containerDate = $('#date_container');
+
 
     $('#filtro_fecha').on('select2:select', function (e) {
         fechaInitial
@@ -53,6 +60,7 @@ $(function () {
         fechaFinal
             .data('DateTimePicker')
             .clear();
+
         containerDate.hide();
 
         const today = moment().set({
