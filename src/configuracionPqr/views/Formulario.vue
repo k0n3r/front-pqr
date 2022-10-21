@@ -148,19 +148,6 @@
                 <input
                     type="checkbox"
                     value="1"
-                    id="radEmail1"
-                    v-model="radEmail"
-                    @change="editRadEmail($event)"
-                />
-                <label for="radEmail1">HABILITAR PARA RADICACIÓN EMAIL</label>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="checkbox check-success input-group">
-                <input
-                    type="checkbox"
-                    value="1"
                     id="enableFilter1"
                     v-model="enableFilter"
                     @change="editEnableFilter($event)"
@@ -354,7 +341,6 @@ export default {
   data() {
     return {
       showEmpty: 1,
-      radEmail: null,
       enableFilter: null,
       showReport: [],
       notify: [],
@@ -422,7 +408,6 @@ export default {
           this.valresponseTimeField = -1;
 
           this.showEmpty = +this.form.show_empty ? 1 : null;
-          this.radEmail = +this.form.rad_email ? 1 : null;
           this.enableFilter = +this.form.enable_filter_dep ? 1 : null;
 
         })
@@ -509,7 +494,6 @@ export default {
       "deleteNotification",
       "updateNotyMessage",
       "updateShowEmpty",
-      "updateRadEmail",
       "updateEnableFilter"
     ]),
     openModal() {
@@ -701,17 +685,6 @@ export default {
               message: e.target.checked
                   ? "Se mostrarán los campos vacios!"
                   : "Se ocultarán los campos vacios!",
-            });
-          });
-    },
-    editRadEmail(e) {
-      this.updateRadEmail(e.target.checked ? 1 : 0)
-          .then(() => {
-            top.notification({
-              type: "success",
-              message: e.target.checked
-                  ? "Radicación por correo habilitada"
-                  : "Radicación por correo deshabilitada"
             });
           });
     },

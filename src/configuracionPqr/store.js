@@ -269,30 +269,6 @@ export default new Vuex.Store({
 
             });
         },
-        updateRadEmail({commit}, val) {
-            return new Promise((resolve, reject) => {
-
-                $.ajax({
-                    url: `/api/pqr/form/radEmail`,
-                    method: 'put',
-                    data: {
-                        rad_email: val
-                    }
-                }).done(response => {
-                    if (response.success) {
-                        commit("setForm", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
-
-            });
-        },
         updateEnableFilter({commit}, val) {
             return new Promise((resolve, reject) => {
 
