@@ -29,7 +29,7 @@ function add(data) {
         });
     }
 
-    if (!+data.moreData.isActive) {
+    if (!+data.moreData.isActiveSubType) {
         $("#group_sys_subtipo").remove();
     }
 
@@ -64,11 +64,13 @@ function add(data) {
 
 //evento ejecutado en el editar
 function edit(data) {
-    top.notification({
-        type: 'error',
-        message: 'No se permite editar el documento'
-    });
-    window.history.back();
+    if (!data.moreData.isStarted) {
+        top.notification({
+            type: 'error',
+            message: 'No se permite editar el documento'
+        });
+        window.history.back();
+    }
 }
 
 //evento ejecutado en el mostrar
