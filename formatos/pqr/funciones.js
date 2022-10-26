@@ -57,6 +57,8 @@ function add(data) {
 
     });
 
+    addEdit(data);
+
     // $.getScript('/views/modules/client/pqr/additionalValidations.js', function () {
     //     additionalValidations(data);
     // });
@@ -70,7 +72,14 @@ function edit(data) {
             message: 'No se permite editar el documento'
         });
         window.history.back();
+        return;
     }
+    addEdit(data);
+}
+
+function addEdit(data) {
+    $("#destino_interno").addClass("required");
+    $("#group_destino_interno").show();
 }
 
 //evento ejecutado en el mostrar
