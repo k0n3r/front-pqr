@@ -78,6 +78,10 @@ function edit(data) {
 }
 
 function addEdit(data) {
+    $("#select_mensajeria option").filter(function () {
+        return +$(this).data('key') === 1;
+    }).remove();
+
     $("#destino_interno").addClass("required");
     $("#group_destino_interno").show();
 }
