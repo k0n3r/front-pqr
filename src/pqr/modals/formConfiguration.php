@@ -39,11 +39,11 @@ include_once $rootPath . 'views/assets/librerias.php';
                             <tr :key="'tr_'+field.id" v-if="!+field.active">
                                 <td scope="row" class="text-uppercase">{{field.label}}</td>
                                 <td class="text-center">
-                                    <button type="button" v-if="isSystem(field.name)" class="btn btn-xs btn-danger" @click="deleteField(field.id)" data-toggle="tooltip" title="Eliminar">
+                                    <button type="button" v-if="isSystem(field.name)" class="btn btn-xs btn-danger" v-on:click="deleteField(field.id)" data-toggle="tooltip" title="Eliminar">
                                         <i class="fa fa-trash"></i>
                                     </button>
 
-                                    <button type="button" class="btn btn-xs btn-danger" @click="changeStatus(field.id)" data-toggle="tooltip" title="Activar">
+                                    <button type="button" class="btn btn-xs btn-danger" v-on:click="changeStatus(field.id)" data-toggle="tooltip" title="Activar">
                                         <i class="fa fa-toggle-off"></i>
                                     </button>
                                 </td>
@@ -105,7 +105,7 @@ include_once $rootPath . 'views/assets/librerias.php';
 
             <div class="form-group mt-2 float-right">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-complete" @click="saveChanges">Guardar</button>
+                <button type="button" class="btn btn-complete" v-on:click="saveChanges">Guardar</button>
             </div>
         </div>
     </div>

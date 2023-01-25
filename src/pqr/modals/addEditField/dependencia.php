@@ -60,7 +60,7 @@ include_once $rootPath . 'views/assets/librerias.php';
                     <div class="input-group">
                         <input type="text" class="form-control" :value="option.text" readonly />
                         <div class="input-group-append">
-                            <span class="btn btn-danger" @click="deleteOption(option.id)">
+                            <span class="btn btn-danger" v-on:click="deleteOption(option.id)">
                                 <i class="fa fa-trash"></i>
                             </span>
                         </div>
@@ -69,8 +69,8 @@ include_once $rootPath . 'views/assets/librerias.php';
 
                 <div class="float-right">
                     <div class="form-group" id="form_buttons">
-                        <button type="button" class="btn btn-danger" @click="resetForm">Cancelar</button>
-                        <button type="button" class="btn btn-complete" @click="onSubmit">Guardar</button>
+                        <button type="button" class="btn btn-danger" v-on:click="resetForm">Cancelar</button>
+                        <button type="button" class="btn btn-complete" v-on:click="onSubmit">Guardar</button>
                     </div>
                     <div class="progress-circle-indeterminate d-none" id="spiner"></div>
                 </div>

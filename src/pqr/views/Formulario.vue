@@ -18,7 +18,7 @@
                 :key="index"
             >
               {{ htmlField.label }}
-              <span class="btn pull-right" @click="addField(htmlField)">
+              <span class="btn pull-right" v-on:click="addField(htmlField)">
                 <i class="fa fa-plus"></i>
               </span>
             </li>
@@ -36,7 +36,7 @@
                 <li
                     data-toggle="tooltip"
                     title="Configuración"
-                    @click="openFormConfig"
+                    v-on:click="openFormConfig"
                 >
                   <button
                       type="button"
@@ -86,7 +86,7 @@
                             "
                               type="button"
                               class="btn btn-xs btn-danger"
-                              @click="deleteField(field.id)"
+                              v-on:click="deleteField(field.id)"
                               data-toggle="tooltip"
                               title="Eliminar"
                           >
@@ -102,7 +102,7 @@
                               :class="
                               +field.active ? 'btn-success' : 'btn-danger'
                             "
-                              @click="changeStatus(field.id, +field.active)"
+                              v-on:click="changeStatus(field.id, +field.active)"
                               data-toggle="tooltip"
                               :title="+field.active ? 'Inactivar' : 'Activar'"
                           >
@@ -118,7 +118,7 @@
                           <button
                               type="button"
                               class="btn btn-xs btn-warning"
-                              @click="editField(field)"
+                              v-on:click="editField(field)"
                               data-toggle="tooltip"
                               title="Editar"
                           >
@@ -138,7 +138,7 @@
               </div>
 
               <div class="form-group float-md-left float-lg-right">
-                <button type="button" class="btn btn-success" @click="publish">
+                <button type="button" class="btn btn-success" v-on:click="publish">
                   Publicar
                 </button>
               </div>

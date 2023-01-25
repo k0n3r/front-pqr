@@ -33,8 +33,8 @@ include_once $rootPath . 'views/assets/librerias.php';
 
                 <div class="float-right">
                     <div class="form-group" id="form_buttons">
-                        <button type="button" class="btn btn-danger" @click="resetForm">Cancelar</button>
-                        <button type="button" class="btn btn-complete" @click="onSubmit">Guardar</button>
+                        <button type="button" class="btn btn-danger" v-on:click="resetForm">Cancelar</button>
+                        <button type="button" class="btn btn-complete" v-on:click="onSubmit">Guardar</button>
                     </div>
                     <div class="progress-circle-indeterminate d-none" id="spiner"></div>
                 </div>

@@ -65,7 +65,7 @@
               <button
                   type="button"
                   class="btn btn-complete"
-                  @click="saveChange"
+                  v-on:click="saveChange"
               >
                 Guardar
               </button>
@@ -115,7 +115,7 @@
               <button
                   type="button"
                   class="btn btn-complete"
-                  @click="editShowReport"
+                  v-on:click="editShowReport"
               >
                 Guardar
               </button>
@@ -228,7 +228,7 @@
               <div class="col">
                 <div class="form-group">
                   <label>Notificación/E-mail</label>
-                  <a href="#" @click="openModal">(clic ayuda)</a>
+                  <a href="#" v-on:click="openModal">(clic ayuda)</a>
                   <select v-model="noty_message" class="full-width">
                     <option
                         v-for="(option, index) in optionsNotyMessages"
@@ -282,7 +282,7 @@
               <button
                   type="button"
                   class="btn btn-complete"
-                  @click="saveNotyMessage"
+                  v-on:click="saveNotyMessage"
               >
                 Guardar
               </button>

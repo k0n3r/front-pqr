@@ -64,7 +64,7 @@
             </table>
 
             <div class="form-group float-sm-left float-lg-right mt-2">
-              <button type="button" class="btn btn-complete" @click="saveChange">Guardar</button>
+              <button type="button" class="btn btn-complete" v-on:click="saveChange">Guardar</button>
             </div>
           </div>
         </div>
