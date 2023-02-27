@@ -87,13 +87,13 @@ include_once $rootPath . 'views/assets/librerias.php';
                                 <td scope="row" class="text-uppercase">{{field.label}}</td>
                                 <td class="text-center">
                                     <div class="checkbox check-success">
-                                        <input type="checkbox" :id="'check_'+field.id" :value="field.id" v-model="showFieldsAnonymous" @change="isCheck($event,1,field.id)" />
+                                        <input type="checkbox" :id="'check_'+field.id" :value="field.id" v-model="showFieldsAnonymous" v-on:change="isCheck($event,1,field.id)" />
                                         <label :for="'check_'+field.id"></label>
                                     </div>
                                 </td>
                                 <td class="text-center">
                                     <div class="checkbox check-success">
-                                        <input type="checkbox" :id="'check2_'+field.id" :value="field.id" v-model="requiredFieldsAnonymous" @change="isCheck($event,2,field.id)" />
+                                        <input type="checkbox" :id="'check2_'+field.id" :value="field.id" v-model="requiredFieldsAnonymous" v-on:change="isCheck($event,2,field.id)" />
                                         <label :for="'check2_'+field.id"></label>
                                     </div>
                                 </td>

@@ -22,8 +22,7 @@
             <form id="find_document_form">
                 <input type="hidden" name="_csrf" value="">
                 <input type="hidden" id="variable_busqueda" name="variable_busqueda">
-                <input type="hidden" name="idbusqueda_componente" id="component"
-                       value="<?= $_REQUEST['idbusqueda_componente'] ?>">
+                <input type="hidden" name="idbusqueda_componente" id="component">
 
                 <div class="row">
                     <div class="col-12">
@@ -140,13 +139,10 @@
 <script src="/views/node_modules/select2/dist/js/select2.min.js" type="text/javascript"></script>
 <script src="/views/node_modules/select2/dist/js/i18n/es.js" type="text/javascript"></script>
 <script type="text/javascript" src="/views/node_modules/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
-
 <script type="text/javascript"
         src="/views/assets/theme/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-
 <script type="text/javascript"
         src="/views/assets/theme/assets/plugins/bootstrap-datetimepicker/js/locales/es.js"></script>
-
 <script src="/views/modules/pqr/formatos/pqr/busqueda.js"></script>
 </body>
 

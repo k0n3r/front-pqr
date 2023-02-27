@@ -137,7 +137,7 @@
                     value="1"
                     id="showEmpty1"
                     v-model="showEmpty"
-                    @change="editShowEmpty($event)"
+                    v-on:change="editShowEmpty($event)"
                 />
                 <label for="showEmpty1">MOSTRAR VALORES VACIOS AL GENERAR EL DOCUMENTO</label>
               </div>
@@ -150,7 +150,7 @@
                     value="1"
                     id="enableFilter1"
                     v-model="enableFilter"
-                    @change="editEnableFilter($event)"
+                    v-on:change="editEnableFilter($event)"
                 />
                 <label for="enableFilter1">FILTRAR REPORTES (DEPENDENCIAS)</label>
               </div>
@@ -205,7 +205,7 @@
                           type="checkbox"
                           :value="notification.id"
                           v-model="notifyEmail"
-                          @change="isCheckNotifyEmail($event, notification.id)"
+                          v-on:change="isCheckNotifyEmail($event, notification.id)"
                           :id="'checkEmail_' + notification.id"
                       />
                       <label :for="'checkEmail_' + notification.id"></label>

@@ -1,4 +1,14 @@
 $(function () {
+    const urlModal = new URL(`${localStorage.getItem('baseUrl')}${window.modalOptions.url}`);
+
+    const idBusquedaComponente = urlModal.searchParams.get('idbusqueda_componente');
+    $('#component').val(idBusquedaComponente);
+
+    const variable_busqueda = urlModal.searchParams.get('variable_busqueda');
+    if (variable_busqueda) {
+        $('#variable_busqueda').val(variable_busqueda);
+    }
+
     const containerDate = $('#date_container');
 
     function createPicker() {
@@ -110,7 +120,6 @@ $(function () {
     });
 
     (function init() {
-
         $('#filtro_fecha,#sys_frecuencia,#sys_impacto,#sys_severidad').select2();
         createPicker();
 
@@ -123,7 +132,6 @@ $(function () {
         }).fail(function () {
             console.error(...arguments)
         });
-
     })();
 
 });

@@ -60,7 +60,7 @@
                     <input
                         type="checkbox"
                         v-model="checkAnonymous"
-                        @change="updatecheckAnonymous"
+                        v-on:change="updatecheckAnonymous"
                     />
                   </p>
                 </div>
