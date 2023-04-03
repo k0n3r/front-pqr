@@ -35,28 +35,10 @@ $(function () {
         $('input').val('');
     });
 
-    $('#btn_success').off('click', '#btn_success').on('click', function () {
-
-        let request = $('#find_document_form').serialize() + "&" + $.param({
-            key: localStorage.getItem('key'),
-            token: localStorage.getItem('token'),
+    $('#btn_success').off('click', '#btn_success')
+        .on('click', function () {
+            top.processReportFilter($('#kformulario_saia').serialize());
         });
-
-
-        $.post(`/app/busquedas/procesa_filtro_busqueda.php`,
-            request,
-            function (data) {
-                if (data.success) {
-                    top.successModalEvent(data);
-                } else {
-                    top.notification({
-                        message: data.mensaje,
-                        type: 'error'
-                    });
-                }
-            },
-            'json');
-    });
 
     const fechaInitial = $('#fecha_inicial');
     const fechaFinal = $('#fecha_final');

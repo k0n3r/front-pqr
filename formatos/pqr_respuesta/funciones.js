@@ -32,7 +32,7 @@ function add(data) {
             if (response.success) {
                 const data = response.data;
 
-                if (typeof data.destino === 'object') {
+                if (typeof data.destino === 'object' && data.destino.id > 0) {
                     const sDestino = $("#destino");
                     sDestino.select2('close');
 
