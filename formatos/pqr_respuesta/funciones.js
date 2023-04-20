@@ -102,9 +102,8 @@ function addEdit() {
         minimumInputLength: 2,
         language: 'es',
         ajax: {
-            type: 'POST',
             dataType: 'json',
-            url: `/app/configuracion/autocompletar_municipios.php`,
+            url: `/api/city/autocomplete`,
             data: function (params) {
                 return {
                     term: params.term,
