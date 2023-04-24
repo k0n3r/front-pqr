@@ -87,30 +87,6 @@ function add(data) {
         $("#group_sys_subtipo").remove();
     }
 
-    $(".pqrAutocomplete").each(function (index, element) {
-        $("#" + element.id).select2({
-            language: "es",
-            placeholder: "Ingrese el nombre",
-            multiple: false,
-            ajax: {
-                delay: 400,
-                url: `/api/pqr/components/autocomplete/list`,
-                dataType: "json",
-                data: function (p) {
-                    return {
-                        key: localStorage.getItem("key"),
-                        token: localStorage.getItem("token"),
-                        name: element.id,
-                        data: {
-                            term: p.term
-                        }
-                    };
-                }
-            }
-        });
-
-    });
-
     addEdit(data);
 
     $.getScript('/views/modules/client/pqr/additionalValidations.js')
@@ -140,6 +116,31 @@ function edit(data) {
 }
 
 function addEdit() {
+
+    $(".pqrAutocomplete").each(function (index, element) {
+        $("#" + element.id).select2({
+            language: "es",
+            placeholder: "Ingrese el nombre",
+            multiple: false,
+            ajax: {
+                delay: 400,
+                url: `/api/pqr/components/autocomplete/list`,
+                dataType: "json",
+                data: function (p) {
+                    return {
+                        key: localStorage.getItem("key"),
+                        token: localStorage.getItem("token"),
+                        name: element.id,
+                        data: {
+                            term: p.term
+                        }
+                    };
+                }
+            }
+        });
+
+    });
+
     $("#select_mensajeria option").filter(function () {
         return +$(this).data('key') === 1;
     }).remove();
