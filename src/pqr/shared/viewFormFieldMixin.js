@@ -1,4 +1,4 @@
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
 const viewFormFieldMixin = {
     computed: {
@@ -13,4 +13,4 @@ const viewFormFieldMixin = {
     }
 };
 
-export { viewFormFieldMixin as default };
+export {viewFormFieldMixin as default};

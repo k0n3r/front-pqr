@@ -8,7 +8,7 @@ $(function () {
                     errorPlacement: function (error, element) {
                         let node = element[0];
                         if (
-                            node.tagName == 'SELECT' &&
+                            node.tagName === 'SELECT' &&
                             node.className.indexOf('select2') !== false
                         ) {
                             error.addClass('pl-3');

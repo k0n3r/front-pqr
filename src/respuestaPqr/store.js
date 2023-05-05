@@ -4,17 +4,16 @@ import Vuex from "vuex"
 Vue.use(Vuex)
 
 $.ajaxSetup({
-    method: "get",
-    dataType: "json",
-    data: {
-        key: localStorage.getItem('key'),
-        token: localStorage.getItem('token')
+    method: 'GET',
+    dataType: 'json',
+    headers: {
+        "X-Bearer-Token": localStorage.getItem('token'),
+        "X-Bearer-Key": localStorage.getItem('key')
     },
     error: function (...args) {
         console.error(args);
     }
 });
-var baseUrl = localStorage.getItem('baseUrl');
 
 export default new Vuex.Store({
     state: {
@@ -26,10 +25,10 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        getFieldOptions({ commit }) {
+        getFieldOptions({commit}) {
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: `${baseUrl}api/pqr/form/textFields`,
+                    url: `/api/pqr/form/textFields`,
                 }).done(response => {
                     if (response.success) {
                         commit("setFieldOptions", response.data);
@@ -45,10 +44,10 @@ export default new Vuex.Store({
 
             });
         },
-        getFieldValues({ commit }) {
+        getFieldValues({commit}) {
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: `${baseUrl}api/pqr/form/responseSetting`,
+                    url: `/api/pqr/form/responseSetting`,
                 }).done(response => {
                     if (response.success) {
                         resolve(response.data);
@@ -63,10 +62,10 @@ export default new Vuex.Store({
 
             });
         },
-        saveResponseConfiguration({ commit }, data) {
+        saveResponseConfiguration({commit}, data) {
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: `${baseUrl}api/pqr/form/updateResponseSetting`,
+                    url: `/api/pqr/form/updateResponseSetting`,
                     method: "put",
                     data: {
                         data: data

@@ -1,0 +1,80 @@
+<div id="AppSelect" class="animated fadeIn">
+    <div class="row">
+        <div class="col">
+            <form id="form" name="form">
+                <input type="hidden" name="_csrf" value="">
+                <div class="form-group form-group-default required">
+                    <label>ETIQUETA</label>
+                    <input class="form-control required" v-model.trim="form.label" type="text" maxlength="250"/>
+                </div>
+
+                <div class="form-group form-group-default required">
+                    <label>OBLIGATORIO?</label>
+
+                    <div class="radio radio-success input-group">
+                        <input type="radio" name="required" id="required1" value="1" aria-required='true'
+                               v-model="form.required" class="required"/>
+                        <label for="required1" class="mr-3">SI</label>
+
+                        <input type="radio" name="required" id="required0" value="0" aria-required='true'
+                               v-model="form.required"/>
+                        <label for="required0" class="mr-3">NO</label>
+                    </div>
+
+                    <label id='required-error' class='error' for='required' style='display: none;'></label>
+                </div>
+
+                <div class="form-group form-group-default required">
+                    <label>MOSTRAR TODAS LAS DEPENDENCIAS?</label>
+                    <div class="radio radio-success input-group">
+
+                        <input type="radio" name="allDependency" id="allDependency1" value="1" aria-required='true'
+                               v-model="allDependency" class="required"/>
+                        <label for="allDependency1" class="mr-3">SI</label>
+
+                        <input type="radio" name="allDependency" id="allDependency0" value="0" aria-required='true'
+                               v-model="allDependency"/>
+                        <label for="allDependency0" class="mr-3">SELECCIONAR</label>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-default form-group-default-select2 required"
+                     v-show="+allDependency==0">
+                    <label>SELECCIONE LAS DEPENDENCIAS</label>
+                    <select class="full-width" id="dependency"></select>
+                    <input class="form-control" :class="+allDependency==0 ? 'required' :''" name="valueOptions"
+                           v-model="valueOptions" type="hidden"/>
+                </div>
+
+                <div class="form-group" v-for="(option,index) in form.options" :key="index">
+                    <div class="input-group">
+                        <input type="text" class="form-control" :value="option.text" readonly/>
+                        <div class="input-group-append">
+                            <span class="btn btn-danger" v-on:click="deleteOption(option.id)">
+                                <i class="fa fa-trash"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="float-right">
+                    <div class="form-group" id="form_buttons">
+                        <button type="button" class="btn btn-danger" v-on:click="resetForm">Cancelar</button>
+                        <button type="button" class="btn btn-complete" v-on:click="onSubmit">Guardar</button>
+                    </div>
+                    <div class="progress-circle-indeterminate d-none" id="spiner"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="/views/node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/views/assets/theme/assets/js/cerok_libraries/ui/globalJqueryValidate.js"></script>
+<script type="text/javascript"
+        src="/views/node_modules/jquery-validation/dist/localization/messages_es.min.js"></script>
+<script type="text/javascript" src="/views/node_modules/vue/dist/vue.global.prod.js"></script>
+
+<script src="/views/modules/pqr/src/pqr/modals/addEditField/js/mixin.js"></script>
+<script src="/views/modules/pqr/src/pqr/modals/addEditField/js/dependencia.js"></script>

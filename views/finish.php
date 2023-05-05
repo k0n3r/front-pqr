@@ -1,21 +1,3 @@
-<?php
-$max_salida = 10;
-$rootPath = $ruta = '';
-
-while ($max_salida > 0) {
-    if (is_file($ruta . 'index.php')) {
-        $rootPath = $ruta;
-        break;
-    }
-
-    $ruta .= '../';
-    $max_salida--;
-}
-
-include_once $rootPath . 'views/assets/librerias.php';
-$params = json_encode($_REQUEST);
-?>
-
 <div class="row">
     <div class="col-12">
         <form>
@@ -26,5 +8,8 @@ $params = json_encode($_REQUEST);
         </form>
     </div>
 </div>
-<?= select2() ?>
-<script id="scriptFinish" src="../../views/modules/pqr/views/js/finish.js" data-params='<?= $params ?>'></script>
+
+<link href="/views/node_modules/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css"/>
+<script src="/views/node_modules/select2/dist/js/select2.min.js" type="text/javascript"></script>
+<script src="/views/node_modules/select2/dist/js/i18n/es.js" type="text/javascript"></script>'
+<script id="scriptFinish" src="/views/modules/pqr/views/js/finish.js" data-params='<?= json_encode($_REQUEST) ?>'></script>

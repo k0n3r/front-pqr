@@ -1,4 +1,5 @@
 import "jquery";
+
 window.jQuery = window.$ = jQuery;
 
 //boostrap

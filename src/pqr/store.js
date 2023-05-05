@@ -4,11 +4,11 @@ import Vuex from "vuex"
 Vue.use(Vuex)
 
 $.ajaxSetup({
-    method: "GET",
-    dataType: "json",
-    data: {
-        key: localStorage.getItem('key'),
-        token: localStorage.getItem('token')
+    method: 'GET',
+    dataType: 'json',
+    headers: {
+        "X-Bearer-Token": localStorage.getItem('token'),
+        "X-Bearer-Key": localStorage.getItem('key')
     },
     error: function (...args) {
         console.error(args);

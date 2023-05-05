@@ -2,11 +2,9 @@ $(function () {
     let params = $('#scriptHistory').data('params');
     $('#scriptHistory').removeAttr('data-params');
 
-    var baseUrl = localStorage.getItem('baseUrl');
-
     $("#tableHistory").bootstrapTable({
-        url: `${baseUrl}api/pqr/${params.idft}/history`,
-        queryParams: function (queryParams) {
+        url: `/api/pqr/${params.idft}/history`,
+        queryParams: function () {
             return {
                 key: localStorage.getItem('key'),
                 token: localStorage.getItem('token')
