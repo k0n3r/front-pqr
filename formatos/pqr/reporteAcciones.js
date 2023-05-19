@@ -185,10 +185,8 @@ $(function () {
 
 
     function answerPqr(idft) {
-        $.get(
+        top.$.get(
             `/api/format/routes`, {
-                key: localStorage.getItem('key'),
-                token: localStorage.getItem('token'),
                 formatName: "pqr_respuesta",
                 padre: idft
             },

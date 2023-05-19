@@ -22,12 +22,8 @@ function showHideDespedida(key) {
 
 function add(data) {
     const idft = $("[name='ft_pqr']").val();
-    $.get(
+    top.$.get(
         `/api/pqr/${idft}/dataToLoadResponse`,
-        {
-            key: localStorage.getItem('key'),
-            token: localStorage.getItem('token')
-        },
         function (response) {
             if (response.success) {
                 const data = response.data;
