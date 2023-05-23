@@ -70,14 +70,10 @@ function add(data) {
 
 function edit(data) {
 
-    $.ajax({
-        method: 'get',
-        dataType: 'json',
+    top.$.ajax({
         url: `/api/document/${data.documento_iddocumento}`,
         async: false,
         data: {
-            key: localStorage.getItem('key'),
-            token: localStorage.getItem('token'),
             getAttributes: 1
         }
     }).done(response => {

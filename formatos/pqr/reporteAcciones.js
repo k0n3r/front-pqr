@@ -69,14 +69,9 @@ $(function () {
                             'button'
                         );
 
-                        $.ajax({
+                        top.$.ajax({
                             type: 'POST',
                             url: `/api/document/${iddocumento}/cancel`,
-                            data: {
-                                key: localStorage.getItem('key'),
-                                token: localStorage.getItem('token')
-                            },
-                            dataType: 'json',
                             success: function (response) {
 
                                 if (response.success) {

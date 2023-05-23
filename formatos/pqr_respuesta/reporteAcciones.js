@@ -1,7 +1,4 @@
-
 $(function () {
-    let baseUrl = localStorage.getItem('baseUrl');
-
     $(document).on('click', '.requestSurvey', function () {
 
         let idft = $(this).data('idft');
@@ -31,20 +28,14 @@ $(function () {
                     '<button><b>SOLICITAR</b></button>',
                     function (instance, toast) {
                         instance.hide({
-                            transitionOut: 'fadeOut'
-                        },
+                                transitionOut: 'fadeOut'
+                            },
                             toast,
                             'button'
                         );
 
-                        $.ajax({
-                            method: 'get',
-                            url: `${baseUrl}api/pqr/answers/${idft}/requestSurveyByEmail`,
-                            data: {
-                                key: localStorage.getItem('key'),
-                                token: localStorage.getItem('token')
-                            },
-                            dataType: 'json',
+                        top.$.ajax({
+                            url: `/api/pqr/answers/${idft}/requestSurveyByEmail`,
                             success: function (response) {
 
                                 if (response.success) {
@@ -67,8 +58,8 @@ $(function () {
                     '<button>CANCELAR</button>',
                     function (instance, toast) {
                         instance.hide({
-                            transitionOut: 'fadeOut'
-                        },
+                                transitionOut: 'fadeOut'
+                            },
                             toast,
                             'button'
                         );
