@@ -1,7 +1,9 @@
 function showHideEncuesta(key) {
     if (+key === 4) {//Enviar por email
+        $("[name='sol_encuesta']").addClass('required');
         $("#group_sol_encuesta").removeClass('d-none');
     } else {
+        $("[name='sol_encuesta']").removeClass('required');
         $("#group_sol_encuesta").addClass('d-none');
     }
 }
@@ -124,12 +126,6 @@ function addEdit() {
         const key = e.params.data.element.dataset.key;
         showHideEncuesta(key);
     });
-
-    $('#sol_encuesta1').change(function () {
-        const val = $(this).is(':checked') ? 1 : 0;
-        $('#sol_encuesta').val(val);
-    });
-
 }
 
 //evento ejecutado en el mostrar
