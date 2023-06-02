@@ -32,7 +32,7 @@ $(function () {
         $('input[type="radio"]').prop('checked', false);
         $('input[type="checkbox"]').prop('checked', false);
 
-        $('input').val('');
+        $('input[type="text"][name^="bqCampo_"]').val('');
     });
 
     $('#btn_success').off('click', '#btn_success')
