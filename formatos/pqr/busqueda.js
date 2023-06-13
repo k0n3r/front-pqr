@@ -33,6 +33,10 @@ $(function () {
         $('input[type="checkbox"]').prop('checked', false);
 
         $('input[type="text"][name^="bqCampo_"]').val('');
+        $('input[type="number"][name^="bqCampo_"]').val('');
+        $('input[type="email"][name^="bqCampo_"]').val('');
+        $('textarea[name^="bqCampo_"]').val('');
+
     });
 
     $('#btn_success').off('click', '#btn_success')
