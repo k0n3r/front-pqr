@@ -39,10 +39,9 @@ $(function () {
 
     });
 
-    $('#btn_success').off('click', '#btn_success')
-        .on('click', function () {
-            top.processReportFilter($('#kformulario_saia').serialize());
-        });
+    $('#btn_success').on('click', function () {
+        top.processReportFilter($('#kformulario_saia').serialize());
+    });
 
     const fechaInitial = $('#fecha_inicial');
     const fechaFinal = $('#fecha_final');
