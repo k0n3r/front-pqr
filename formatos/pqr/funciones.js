@@ -52,6 +52,11 @@ function add(data) {
                 loadAnexosPqr(response.data.anexos_digitales);
             }
         });
+    } else {
+        $('#cWEB,#cEMAIL').remove();
+        $("label[for='cWEB'],label[for='cEMAIL']").remove();
+        $("#group_dependencia").after($("#group_canal_recepcion"));
+        $("#group_canal_recepcion").removeClass('d-none');
     }
 
     if (+data.moreData.isEnabledAnonymous) {
