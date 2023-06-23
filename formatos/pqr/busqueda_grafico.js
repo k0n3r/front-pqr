@@ -7,10 +7,7 @@ $(function () {
         graphId: modalParams.graphId || 0,
         graphName: modalParams.graphName || '',
     }
-
     $('#component').val(params.idBusquedaComponente);
-    $('#variable_busqueda').val(params.variableBusqueda);
-
 
     const containerDate = $('#date_container');
 
@@ -21,34 +18,8 @@ $(function () {
         });
     }
 
-    $('#btn_clear').on('click', function () {
-        $('#filtro_fecha')
-            .val(1)
-            .trigger('change');
-
-        containerDate.hide();
-
-        $('select').not('#filtro_fecha')
-            .val('')
-            .trigger('change');
-
-        $('input[type="radio"]').prop('checked', false);
-        $('input[type="checkbox"]').prop('checked', false);
-
-        $('input[type="text"][name^="bqCampo_"]').val('');
-        $('input[type="number"][name^="bqCampo_"]').val('');
-        $('input[type="email"][name^="bqCampo_"]').val('');
-        $('textarea[name^="bqCampo_"]').val('');
-
-    });
-
-    $('#btn_success').on('click', function () {
-        top.processReportFilter($('#kformulario_saia').serialize());
-    });
-
     const fechaInitial = $('#fecha_inicial');
     const fechaFinal = $('#fecha_final');
-
 
     $('#filtro_fecha').on('select2:select', function (e) {
         fechaInitial
@@ -107,19 +78,27 @@ $(function () {
         }
     });
 
-    (function init() {
-        $('#filtro_fecha,#sys_frecuencia,#sys_impacto,#sys_severidad').select2();
-        createPicker();
+    $('#btn_clear').on('click', function () {
+        $('#filtro_fecha')
+            .val(1)
+            .trigger('change');
 
-        $.ajax({
-            url: `/views/modules/pqr/formatos/pqr/buscar.html`,
-            dataType: 'html',
-        }).done((html) => {
-            const res = (html.replace(/d\./g, "v.")).replace(/_ft@/g, "_v@");
-            $("#morefields").empty().append(res);
-        }).fail(function () {
-            console.error(...arguments)
-        });
+        containerDate.hide();
+
+        $('select').not('#filtro_fecha')
+            .val('')
+            .trigger('change');
+
+        $('input[type="text"][name^="bqCampo_"]').val('');
+    });
+
+    $('#btn_success').on('click', function () {
+        top.processReportFilter($('#kformulario_saia').serialize());
+    });
+
+    (function init() {
+        $('#filtro_fecha,#sys_estado').select2();
+        createPicker();
     })();
 
 });
