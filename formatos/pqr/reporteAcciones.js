@@ -111,7 +111,7 @@ $(function () {
     $(document).on('click', '.history', function () {
         const idft = $(this).data('idft');
         top.topModal({
-            url: `views/modules/pqr/views/viewHistory.php`,
+            url: `views/modules/pqr/views/viewHistory.html`,
             params: {
                 idft: idft
             },
@@ -126,7 +126,7 @@ $(function () {
         const idft = $(this).data('idft');
 
         top.topModal({
-            url: `views/modules/pqr/views/finish.php`,
+            url: `views/modules/pqr/views/finish.html`,
             params: {
                 idft: idft
             },

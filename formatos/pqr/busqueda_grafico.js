@@ -92,12 +92,13 @@ $(function () {
         $('input[type="text"][name^="bqCampo_"]').val('');
     });
 
-    $('#btn_success').on('click', function () {
-        top.processReportFilter($('#kformulario_saia').serialize());
-    });
+    $('#btn_success').off('click', '#btn_success')
+        .on('click', function () {
+            top.processReportFilter($('#kformulario_saia').serialize());
+        });
 
     (function init() {
-        $('#filtro_fecha,#sys_estado').select2();
+        $('#filtro_fecha,#sys_estado,#sys_oportuno').select2();
         createPicker();
     })();
 

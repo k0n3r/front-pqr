@@ -108,7 +108,7 @@ $(function () {
     });
 
     (function init() {
-        $('#filtro_fecha,#sys_frecuencia,#sys_impacto,#sys_severidad').select2();
+        $('#filtro_fecha,#sys_frecuencia,#sys_impacto,#sys_severidad,#sys_oportuno').select2();
         createPicker();
 
         $.ajax({

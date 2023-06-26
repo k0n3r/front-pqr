@@ -86,6 +86,23 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group form-group-default form-group-default-select2">
+                            <label>OPORTUNIDAD EN LAS RESPUESTAS:</label>
+                            <select class='full-width' name='bqCampo_sys_oportuno' id='sys_oportuno'>
+                                <option value="">Seleccione ...</option>
+                                <option value="PENDIENTES SIN VENCER">PENDIENTES SIN VENCER</option>
+                                <option value="VENCIDAS SIN CERRAR">VENCIDAS SIN CERRAR</option>
+                                <option value="CERRADAS A TERMINO">CERRADAS A TERMINO</option>
+                                <option value="CERRADAS FUERA DE TERMINO">CERRADAS FUERA DE TERMINO</option>
+                            </select>
+
+                            <input type="hidden" name="bqCondicional_sys_oportuno" value="=">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group form-group-default form-group-default-select2">
                             <label>FRECUENCIA:</label>
                             <select class='full-width' name='bqCampo_sys_frecuencia' id='sys_frecuencia'>
                                 <option value="">Seleccione ...</option>

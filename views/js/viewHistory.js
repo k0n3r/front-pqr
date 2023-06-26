@@ -1,6 +1,7 @@
 $(function () {
-    let params = $('#scriptHistory').data('params');
-    $('#scriptHistory').removeAttr('data-params');
+    const params = {
+        idft: top.modalOptions.params.idft
+    }
 
     $("#tableHistory").bootstrapTable({
         url: `/api/pqr/${params.idft}/history`,

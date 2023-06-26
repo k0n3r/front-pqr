@@ -1,36 +1,35 @@
 $(function () {
-    let params = $('#scriptFinish').data('params');
-    $('#scriptFinish').removeAttr('data-params');
+    const params = {
+        idft: top.modalOptions.params.idft
+    }
 
-    $(document).off('click', '#btn_success')
-        .on('click', '#btn_success', function () {
-
-            let observaciones = $("#observaciones").val();
-            if (!observaciones) {
-                top.notification({
-                    message: "Por favor ingrese las observaciones",
-                    type: 'error'
-                });
-                return false;
-            }
-
-            top.$.ajax({
-                method: 'PUT',
-                url: `/api/pqr/${params.idft}/finish`,
-                data: {
-                    observaciones: observaciones
-                },
-                success: function (response) {
-                    if (response.success) {
-                        top.successModalEvent();
-                    } else {
-                        top.notification({
-                            message: response.message,
-                            type: 'error'
-                        });
-                    }
-                }
+    $('#btn_success').on('click', function () {
+        const observaciones = $("#observaciones").val();
+        if (!observaciones) {
+            top.notification({
+                message: "Por favor ingrese las observaciones",
+                type: 'error'
             });
+            return false;
+        }
+
+        top.$.ajax({
+            method: 'PUT',
+            url: `/api/pqr/${params.idft}/finish`,
+            data: {
+                observaciones
+            },
+            success: function (response) {
+                if (response.success) {
+                    top.successModalEvent();
+                } else {
+                    top.notification({
+                        message: response.message,
+                        type: 'error'
+                    });
+                }
+            }
         });
+    });
 
 });
