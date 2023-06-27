@@ -98,7 +98,7 @@ $(function () {
         });
 
     (function init() {
-        $('#filtro_fecha,#sys_estado,#sys_oportuno').select2();
+        $('#filtro_fecha,#sys_estado,#sys_oportuno,#canal_recepcion').select2();
         createPicker();
     })();
 
