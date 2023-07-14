@@ -13,13 +13,14 @@ $(function () {
                 formFields: []
             };
         },
-        created() {
+        mounted() {
+
             let form = dataParams.form;
             let fields = this.formFields = dataParams.fields;
 
             this.name = form.label;
-            this.showAnonymous = +form.show_anonymous ? 1 : null;
-            this.showFormName = +form.show_label ? 1 : null;
+            this.showAnonymous = +form.show_anonymous ? true : null;
+            this.showFormName = +form.show_label ? true : null;
 
             let idsShowFields = [];
             let idsRequiredFields = [];
