@@ -23,7 +23,8 @@ export default new Vuex.Store({
         pqrTypes: [],
         personsNotifications: [],
         optionsNotyMessages: [],
-        responseTimeOptions: []
+        responseTimeOptions: [],
+        descriptionField: {}
     },
     mutations: {
         setUrlWs(state, url) {
@@ -50,6 +51,9 @@ export default new Vuex.Store({
         setResponseTimeOptions(state, data) {
             state.responseTimeOptions = data;
         },
+        setDescriptionField(state, data) {
+            state.descriptionField = data;
+        },
         addPersonsNotification(state, data) {
             state.personsNotifications.push(data);
         },
@@ -63,7 +67,7 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        getDataSetting({commit}) {
+        getDataSetting({ commit }) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -78,6 +82,7 @@ export default new Vuex.Store({
                         commit("setPersonNotifications", data.pqrNotifications)
                         commit("setOptionsNotyMessages", data.optionsNotyMessages)
                         commit("setResponseTimeOptions", data.responseTimeOptions)
+                        commit("setDescriptionField", data.descriptionField)
                         resolve();
                     } else {
                         console.log(response)
@@ -90,7 +95,7 @@ export default new Vuex.Store({
 
             });
         },
-        refreshPqrTypes({commit}, id) {
+        refreshPqrTypes({ commit }, id) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -110,7 +115,7 @@ export default new Vuex.Store({
 
             });
         },
-        updatePqrTypes({commit}, data) {
+        updatePqrTypes({ commit }, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -131,7 +136,7 @@ export default new Vuex.Store({
 
             });
         },
-        updateShowReport({commit}, data) {
+        updateShowReport({ commit }, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -153,7 +158,7 @@ export default new Vuex.Store({
 
             });
         },
-        insertNotification({commit}, data) {
+        insertNotification({ commit }, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -175,7 +180,7 @@ export default new Vuex.Store({
 
             });
         },
-        updateNotification({commit}, data) {
+        updateNotification({ commit }, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -199,7 +204,7 @@ export default new Vuex.Store({
 
             });
         },
-        deleteNotification({commit}, data) {
+        deleteNotification({ commit }, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -221,7 +226,25 @@ export default new Vuex.Store({
 
             });
         },
-        updateNotyMessage({commit}, data) {
+        updateDescriptionField({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: `/api/pqr/descriptionField/${data}`,
+                    method: 'put'
+                }).done(response => {
+                    if (response.success) {
+                        resolve();
+                    } else {
+                        reject(response.message);
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
+            })
+        },
+        updateNotyMessage({ commit }, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -244,7 +267,7 @@ export default new Vuex.Store({
 
             })
         },
-        updateShowEmpty({commit}, val) {
+        updateShowEmpty({ commit }, val) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -268,7 +291,7 @@ export default new Vuex.Store({
 
             });
         },
-        updateEnableFilter({commit}, val) {
+        updateEnableFilter({ commit }, val) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({

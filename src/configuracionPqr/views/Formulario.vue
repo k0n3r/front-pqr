@@ -5,6 +5,36 @@
                 <div class="card card-default">
                     <div class="card-header">
                         <div class="card-title">
+                            CONFIGURACIÓN DEL CAMPO DESCRIPCIÓN
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead class="thead-light text-center">
+                            <tr>
+                                <th scope="col">CAMPO</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center"><select data-vmodel="descripcion" id="descripcion" class="w-75"></select></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group float-md-left float-lg-right mt-2">
+                            <button
+                                    type="button"
+                                    class="btn btn-complete"
+                                    v-on:click="editDescriptionField"
+                            >
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-default">
+                    <div class="card-header">
+                        <div class="card-title">
                             CONFIGURACIÓN DÍAS DE VENCIMIENTO (EN DÍAS HABILES)
                         </div>
                     </div>
@@ -354,7 +384,8 @@ export default {
             },
             responseTimeField: 0,
             valresponseTimeField: 0,
-            optionsResponseTimeField: []
+            optionsResponseTimeField: [],
+            descriptionFieldId: 0
         };
     },
     watch: {
@@ -409,7 +440,15 @@ export default {
 
                 this.showEmpty = +this.form.show_empty ? 1 : null;
                 this.enableFilter = +this.form.enable_filter_dep ? 1 : null;
+                this.descriptionFieldId = this.descriptionField.id;
 
+                if(this.descriptionField.id){
+                    $('#descripcion').append(`
+                        <option value="${this.descriptionField.id}">
+                            ${this.descriptionField.name}
+                        </option>
+                    `).val(this.descriptionField.id).trigger('change');
+                }
             })
             .catch(() => {
                 top.notification({
@@ -421,6 +460,37 @@ export default {
     mounted() {
         let _this = this;
         $("#sortable").sortable();
+
+        $("#descripcion")
+            .select2({
+                placeholder: "Ingrese el nombre del campo",
+                language: "es",
+                minimumInputLength: 0,
+                multiple: true,
+                ajax: {
+                    url: `/api/pqr/form/textFields`,
+                    dataType: "json",
+                    data: function (params) {
+                        return {
+                            key: localStorage.getItem("key"),
+                            token: localStorage.getItem("token"),
+                            term: params.term
+                        };
+                    },
+                    processResults: function (response) {
+                        return response.success ? {results: response.data} : {};
+                    },
+                },
+            })
+            .on("select2:selecting", function (e) {
+                $("#descripcion").val(null).trigger("change");
+            })
+            .on("change", function (e) {
+                let element = $(e.currentTarget);
+                if (+element.val()) {
+                    _this.descriptionFieldId = element.val();
+                }
+            });
 
         $("#person")
             .select2({
@@ -463,7 +533,8 @@ export default {
             "formFields",
             "personsNotifications",
             "optionsNotyMessages",
-            "responseTimeOptions"
+            "responseTimeOptions",
+            "descriptionField"
         ]),
         getContentIframe() {
             let iframe = "EL FORMULARIO NO HA SIDO PUBLICADO";
@@ -494,7 +565,8 @@ export default {
             "deleteNotification",
             "updateNotyMessage",
             "updateShowEmpty",
-            "updateEnableFilter"
+            "updateEnableFilter",
+            "updateDescriptionField"
         ]),
         openModal() {
             top.topModal({
@@ -615,6 +687,21 @@ export default {
                     });
                 }
             }
+        },
+        editDescriptionField(){
+            this.updateDescriptionField(this.descriptionFieldId)
+            .then(() => {
+                    top.notification({
+                        type: "success",
+                        message: "Campo descripción actualizado!",
+                    });
+                })
+                .catch(() => {
+                    top.notification({
+                        type: "error",
+                        message: "No fue posible guardar el campo descripción!",
+                    });
+                });
         },
         editShowReport() {
             let data = {
