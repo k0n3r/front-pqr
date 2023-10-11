@@ -67,7 +67,7 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        getDataSetting({ commit }) {
+        getDataSetting({commit}) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -95,7 +95,7 @@ export default new Vuex.Store({
 
             });
         },
-        refreshPqrTypes({ commit }, id) {
+        refreshPqrTypes({commit}, id) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -115,7 +115,7 @@ export default new Vuex.Store({
 
             });
         },
-        updatePqrTypes({ commit }, data) {
+        updatePqrTypes({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -136,7 +136,7 @@ export default new Vuex.Store({
 
             });
         },
-        updateShowReport({ commit }, data) {
+        updateShowReport({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -158,7 +158,7 @@ export default new Vuex.Store({
 
             });
         },
-        insertNotification({ commit }, data) {
+        insertNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -180,7 +180,7 @@ export default new Vuex.Store({
 
             });
         },
-        updateNotification({ commit }, data) {
+        updateNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -204,7 +204,7 @@ export default new Vuex.Store({
 
             });
         },
-        deleteNotification({ commit }, data) {
+        deleteNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -226,11 +226,14 @@ export default new Vuex.Store({
 
             });
         },
-        updateDescriptionField({ commit }, data) {
+        updateDescriptionField({commit}, descriptionFieldId) {
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: `/api/pqr/descriptionField/${data}`,
-                    method: 'put'
+                    url: `/api/pqr/form/descriptionField`,
+                    method: 'put',
+                    data: {
+                        fieldId: descriptionFieldId
+                    }
                 }).done(response => {
                     if (response.success) {
                         resolve();
@@ -244,7 +247,7 @@ export default new Vuex.Store({
 
             })
         },
-        updateNotyMessage({ commit }, data) {
+        updateNotyMessage({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -267,7 +270,7 @@ export default new Vuex.Store({
 
             })
         },
-        updateShowEmpty({ commit }, val) {
+        updateShowEmpty({commit}, val) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -291,7 +294,7 @@ export default new Vuex.Store({
 
             });
         },
-        updateEnableFilter({ commit }, val) {
+        updateEnableFilter({commit}, val) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
