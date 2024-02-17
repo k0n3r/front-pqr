@@ -2,28 +2,179 @@
   <div class="container-fluid h-100" style="overflow-y: auto">
     <div class="row">
       <div class="col-md">
+
         <div class="card card-default">
           <div class="card-header">
-            <div class="card-title">CONFIGURACIÓN DEL CAMPO DESCRIPCIÓN</div>
+            <div class="card-title">OTRAS FUNCIONALIDADES</div>
           </div>
           <div class="card-body">
+
             <div class="form-group">
-              <select
-                  class="full-width select2-hidden-accessible"
-                  id="descripcion"
-              ></select>
+              <div class="checkbox check-success input-group">
+                <input
+                    type="checkbox"
+                    value="1"
+                    id="showEmpty1"
+                    v-model="showEmpty"
+                    v-on:change="editShowEmpty($event)"
+                />
+                <label for="showEmpty1">MOSTRAR VALORES VACIOS AL GENERAR EL DOCUMENTO</label>
+              </div>
             </div>
+
+            <div class="form-group">
+              <div class="checkbox check-success input-group">
+                <input
+                    type="checkbox"
+                    value="1"
+                    id="enableFilter1"
+                    v-model="enableFilter"
+                    v-on:change="editEnableFilter($event)"
+                />
+                <label for="enableFilter1">FILTRAR REPORTES (DEPENDENCIAS)</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="checkbox check-success input-group">
+                <input
+                    type="checkbox"
+                    value="1"
+                    id="enableBalancer1"
+                    v-model="enableBalancer"
+                    v-on:change="editEnableBalancer($event)"
+                />
+                <label for="enableBalancer1">HABILITAR BALANCEO</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card card-default">
+          <div class="card-header">
+            <div class="card-title">
+              BALANCEO DE CARGAS <span
+                class="text-danger font-weight-bold">{{ !this.enableBalancer ? 'Habilite el Balanceo' : '' }}</span>
+            </div>
+          </div>
+          <div v-if="enableBalancer" class="card-body">
+            <p>
+              Seleccione el campo :
+              <select v-model="balancerField" id="balancerField">
+                <option
+                    v-for="(option, index) in balanceOptions"
+                    :key="index"
+                    :value="option.id"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+
+              <select v-model="valBalancerField"
+                      id="valBalancerField" v-if="valBalancerField>0">
+                <option
+                    v-for="(option, index) in optionsBalancerField"
+                    :key="index"
+                    :value="option.id"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+            </p>
+            <table class="table">
+              <thead class="thead-light text-center">
+              <tr>
+                <th scope="col">Tipo</th>
+                <th scope="col">Grupo</th>
+              </tr>
+              </thead>
+              <tbody>
+              <template v-for="(balancer, index) in pqrBalancerGroup">
+                <tr
+                    :key="index"
+                    class="trBalancer"
+                    :data-id="balancer.id"
+                >
+                  <td scope="row">{{ balancer.text }}</td>
+                  <td class="text-center">
+                    <select
+                        class="full-width balancer"
+                        :id="'balancer_'+balancer.id"
+                        :value=balancer.groupId
+                    >
+                      <option value="-1">Seleccione el Grupo</option>
+                      <option v-for="option in groupOptions" v-bind:value="option.id">{{ option.name }}</option>
+                    </select>
+                  </td>
+                </tr>
+              </template>
+              </tbody>
+            </table>
             <div class="form-group float-md-left float-lg-right mt-2">
               <button
                   type="button"
                   class="btn btn-complete"
-                  v-on:click="editDescriptionField"
+                  v-on:click="saveChangeBalancer"
               >
                 Guardar
               </button>
             </div>
           </div>
         </div>
+
+        <div class="card card-default">
+          <div class="card-header">
+            <div class="card-title">
+              CAMPOS A MOSTRAR EN EL REPORTE
+              <span class="text-danger" v-show="!+form.fk_formato"
+              >PRIMERO DEBE PUBLICAR EL FORMULARIO</span
+              >
+            </div>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <thead class="thead-light text-center">
+              <tr>
+                <th scope="col">ETIQUETA</th>
+                <th scope="col">MOSTRAR</th>
+              </tr>
+              </thead>
+              <tbody>
+              <template v-for="field in formFields">
+                <tr :key="field.id" v-if="showField(field)">
+                  <td scope="row" class="text-uppercase">
+                    {{ field.label }}
+                  </td>
+                  <td class="text-center">
+                    <div class="checkbox check-success">
+                      <input
+                          type="checkbox"
+                          :value="field.id"
+                          v-model="showReport"
+                          :id="'check_' + field.id"
+                      />
+                      <label :for="'check_' + field.id"></label>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+              </tbody>
+            </table>
+            <div class="form-group float-md-left float-lg-right mt-2">
+              <button
+                  type="button"
+                  class="btn btn-complete"
+                  v-on:click="editShowReport"
+              >
+                Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md">
 
         <div class="card card-default">
           <div class="card-header">
@@ -93,92 +244,6 @@
                 Guardar
               </button>
             </div>
-          </div>
-        </div>
-
-        <div class="card card-default">
-          <div class="card-header">
-            <div class="card-title">
-              CAMPOS A MOSTRAR EN EL REPORTE
-              <span class="text-danger" v-show="!+form.fk_formato"
-              >PRIMERO DEBE PUBLICAR EL FORMULARIO</span
-              >
-            </div>
-          </div>
-          <div class="card-body">
-            <table class="table">
-              <thead class="thead-light text-center">
-              <tr>
-                <th scope="col">ETIQUETA</th>
-                <th scope="col">MOSTRAR</th>
-              </tr>
-              </thead>
-              <tbody>
-              <template v-for="field in formFields">
-                <tr :key="field.id" v-if="showField(field)">
-                  <td scope="row" class="text-uppercase">
-                    {{ field.label }}
-                  </td>
-                  <td class="text-center">
-                    <div class="checkbox check-success">
-                      <input
-                          type="checkbox"
-                          :value="field.id"
-                          v-model="showReport"
-                          :id="'check_' + field.id"
-                      />
-                      <label :for="'check_' + field.id"></label>
-                    </div>
-                  </td>
-                </tr>
-              </template>
-              </tbody>
-            </table>
-            <div class="form-group float-md-left float-lg-right mt-2">
-              <button
-                  type="button"
-                  class="btn btn-complete"
-                  v-on:click="editShowReport"
-              >
-                Guardar
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md">
-        <div class="card card-default">
-          <div class="card-header">
-            <div class="card-title">OTRAS FUNCIONALIDADES</div>
-          </div>
-          <div class="card-body">
-            <div class="form-group">
-              <div class="checkbox check-success input-group">
-                <input
-                    type="checkbox"
-                    value="1"
-                    id="showEmpty1"
-                    v-model="showEmpty"
-                    v-on:change="editShowEmpty($event)"
-                />
-                <label for="showEmpty1">MOSTRAR VALORES VACIOS AL GENERAR EL DOCUMENTO</label>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="checkbox check-success input-group">
-                <input
-                    type="checkbox"
-                    value="1"
-                    id="enableFilter1"
-                    v-model="enableFilter"
-                    v-on:change="editEnableFilter($event)"
-                />
-                <label for="enableFilter1">FILTRAR REPORTES (DEPENDENCIAS)</label>
-              </div>
-            </div>
-
           </div>
         </div>
 
@@ -315,6 +380,29 @@
 
         <div class="card card-default">
           <div class="card-header">
+            <div class="card-title">CONFIGURACIÓN DEL CAMPO DESCRIPCIÓN</div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <select
+                  class="full-width select2-hidden-accessible"
+                  id="descripcion"
+              ></select>
+            </div>
+            <div class="form-group float-md-left float-lg-right mt-2">
+              <button
+                  type="button"
+                  class="btn btn-complete"
+                  v-on:click="editDescriptionField"
+              >
+                Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-default">
+          <div class="card-header">
             <div class="card-title">Publicar en sitio web</div>
           </div>
           <div class="card-body">
@@ -365,6 +453,7 @@ export default {
     return {
       showEmpty: 1,
       enableFilter: null,
+      enableBalancer: null,
       showReport: [],
       notify: [],
       notifyEmail: [],
@@ -376,16 +465,19 @@ export default {
         type: 1,
       },
       responseTimeField: 0,
+      balancerField: 0,
       valresponseTimeField: 0,
+      valBalancerField: 0,
       optionsResponseTimeField: [],
+      optionsBalancerField: [],
       descriptionFieldId: 0
     };
   },
   watch: {
     responseTimeField(val) {
 
-      let index = this.responseTimeOptions.findIndex(i => i.id == val);
-      if (index == -1) {
+      let index = this.responseTimeOptions.findIndex(i => i.id === val);
+      if (index === -1) {
         return;
       }
 
@@ -401,6 +493,27 @@ export default {
         top.notification({
           type: "error",
           message: "No fue posible obtener los dias",
+        });
+      });
+    },
+    balancerField(val) {
+      let index = this.balanceOptions.findIndex(i => i.id === val);
+      if (index === -1) {
+        return;
+      }
+      this.optionsBalancerField = this.balanceOptions[index].options;
+
+      if (this.optionsBalancerField.length) {
+        this.valBalancerField = this.optionsBalancerField[0].id;
+      } else {
+        this.valBalancerField = -1;
+      }
+    },
+    valBalancerField(val) {
+      this.refreshGroups(val).catch(() => {
+        top.notification({
+          type: "error",
+          message: "No fue posible obtener los grupos",
         });
       });
     }
@@ -428,11 +541,16 @@ export default {
           });
           this.notifyEmail = idsNotifyEmail;
           this.notify = idsNotify;
+
           this.responseTimeField = this.form.fk_field_time;
           this.valresponseTimeField = -1;
 
+          this.balancerField = this.form.fk_field_balancer;
+          this.valBalancerField = -1;
+
           this.showEmpty = +this.form.show_empty ? 1 : null;
           this.enableFilter = +this.form.enable_filter_dep ? 1 : null;
+          this.enableBalancer = +this.form.enable_balancer ? 1 : null;
           this.descriptionFieldId = this.descriptionField.id;
 
           if (this.descriptionField.id) {
@@ -443,6 +561,7 @@ export default {
                     `).val(this.descriptionField.id).trigger('change');
           }
         })
+
         .catch(() => {
           top.notification({
             type: "error",
@@ -451,82 +570,27 @@ export default {
         });
   },
   mounted() {
-    let _this = this;
-    $("#sortable").sortable();
+    this.$nextTick(() => {
+      this.enableEvents();
 
-    $("#descripcion")
-        .select2({
-          placeholder: "Ingrese el nombre del campo",
-          language: "es",
-          minimumInputLength: 0,
-          multiple: false,
-          ajax: {
-            url: `/api/pqr/form/textFields`,
-            dataType: "json",
-            data: function (params) {
-              return {
-                key: localStorage.getItem("key"),
-                token: localStorage.getItem("token"),
-                term: params.term
-              };
-            },
-            processResults: function (response) {
-              return response.success ? {results: response.data} : {};
-            },
-          },
-        })
-        .on("select2:selecting", function (e) {
-          $("#descripcion").val(null).trigger("change");
-        })
-        .on("change", function (e) {
-          let element = $(e.currentTarget);
-          if (+element.val()) {
-            _this.descriptionFieldId = element.val();
-          }
-        });
-
-    $("#person")
-        .select2({
-          placeholder: "Ingrese el nombre del funcionario",
-          language: "es",
-          minimumInputLength: 3,
-          multiple: false,
-          ajax: {
-            delay: 400,
-            url: `/api/user/autocomplete`,
-            dataType: "json",
-            data: function (params) {
-              return {
-                key: localStorage.getItem("key"),
-                token: localStorage.getItem("token"),
-                term: params.term,
-              };
-            },
-            processResults: function (response) {
-              return response.success ? {results: response.data} : {};
-            },
-          },
-        })
-        .on("select2:selecting", function (e) {
-          $("#person").val(null).trigger("change");
-        })
-        .on("change", function (e) {
-          let element = $(e.currentTarget);
-          if (+element.val()) {
-            _this.addNotification(element.val());
-          }
-        });
+      this.$on('hook:updated', () => {
+        $(".balancer").select2();
+      });
+    });
   },
   computed: {
     ...mapState([
       "urlWs",
       "publish",
       "pqrTypes",
+      "pqrBalancerGroup",
       "form",
       "formFields",
       "personsNotifications",
       "optionsNotyMessages",
       "responseTimeOptions",
+      "balanceOptions",
+      "groupOptions",
       "descriptionField"
     ]),
     getContentIframe() {
@@ -550,8 +614,10 @@ export default {
   methods: {
     ...mapActions([
       "refreshPqrTypes",
+      "refreshGroups",
       "getDataSetting",
       "updatePqrTypes",
+      "updateBalancerGroup",
       "updateShowReport",
       "insertNotification",
       "updateNotification",
@@ -559,8 +625,76 @@ export default {
       "updateNotyMessage",
       "updateShowEmpty",
       "updateEnableFilter",
+      "updateEnableBalancer",
       "updateDescriptionField"
     ]),
+    enableEvents() {
+      let _this = this;
+      $("#sortable").sortable();
+
+      $("#descripcion")
+          .select2({
+            placeholder: "Ingrese el nombre del campo",
+            language: "es",
+            minimumInputLength: 0,
+            multiple: false,
+            ajax: {
+              url: `/api/pqr/form/textFields`,
+              dataType: "json",
+              data: function (params) {
+                return {
+                  key: localStorage.getItem("key"),
+                  token: localStorage.getItem("token"),
+                  term: params.term
+                };
+              },
+              processResults: function (response) {
+                return response.success ? {results: response.data} : {};
+              },
+            },
+          })
+          .on("select2:selecting", function () {
+            $("#descripcion").val(null).trigger("change");
+          })
+          .on("change", function (e) {
+            let element = $(e.currentTarget);
+            if (+element.val()) {
+              _this.descriptionFieldId = element.val();
+            }
+          });
+
+      $("#person")
+          .select2({
+            placeholder: "Ingrese el nombre del funcionario",
+            language: "es",
+            minimumInputLength: 3,
+            multiple: false,
+            ajax: {
+              delay: 400,
+              url: `/api/user/autocomplete`,
+              dataType: "json",
+              data: function (params) {
+                return {
+                  key: localStorage.getItem("key"),
+                  token: localStorage.getItem("token"),
+                  term: params.term,
+                };
+              },
+              processResults: function (response) {
+                return response.success ? {results: response.data} : {};
+              },
+            },
+          })
+          .on("select2:selecting", function (e) {
+            $("#person").val(null).trigger("change");
+          })
+          .on("change", function (e) {
+            let element = $(e.currentTarget);
+            if (+element.val()) {
+              _this.addNotification(element.val());
+            }
+          });
+    },
     openModal() {
       top.topModal({
         url: "views/modules/pqr/src/configuracionPqr/modals/help.php",
@@ -580,6 +714,37 @@ export default {
             top.notification({
               type: "success",
               message: "Notificación/Mensage actualizado!",
+            });
+          })
+          .catch(() => {
+            top.notification({
+              type: "error",
+              message: "No fue posible guardar los cambios",
+            });
+          });
+    },
+    saveChangeBalancer() {
+      let _this = this;
+      let balancer = [];
+      $(".trBalancer").each(function (index, element) {
+        const idBalancer = element.attributes["data-id"].value;
+        const value = +$("#balancer_" + idBalancer).val();
+
+        balancer.push({
+          id: idBalancer,
+          groupId: value,
+        });
+      });
+      let data = {
+        fk_field_balancer: _this.balancerField,
+        options: balancer,
+      };
+
+      this.updateBalancerGroup(data)
+          .then(() => {
+            top.notification({
+              type: "success",
+              message: "Cambios actualizados",
             });
           })
           .catch(() => {
@@ -776,6 +941,23 @@ export default {
               message: e.target.checked
                   ? "Filtros de reporte habilitado"
                   : "Filtros de reporte deshabilitado"
+            });
+          })
+          .catch((message) => {
+            top.notification({
+              type: "error",
+              message
+            });
+          });
+    },
+    editEnableBalancer(e) {
+      this.updateEnableBalancer(e.target.checked ? 1 : 0)
+          .then(() => {
+            top.notification({
+              type: "success",
+              message: e.target.checked
+                  ? "Balanceo habilitado"
+                  : "Balanceo deshabilitado"
             });
           })
           .catch((message) => {

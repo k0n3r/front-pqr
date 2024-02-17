@@ -21,9 +21,12 @@ export default new Vuex.Store({
         form: {},
         formFields: [],
         pqrTypes: [],
+        pqrBalancerGroup: [],
         personsNotifications: [],
         optionsNotyMessages: [],
         responseTimeOptions: [],
+        balanceOptions: [],
+        groupOptions: [],
         descriptionField: {}
     },
     mutations: {
@@ -42,6 +45,9 @@ export default new Vuex.Store({
         setPqrTypes(state, data) {
             state.pqrTypes = data;
         },
+        setBalancerGroup(state, data) {
+            state.pqrBalancerGroup = data;
+        },
         setPersonNotifications(state, data) {
             state.personsNotifications = data;
         },
@@ -50,6 +56,12 @@ export default new Vuex.Store({
         },
         setResponseTimeOptions(state, data) {
             state.responseTimeOptions = data;
+        },
+        setBalancerOptions(state, data) {
+            state.balanceOptions = data;
+        },
+        setGroupOptions(state, data) {
+            state.groupOptions = data;
         },
         setDescriptionField(state, data) {
             state.descriptionField = data;
@@ -82,6 +94,8 @@ export default new Vuex.Store({
                         commit("setPersonNotifications", data.pqrNotifications)
                         commit("setOptionsNotyMessages", data.optionsNotyMessages)
                         commit("setResponseTimeOptions", data.responseTimeOptions)
+                        commit("setBalancerOptions", data.balancerOptions)
+                        commit("setGroupOptions", data.groupOptions)
                         commit("setDescriptionField", data.descriptionField)
                         resolve();
                     } else {
@@ -115,11 +129,52 @@ export default new Vuex.Store({
 
             });
         },
+        refreshGroups({commit}, id) {
+            return new Promise((resolve, reject) => {
+
+                $.ajax({
+                    url: `/api/pqr/balancer/field/${id}`,
+                }).done(response => {
+                    if (response.success) {
+                        commit("setBalancerGroup", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
+            });
+        },
         updatePqrTypes({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
                     url: `/api/pqr/responseTimes`,
+                    method: 'put',
+                    data
+                }).done(response => {
+                    if (response.success) {
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject();
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
+            });
+        },
+        updateBalancerGroup({commit}, data) {
+            return new Promise((resolve, reject) => {
+
+                $.ajax({
+                    url: `/api/pqr/balancer`,
                     method: 'put',
                     data
                 }).done(response => {
@@ -302,6 +357,30 @@ export default new Vuex.Store({
                     method: 'put',
                     data: {
                         enable_filter_dep: val
+                    }
+                }).done(response => {
+                    if (response.success) {
+                        commit("setForm", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject(response.message);
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
+            });
+        },
+        updateEnableBalancer({commit}, val) {
+            return new Promise((resolve, reject) => {
+
+                $.ajax({
+                    url: `/api/pqr/form/balancer`,
+                    method: 'put',
+                    data: {
+                        enable_balancer: val
                     }
                 }).done(response => {
                     if (response.success) {
