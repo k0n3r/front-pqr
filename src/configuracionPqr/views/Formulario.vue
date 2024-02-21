@@ -280,7 +280,7 @@
                           type="checkbox"
                           :value="notification.id"
                           v-model="notify"
-                          @input="isCheckNotify($event, notification.id)"
+                          @input="isCheckNotify($event, +notification.id)"
                           :id="'checkNotify_' + notification.id"
                       />
                       <label :for="'checkNotify_' + notification.id"></label>
@@ -293,7 +293,7 @@
                           type="checkbox"
                           :value="notification.id"
                           v-model="notifyEmail"
-                          v-on:change="isCheckNotifyEmail($event, notification.id)"
+                          v-on:change="isCheckNotifyEmail($event, +notification.id)"
                           :id="'checkEmail_' + notification.id"
                       />
                       <label :for="'checkEmail_' + notification.id"></label>
@@ -533,10 +533,10 @@ export default {
           let idsNotifyEmail = [];
           this.personsNotifications.forEach((row) => {
             if (+row.email) {
-              idsNotifyEmail.push(row.id);
+              idsNotifyEmail.push(+row.id);
             }
             if (+row.notify) {
-              idsNotify.push(row.id);
+              idsNotify.push(+row.id);
             }
           });
           this.notifyEmail = idsNotifyEmail;
@@ -663,37 +663,36 @@ export default {
             }
           });
 
-      $("#person")
-          .select2({
-            placeholder: "Ingrese el nombre del funcionario",
-            language: "es",
-            minimumInputLength: 3,
-            multiple: false,
-            ajax: {
-              delay: 400,
-              url: `/api/user/autocomplete`,
-              dataType: "json",
-              data: function (params) {
-                return {
-                  key: localStorage.getItem("key"),
-                  token: localStorage.getItem("token"),
-                  term: params.term,
-                };
-              },
-              processResults: function (response) {
-                return response.success ? {results: response.data} : {};
-              },
-            },
-          })
-          .on("select2:selecting", function (e) {
-            $("#person").val(null).trigger("change");
-          })
-          .on("change", function (e) {
-            let element = $(e.currentTarget);
-            if (+element.val()) {
-              _this.addNotification(element.val());
-            }
-          });
+      const select = $("#person");
+
+      select.select2({
+        placeholder: "Ingrese el nombre del funcionario",
+        language: "es",
+        minimumInputLength: 3,
+        multiple: false,
+        ajax: {
+          delay: 400,
+          url: `/api/user/autocomplete`,
+          dataType: "json",
+          data: function (params) {
+            return {
+              key: localStorage.getItem("key"),
+              token: localStorage.getItem("token"),
+              term: params.term,
+            };
+          },
+          processResults: function (response) {
+            return response.success ? {results: response.data} : {};
+          },
+        },
+      }).on("select2:selecting", function (e) {
+        select.val(null).trigger("change");
+      }).on("change", function (e) {
+        let element = $(e.currentTarget);
+        if (+element.val()) {
+          _this.addNotification(+element.val());
+        }
+      });
     },
     openModal() {
       top.topModal({
@@ -801,20 +800,18 @@ export default {
     isCheckNotify(e, id) {
       if (e.target.checked) {
         this.editNotification({
-          id: id,
+          id,
           data: {
             notify: 1,
           },
         });
       } else {
-        let i = this.notifyEmail.indexOf(id);
-        if (i == -1) {
-          this.delNotification({
-            id: id,
-          });
+        const i = this.notifyEmail.indexOf(id);
+        if (i === -1) {
+          this.delNotification({id,});
         } else {
           this.editNotification({
-            id: id,
+            id,
             data: {
               notify: 0,
             },
@@ -825,20 +822,18 @@ export default {
     isCheckNotifyEmail(e, id) {
       if (e.target.checked) {
         this.editNotification({
-          id: id,
+          id,
           data: {
             email: 1,
           },
         });
       } else {
-        let i = this.notify.indexOf(id);
-        if (i == -1) {
-          this.delNotification({
-            id: id,
-          });
+        const i = this.notify.indexOf(id);
+        if (i === -1) {
+          this.delNotification({id});
         } else {
           this.editNotification({
-            id: id,
+            id,
             data: {
               email: 0,
             },
@@ -880,19 +875,22 @@ export default {
             });
           });
     },
-    addNotification(id) {
-      let index = this.personsNotifications.findIndex((i) => i.id == id);
+    addNotification(idfuncionario) {
 
-      if (index != -1) {
+      let index = this.personsNotifications.findIndex((i) => {
+        return i.fk_funcionario.id === idfuncionario
+      });
+
+      if (index !== -1) {
         top.notification({
           type: "error",
-          message: "No funcionario ya ha sido agregado",
+          message: "el funcionario ya ha sido agregado",
         });
         return false;
       }
 
       let data = {
-        id: id,
+        id: idfuncionario,
       };
 
       this.insertNotification(data)
