@@ -25,7 +25,7 @@ $(function () {
         const documentId = $(this).data('id');
 
         const options = {
-            url: `views/tareas/lista_documento.php`,
+            url: `/views/tareas/lista_documento.php`,
             params: {
                 documentId: documentId
             },
@@ -111,7 +111,7 @@ $(function () {
     $(document).on('click', '.history', function () {
         const idft = $(this).data('idft');
         top.topModal({
-            url: `views/modules/pqr/views/viewHistory.html`,
+            url: `/views/modules/pqr/views/viewHistory.html`,
             params: {
                 idft: idft
             },
@@ -126,7 +126,7 @@ $(function () {
         const idft = $(this).data('idft');
 
         top.topModal({
-            url: `views/modules/pqr/views/finish.html`,
+            url: `/views/modules/pqr/views/finish.html`,
             params: {
                 idft: idft
             },

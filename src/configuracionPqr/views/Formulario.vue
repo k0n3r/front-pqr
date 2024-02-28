@@ -696,7 +696,7 @@ export default {
     },
     openModal() {
       top.topModal({
-        url: "views/modules/pqr/src/configuracionPqr/modals/help.php",
+        url: `/views/modules/pqr/src/configuracionPqr/modals/help.php`,
         buttons: {},
       });
     },

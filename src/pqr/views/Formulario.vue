@@ -263,7 +263,7 @@ export default {
                 refresh: this.refresh,
             };
             let optionsModal = {
-                url: "views/modules/pqr/src/pqr/modals/formConfiguration.html",
+                url: `/views/modules/pqr/src/pqr/modals/formConfiguration.html`,
                 backdrop: "static",
                 keyboard: false,
                 buttons: {},
