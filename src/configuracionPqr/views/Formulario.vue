@@ -259,7 +259,6 @@
                   id="person"
               ></select>
             </div>
-
             <table class="table" v-show="personsNotifications.length">
               <thead class="thead-light text-center">
               <tr>
@@ -269,6 +268,7 @@
               </tr>
               </thead>
               <tbody>
+
               <template v-for="notification in personsNotifications">
                 <tr :key="notification.id">
                   <td scope="row" class="text-uppercase">
@@ -278,7 +278,7 @@
                     <div class="checkbox check-success">
                       <input
                           type="checkbox"
-                          :value="notification.id"
+                          :value="+notification.id"
                           v-model="notify"
                           @input="isCheckNotify($event, +notification.id)"
                           :id="'checkNotify_' + notification.id"
@@ -291,7 +291,7 @@
                     <div class="checkbox check-success">
                       <input
                           type="checkbox"
-                          :value="notification.id"
+                          :value="+notification.id"
                           v-model="notifyEmail"
                           v-on:change="isCheckNotifyEmail($event, +notification.id)"
                           :id="'checkEmail_' + notification.id"
@@ -808,7 +808,7 @@ export default {
       } else {
         const i = this.notifyEmail.indexOf(id);
         if (i === -1) {
-          this.delNotification({id,});
+          this.delNotification({id});
         } else {
           this.editNotification({
             id,
