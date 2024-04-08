@@ -12,7 +12,12 @@
         <tbody>
             <tr>
                 <td>Número de radicado PQR</td>
-                <td>{*n_numeroPqr*}</td>
+                <td>{*n_radicadoPqr*}</td>
+            </tr>
+
+            <tr>
+                <td>Número de consecutivo PQR</td>
+                <td>{*n_consecutivoPqr*}</td>
             </tr>
 
             <tr>
