@@ -49,18 +49,28 @@ $(function () {
         let iddocumento = $(this).data('id');
 
         top.confirm({
-            id: 'question',
-            type: 'warning',
-            message: '¿Está seguro de anular el registro?',
-            position: 'center',
             timeout: 0,
+            closeOnEscape: false,
             overlay: true,
-            overlayClose: true,
-            closeOnEscape: true,
-            closeOnClick: true,
+            displayMode: 'once',
+            title: 'Anular documento',
+            message: 'Debe indicar una observación. Recuerde, esta acción no se podrá revertir',
+            position: 'center',
+            drag: false,
+            type: 'warning',
+            inputs: [
+                [
+                    '<input type="text" id="cancel_observation">',
+                    'keyup',
+                    () => {
+                        return true;
+                    },
+                    true
+                ]
+            ],
             buttons: [
                 [
-                    '<button><b>SI</b></button>',
+                    '<button>Cancelar</button>',
                     function (instance, toast) {
                         instance.hide({
                                 transitionOut: 'fadeOut'
@@ -68,32 +78,35 @@ $(function () {
                             toast,
                             'button'
                         );
+                    }
+                ],
+                [
+                    '<button><b>Anular</b></button>',
+                    function (instance, toast) {
 
+                        const input = $(toast).find('#cancel_observation');
                         top.$.ajax({
                             type: 'POST',
                             url: `/api/document/${iddocumento}/cancel`,
-                            success: function (response) {
-
-                                if (response.success) {
-                                    top.notification({
-                                        message: response.message,
-                                        type: 'success'
-                                    });
-                                    $('#table').bootstrapTable('refresh');
-                                } else {
-                                    top.notification({
-                                        message: response.message,
-                                        type: 'error'
-                                    });
-                                }
+                            data: {
+                                observation: input.val()
+                            },
+                        }).done(response => {
+                            if (!+response.success) {
+                                top.notification({
+                                    message: response.message,
+                                    type: 'error'
+                                });
+                                return;
                             }
+
+                            top.notification({
+                                message: response.message,
+                                type: 'success'
+                            });
+                            $('#table').bootstrapTable('refresh');
                         });
-                    },
-                    true
-                ],
-                [
-                    '<button>NO</button>',
-                    function (instance, toast) {
+
                         instance.hide({
                                 transitionOut: 'fadeOut'
                             },
@@ -105,7 +118,6 @@ $(function () {
                 ]
             ]
         });
-
     });
 
     $(document).on('click', '.history', function () {
