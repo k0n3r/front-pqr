@@ -85,6 +85,13 @@ $(function () {
                     function (instance, toast) {
 
                         const input = $(toast).find('#cancel_observation');
+                        if (!input.val().trim().length) {
+                            top.notification({
+                                message: "Por favor ingrese una observación",
+                                type: 'error'
+                            });
+                            return;
+                        }
                         top.$.ajax({
                             type: 'POST',
                             url: `/api/document/${iddocumento}/cancel`,
