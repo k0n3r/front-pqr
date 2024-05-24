@@ -191,6 +191,73 @@ $(function () {
         }, 'modal');
     });
 
+    $(document).on('click', '.editUser', function () {
+
+        const idft = $(this).data('idft');
+
+        top.$.ajax({
+            url: `/api/pqr/${idft}/externalUser`,
+        }).done(response => {
+            if (!+response.success) {
+                top.notification({
+                    message: response.message,
+                    type: 'error'
+                });
+                return;
+            }
+
+            top.topModal({
+                url: `/views/tercero/formularioDinamico.html`,
+                params: {
+                    fieldId: response.data.fieldId,
+                    id: response.data.sys_tercero,
+                    skipMessage: 1
+                },
+                title: 'Tercero',
+                buttons: {
+                    success: {
+                        label: 'Continuar',
+                        class: 'btn btn-complete'
+                    },
+                    cancel: {
+                        label: 'Cerrar',
+                        class: 'btn btn-danger'
+                    }
+                },
+                onSuccess: function (data) {
+                    top.$.ajax({
+                        type: 'POST',
+                        url: `/api/pqr/${idft}/externalUser`,
+                        data: {
+                            sys_tercero: data.id
+                        }
+                    }).done(response => {
+                        if (!+response.success) {
+                            console.error(response)
+                            return;
+                        }
+
+                        if(!+response.data.correo){
+                            top.notification({
+                                title: "Datos actualizados!",
+                                message: "El tercero no tiene un correo electrónico registrado.",
+                                type: 'info'
+                            });
+                        }else{
+                            top.notification({
+                                message: "Datos actualizados!",
+                                type: 'success'
+                            });
+                        }
+
+                    });
+
+                    top.closeTopModal();
+                }
+            });
+        });
+    });
+
 
     $(document).on('click', '.answer', function () {
         const idft = $(this).data('idft');
