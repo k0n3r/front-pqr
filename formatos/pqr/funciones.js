@@ -156,6 +156,14 @@ function addEdit() {
 
 //evento ejecutado en el mostrar
 function show(data) {
+    $(document)
+        .off('click', '#show_versions')
+        .on('click', '#show_versions', function () {
+            top.notification({
+                type: 'info',
+                message: "No se permite versionar un registro de PQRSF"
+            });
+        });
 }
 
 //evento ejecutado anterior al adicionar
