@@ -13,7 +13,6 @@ $(function () {
 
     function createPicker() {
         $('#fecha_inicial,#fecha_final').datetimepicker({
-            locale: 'es',
             format: 'YYYY-MM-DD'
         });
     }

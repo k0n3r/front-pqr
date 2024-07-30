@@ -30,7 +30,6 @@ export default {
     },
     mounted() {
         let options = {
-            locale: 'es',
             format: 'YYYY-MM-DD',
         };
         $("#" + this.dataParams.name).datetimepicker(options);

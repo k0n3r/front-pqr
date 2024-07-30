@@ -156,7 +156,7 @@ import "topViews/node_modules/jquery-ui-dist/jquery-ui.min.css";
 
 //select 2
 import "topViews/node_modules/select2/dist/js/select2.min.js";
-import "topViews/node_modules/select2/dist/js/i18n/es.js";
+import "topViews/assets/theme/assets/js/cerok_libraries/ui/globalSelect2.js";
 import "topViews/node_modules/select2/dist/css/select2.min.css";
 
 //Dropzone
@@ -166,13 +166,17 @@ import "topViews/assets/theme/assets/plugins/dropzone/custom.css";
 window.Dropzone = Dropzone;
 
 //datetimepicker
-import "topViews/assets/theme/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js";
+import "topViews/node_modules/moment/min/moment.min.js";
+import "topViews/assets/theme/assets/js/cerok_libraries/ui/globalMoment.js";
+
+import "topViews/assets/theme/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js";
 import "topViews/assets/theme/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css";
 
 
 //jquery validate
 import "topViews/node_modules/jquery-validation/dist/jquery.validate.min.js";
-import "topViews/node_modules/jquery-validation/dist/localization/messages_es.min.js";
+import "topViews/assets/theme/assets/js/cerok_libraries/ui/globalJqueryValidate.js";
+
 
 import ViewFormField from "pqr/components/ViewFormField.vue";
 import {mapState, mapActions, mapMutations} from "vuex";

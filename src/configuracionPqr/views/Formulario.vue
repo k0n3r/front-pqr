@@ -442,7 +442,7 @@ import "topViews/node_modules/jquery-ui-dist/jquery-ui.min.css";
 
 //select 2
 import "topViews/node_modules/select2/dist/js/select2.min.js";
-import "topViews/node_modules/select2/dist/js/i18n/es.js";
+import "topViews/assets/theme/assets/js/cerok_libraries/ui/globalSelect2.js";
 import "topViews/node_modules/select2/dist/css/select2.min.css";
 
 import {mapState, mapActions} from "vuex";

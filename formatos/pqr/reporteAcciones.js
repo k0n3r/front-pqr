@@ -135,7 +135,7 @@ $(function () {
                 idft: idft
             },
             size: 'modal-lg',
-            title: 'Historial de cambios',
+            title: 'Historial',
             buttons: {}
         });
     });

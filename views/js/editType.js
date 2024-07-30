@@ -150,7 +150,6 @@ $(function () {
 
 
     $('#sys_fecha_vencimiento').datetimepicker({
-        locale: 'es',
         format: 'YYYY-MM-DD',
         minDate: moment()
     });
