@@ -166,9 +166,7 @@ import "topViews/assets/theme/assets/plugins/dropzone/custom.css";
 window.Dropzone = Dropzone;
 
 //datetimepicker
-import "topViews/node_modules/moment/min/moment.min.js";
-import "topViews/assets/theme/assets/js/cerok_libraries/ui/globalMoment.js";
-
+import "topViews/node_modules/moment/min/moment-with-locales.min.js";
 import "topViews/assets/theme/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js";
 import "topViews/assets/theme/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css";
 

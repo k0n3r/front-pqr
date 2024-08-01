@@ -94,15 +94,11 @@ function addEdit() {
 
     $('#ciudad_origen').select2({
         minimumInputLength: 2,
-        language: 'es',
         ajax: {
-            dataType: 'json',
             url: `/api/city/autocomplete`,
             data: function (params) {
                 return {
-                    term: params.term,
-                    key: localStorage.getItem('key'),
-                    token: localStorage.getItem('token')
+                    term: params.term
                 };
             },
             processResults: function (response) {

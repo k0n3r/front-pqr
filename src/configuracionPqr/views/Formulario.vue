@@ -635,16 +635,12 @@ export default {
       $("#descripcion")
           .select2({
             placeholder: "Ingrese el nombre del campo",
-            language: "es",
             minimumInputLength: 0,
             multiple: false,
             ajax: {
               url: `/api/pqr/form/textFields`,
-              dataType: "json",
               data: function (params) {
                 return {
-                  key: localStorage.getItem("key"),
-                  token: localStorage.getItem("token"),
                   term: params.term
                 };
               },
@@ -667,18 +663,14 @@ export default {
 
       select.select2({
         placeholder: "Ingrese el nombre del funcionario",
-        language: "es",
         minimumInputLength: 3,
         multiple: false,
         ajax: {
           delay: 400,
           url: `/api/user/autocomplete`,
-          dataType: "json",
           data: function (params) {
             return {
-              key: localStorage.getItem("key"),
-              token: localStorage.getItem("token"),
-              term: params.term,
+              term: params.term
             };
           },
           processResults: function (response) {

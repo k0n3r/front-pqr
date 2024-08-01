@@ -30,6 +30,14 @@
  * https://jqueryvalidation.org/
  * Copyright (c) 2022 Jörn Zaefferer; Licensed MIT */
 
+/*! version : 4.17.47
+ =========================================================
+ bootstrap-datetimejs
+ https://github.com/Eonasdan/bootstrap-datetimepicker
+ Copyright (c) 2015 Jonathan Peterson
+ =========================================================
+ */
+
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
  * @version 1.16.1

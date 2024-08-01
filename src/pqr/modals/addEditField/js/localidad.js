@@ -25,7 +25,6 @@ $(function () {
         mounted() {
             let _this = this;
             let options = {
-                language: "es",
                 placeholder: "Ingrese el nombre del país",
                 dropdownParent: "#dinamic_modal",
                 minimumInputLength: 3,
@@ -33,11 +32,8 @@ $(function () {
                 ajax: {
                     delay: 400,
                     url: `/api/pqr/components/autocomplete/find`,
-                    dataType: 'json',
                     data: function (p) {
                         return {
-                            key: localStorage.getItem('key'),
-                            token: localStorage.getItem('token'),
                             type: 'pais',
                             data: {
                                 term: p.term

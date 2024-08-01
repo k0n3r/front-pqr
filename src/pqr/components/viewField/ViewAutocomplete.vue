@@ -26,10 +26,8 @@ export default {
         },
     },
     mounted() {
-        let baseUrl = localStorage.getItem("baseUrl");
         let _this = this;
         let options = {
-            language: "es",
             placeholder: "Ingrese el nombre",
             //minimumInputLength: 3,
             multiple: false,

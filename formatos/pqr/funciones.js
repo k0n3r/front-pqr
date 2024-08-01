@@ -124,17 +124,14 @@ function addEdit() {
 
     $(".pqrAutocomplete").each(function (index, element) {
         $("#" + element.id).select2({
-            language: "es",
+            
             placeholder: "Ingrese el nombre",
             multiple: false,
             ajax: {
                 delay: 400,
                 url: `/api/pqr/components/autocomplete/list`,
-                dataType: "json",
                 data: function (p) {
                     return {
-                        key: localStorage.getItem("key"),
-                        token: localStorage.getItem("token"),
                         name: element.id,
                         data: {
                             term: p.term

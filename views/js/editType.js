@@ -8,7 +8,6 @@ $(function () {
 
     function initSelectDependency() {
         let options = {
-            language: "es",
             placeholder: "Ingrese el nombre",
             multiple: false,
             ajax: {
@@ -38,7 +37,6 @@ $(function () {
         });
 
         $("#" + id).select2({
-            language: "es",
             placeholder: "Seleccione",
             multiple: false
         });

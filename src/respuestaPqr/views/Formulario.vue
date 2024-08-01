@@ -113,7 +113,6 @@ export default {
                 $("select")
                     .select2({
                         placeholder: "Seleccione los campos",
-                        language: "es",
                         multiple: true,
                         data: _this.fieldOptions,
                     })
