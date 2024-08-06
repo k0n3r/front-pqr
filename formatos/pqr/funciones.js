@@ -92,19 +92,7 @@ function add(data) {
         $("#group_sys_subtipo").remove();
     }
 
-    addEdit(data);
-
-    $.getScript('/views/modules/client/pqr/additionalValidations.js')
-        .done(() => {
-            try {
-                additionalValidations(data);
-            } catch (e) {
-                console.info(e.message)
-            }
-        })
-        .fail(() => {
-            console.info("No existen funciones personalizadas en el front");
-        });
+    addEdit(data, false);
 }
 
 //evento ejecutado en el editar
@@ -117,10 +105,10 @@ function edit(data) {
         window.history.back();
         return;
     }
-    addEdit(data);
+    addEdit(data, true);
 }
 
-function addEdit() {
+function addEdit(data, isEdit) {
 
     $(".pqrAutocomplete").each(function (index, element) {
         $("#" + element.id).select2({
@@ -152,6 +140,18 @@ function addEdit() {
 
     $("#destino_interno").addClass("required");
     $("#group_destino_interno").show();
+
+    $.getScript('/views/modules/client/pqr/additionalValidations.js')
+        .done(() => {
+            try {
+                additionalValidations(data, isEdit);
+            } catch (e) {
+                console.info(e.message)
+            }
+        })
+        .fail(() => {
+            console.info("No existen funciones personalizadas en el front");
+        });
 }
 
 //evento ejecutado en el mostrar

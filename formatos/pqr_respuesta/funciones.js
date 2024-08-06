@@ -67,7 +67,7 @@ function add(data) {
         'json'
     );
 
-    addEdit(data);
+    addEdit(data, false);
 }
 
 function edit(data) {
@@ -87,10 +87,10 @@ function edit(data) {
             window.history.back();
         }
     });
-    addEdit(data);
+    addEdit(data, true);
 }
 
-function addEdit() {
+function addEdit(data, isEdit) {
 
     $('#ciudad_origen').select2({
         minimumInputLength: 2,
@@ -126,6 +126,18 @@ function addEdit() {
         const key = e.params.data.element.dataset.key;
         showHideEncuesta(key);
     });
+
+    $.getScript('/views/modules/client/pqr_respuesta/additionalValidations.js')
+        .done(() => {
+            try {
+                additionalValidations(data, isEdit);
+            } catch (e) {
+                console.info(e.message)
+            }
+        })
+        .fail(() => {
+            console.info("No existen funciones personalizadas en el front");
+        });
 }
 
 //evento ejecutado en el mostrar
