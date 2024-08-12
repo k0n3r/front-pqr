@@ -4,7 +4,7 @@
             <form id="form" name="form">
                 <input type="hidden" name="_csrf" value="">
                 <div class="form-group form-group-default required">
-                    <label>ETIQUETA</label>
+                    <label class="text-uppercase" data-i18n="pqr.etiqueta">Etiqueta</label>
                     <input class="form-control required" v-model.trim="form.label" type="text" maxlength="250"/>
                 </div>
 
@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="form-group form-group-default required">
-                    <label>OBLIGATORIO?</label>
+                    <label class="text-uppercase" data-i18n="pqr.obligatorio">Obligatorio</label>
 
                     <div class="radio radio-success input-group">
                         <input type="radio" name="required" id="required1" value="1" v-model="form.required"

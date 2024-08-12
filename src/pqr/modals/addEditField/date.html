@@ -4,40 +4,40 @@
             <form id="form" name="form">
                 <input type="hidden" name="_csrf" value="">
                 <div class="form-group form-group-default required">
-                    <label>ETIQUETA</label>
+                    <label class="text-uppercase" data-i18n="pqr.etiqueta">Etiqueta</label>
                     <input class="form-control required" v-model.trim="form.label" type="text" maxlength="250"/>
                 </div>
 
                 <div class="form-group form-group-default">
-                    <label>MARCADOR DE TEXTO</label>
+                    <label class="text-uppercase" data-i18n="pqr.marcador_texto">Marcador de texto</label>
                     <input class="form-control" type="text" v-model.trim="form.placeholder" maxlength="250"/>
                 </div>
 
                 <div v-if="is_system==0" class="form-group form-group-default required">
-                    <label>OBLIGATORIO?</label>
+                    <label class="text-uppercase" data-i18n="pqr.obligatorio">Obligatorio</label>
 
                     <div class="radio radio-success input-group">
                         <input type="radio" name="required" id="required1" value="1" v-model="form.required"
                                class="required"/>
-                        <label for="required1" class="mr-3">SI</label>
+                        <label for="required1" class="mr-3 text-uppercase" data-i18n="g.si">SI</label>
 
                         <input type="radio" name="required" id="required0" value="0" v-model="form.required"/>
-                        <label for="required0" class="mr-3">NO</label>
+                        <label for="required0" class="mr-3 text-uppercase" data-i18n="g.no">NO</label>
                     </div>
 
                     <label id='required-error' class='error' for='required' style='display: none;'></label>
                 </div>
 
                 <div class="form-group form-group-default required">
-                    <label>TIPO DE FECHA?</label>
+                    <label class="text-uppercase" data-i18n="pqr.tipo_fecha">Tipo de fecha</label>
 
                     <div class="radio radio-success input-group">
                         <input type="radio" name="dateType" id="date1" value="date" v-model="form.dateType"
                                class="required"/>
-                        <label for="date1" class="mr-3">FECHA</label>
+                        <label for="date1" class="mr-3 text-uppercase" data-i18n="g.fecha">Fecha</label>
 
                         <input type="radio" name="dateType" id="date2" value="datetime" v-model="form.dateType"/>
-                        <label for="date2" class="mr-3">FECHA Y HORA</label>
+                        <label for="date2" class="mr-3 text-uppercase" data-i18n="pqr.fecha_hora">Fecha y hora</label>
                     </div>
 
                     <label id='required-error' class='error' for='required' style='display: none;'></label>
@@ -45,8 +45,8 @@
 
                 <div class="float-right">
                     <div class="form-group" id="form_buttons">
-                        <button type="button" class="btn btn-danger" style="margin:1px" v-on:click="resetForm">Cancelar</button>
-                        <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="onSubmit">Guardar</button>
+                        <button type="button" class="btn btn-danger" style="margin:1px" v-on:click="resetForm" data-i18n="g.cancelar">Cancelar</button>
+                        <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="onSubmit" data-i18n="g.guardar">Guardar</button>
                     </div>
                     <div class="progress-circle-indeterminate d-none" id="spiner"></div>
                 </div>

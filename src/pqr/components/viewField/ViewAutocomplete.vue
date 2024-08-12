@@ -29,7 +29,6 @@ export default {
         let _this = this;
         let options = {
             placeholder: "Ingrese el nombre",
-            //minimumInputLength: 3,
             multiple: false,
             ajax: {
                 delay: 400,

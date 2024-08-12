@@ -1,2 +1,29 @@
 {
+  "db": {
+    "modulo": {
+      "agrupador_pqr": "PQRSF",
+      "configuracion_pqr": "Configuration",
+      "conf_plantilla_pqr": "PQRSF Form",
+      "conf_respuesta_pqr": "PQRSF Responses",
+      "conf_formulario_pqr": "General",
+      "reporte_pqr": "Reports",
+      "rep_pendientes_pqr": "Pending",
+      "rep_proceso_pqr": "In process",
+      "rep_terminados_pqr": "Completed",
+      "indicadores_pqr": "Indicators",
+      "ver_campo_inactivo": "View inactive fields",
+      "etiqueta": "Label",
+      "acciones": "Actions",
+      "mostrar_nombre_formulario": "Show form name",
+      "habilitar_anonimo": "Enable anonymous",
+      "mostrar": "Show",
+      "obligatorio": "Mandatory",
+      "eliminar": "Delete",
+      "activar": "Activate",
+      "nombre_formulario": "Form name",
+      "marcador_texto": "Placeholder",
+      "tipo_fecha": "Date type",
+      "fecha_hora": "Date and time"
+    }
+  }
 }

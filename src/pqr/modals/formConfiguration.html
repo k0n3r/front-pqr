@@ -5,7 +5,7 @@
             <div class="form-group">
                 <div class="checkbox check-success input-group">
                     <input type="checkbox" value="1" id="showInactive1" v-model="showInactive"/>
-                    <label for="showInactive1">VER CAMPOS INACTIVOS</label>
+                    <label for="showInactive1" class="text-uppercase" data-i18n="pqr.ver_campo_inactivo">Ver campos inactivos</label>
                 </div>
             </div>
 
@@ -13,8 +13,8 @@
                 <table class="table">
                     <thead class="thead-light text-center">
                     <tr>
-                        <th scope="col">Etiqueta</th>
-                        <th scope="col">ACCIONES</th>
+                        <th scope="col" data-i18n="pqr.etiqueta">Etiqueta</th>
+                        <th scope="col" data-i18n="pqr.acciones">Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -23,12 +23,12 @@
                             <td scope="row" class="text-uppercase">{{ field.label }}</td>
                             <td class="text-center">
                                 <button type="button" v-if="isSystem(field.name)" class="btn btn-xs btn-danger"
-                                        v-on:click="deleteField(field.id)" data-toggle="tooltip" title="Eliminar">
+                                        v-on:click="deleteField(field.id)" data-toggle="tooltip" title="Eliminar" data-i18n="[title]pqr.eliminar">
                                     <i class="fa fa-trash"></i>
                                 </button>
 
                                 <button type="button" class="btn btn-xs btn-danger" v-on:click="changeStatus(field.id)"
-                                        data-toggle="tooltip" title="Activar">
+                                        data-toggle="tooltip" title="Activar" data-i18n="[title]pqr.activar">
                                     <i class="fa fa-toggle-off"></i>
                                 </button>
                             </td>
@@ -42,18 +42,18 @@
             <div class="form-group">
                 <div class="checkbox check-success input-group">
                     <input type="checkbox" value="1" id="showFormName1" v-model="showFormName"/>
-                    <label for="showFormName1">MOSTRAR NOMBRE DEL FORMULARIO</label>
+                    <label for="showFormName1" class="text-uppercase" data-i18n="pqr.mostrar_nombre_formulario">Mostrar nombre del formulario</label>
                 </div>
             </div>
 
             <div class="form-group" v-show="+showFormName">
-                <input type="text" class="form-control" v-model="name" placeholder="Nombre del formulario"/>
+                <input type="text" class="form-control" v-model="name" data-i18n="[placeholder]pqr.nombre_formulario" placeholder="Nombre del formulario"/>
             </div>
 
             <div class="form-group">
                 <div class="checkbox check-success input-group">
                     <input type="checkbox" value="1" id="showAnonymous1" v-model="showAnonymous"/>
-                    <label for="showAnonymous1">HABILITAR ANÓNIMO</label>
+                    <label for="showAnonymous1" class="text-uppercase" data-i18n="pqr.habilitar_anonimo">Habilitar anónimo</label>
                 </div>
             </div>
 
@@ -61,9 +61,9 @@
                 <table class="table">
                     <thead class="thead-light text-center">
                     <tr>
-                        <th scope="col">Etiqueta</th>
-                        <th scope="col">Mostrar</th>
-                        <th scope="col">Obligatorio</th>
+                        <th scope="col" data-i18n="pqr.etiqueta">Etiqueta</th>
+                        <th scope="col" data-i18n="pqr.mostrar">Mostrar</th>
+                        <th scope="col" data-i18n="pqr.obligatorio">Obligatorio</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -91,8 +91,8 @@
             </div>
 
             <div class="form-group mt-2 float-right">
-                <button type="button" class="btn btn-danger" style="margin:1px" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="saveChanges">Guardar
+                <button type="button" class="btn btn-danger" style="margin:1px" data-dismiss="modal" data-i18n="g.cancelar">Cancelar</button>
+                <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="saveChanges" data-i18n="g.guardar">Guardar
                 </button>
             </div>
         </div>

@@ -1,2 +1,29 @@
 {
+  "db": {
+    "modulo": {
+      "agrupador_pqr": "PQRSF",
+      "configuracion_pqr": "Configuración",
+      "conf_plantilla_pqr": "Formulario PQRSF",
+      "conf_respuesta_pqr": "Respuestas PQRSF",
+      "conf_formulario_pqr": "General",
+      "reporte_pqr": "Reportes",
+      "rep_pendientes_pqr": "Pendientes",
+      "rep_proceso_pqr": "En proceso",
+      "rep_terminados_pqr": "Terminados",
+      "indicadores_pqr": "Indicadores",
+      "ver_campo_inactivo": "Ver campos inactivos",
+      "etiqueta": "Etiqueta",
+      "acciones": "Acciones",
+      "mostrar_nombre_formulario": "Mostrar nombre del formulario",
+      "habilitar_anonimo": "Habilitar anónimo",
+      "mostrar": "Mostrar",
+      "obligatorio": "Obligatorio",
+      "eliminar": "Eliminar",
+      "activar": "Activar",
+      "nombre_formulario": "Nombre del formulario",
+      "marcador_texto": "Marcador de texto",
+      "tipo_fecha": "Tipo de fecha",
+      "fecha_hora": "Fecha y hora"
+    }
+  }
 }

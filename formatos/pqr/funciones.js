@@ -112,7 +112,6 @@ function addEdit(data, isEdit) {
 
     $(".pqrAutocomplete").each(function (index, element) {
         $("#" + element.id).select2({
-            
             placeholder: "Ingrese el nombre",
             multiple: false,
             ajax: {
