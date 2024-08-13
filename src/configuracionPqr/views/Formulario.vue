@@ -5,7 +5,7 @@
 
         <div class="card card-default">
           <div class="card-header">
-            <div class="card-title">OTRAS FUNCIONALIDADES</div>
+            <div class="card-title text-uppercase" data-i18n="pqr.otras_funcionalidades">Otras funcionalidades</div>
           </div>
           <div class="card-body">
 
@@ -18,7 +18,8 @@
                     v-model="showEmpty"
                     v-on:change="editShowEmpty($event)"
                 />
-                <label for="showEmpty1">MOSTRAR VALORES VACIOS AL GENERAR EL DOCUMENTO</label>
+                <label for="showEmpty1" class="text-uppercase" data-i18n="pqr.mostrar_valores_vacios">Mostrar valores
+                  vacios al generar el documento</label>
               </div>
             </div>
 
@@ -31,7 +32,8 @@
                     v-model="enableFilter"
                     v-on:change="editEnableFilter($event)"
                 />
-                <label for="enableFilter1">FILTRAR REPORTES (DEPENDENCIAS)</label>
+                <label for="enableFilter1" class="text-uppercase" data-i18n="pqr.filtrar_reportes">Filtrar reportes
+                  (dependencias)</label>
               </div>
             </div>
 
@@ -44,7 +46,8 @@
                     v-model="enableBalancer"
                     v-on:change="editEnableBalancer($event)"
                 />
-                <label for="enableBalancer1">HABILITAR BALANCEO</label>
+                <label for="enableBalancer1" class="text-uppercase" data-i18n="pqr.habilitar_balanceador">Habilitar
+                  balanceo</label>
               </div>
             </div>
 
@@ -54,13 +57,13 @@
         <div class="card card-default">
           <div class="card-header">
             <div class="card-title">
-              BALANCEO DE CARGAS <span
+              <span class="text-uppercase" data-i18n="pqr.balanceo_carga">Balanceo de cargas</span> <span
                 class="text-danger font-weight-bold">{{ !this.enableBalancer ? 'Habilite el Balanceo' : '' }}</span>
             </div>
           </div>
           <div v-if="enableBalancer" class="card-body">
             <p>
-              Seleccione el campo :
+              <span data-i18n="pqr.seleccione_campo">Seleccione el campo</span>
               <select v-model="balancerField" id="balancerField">
                 <option
                     v-for="(option, index) in balanceOptions"
@@ -85,8 +88,8 @@
             <table class="table">
               <thead class="thead-light text-center">
               <tr>
-                <th scope="col">Tipo</th>
-                <th scope="col">Grupo</th>
+                <th scope="col" data-i18n="pqr.tipo">Tipo</th>
+                <th scope="col" data-i18n="pqr.grupo">Grupo</th>
               </tr>
               </thead>
               <tbody>
@@ -103,7 +106,7 @@
                         :id="'balancer_'+balancer.id"
                         :value=balancer.groupId
                     >
-                      <option value="-1">Seleccione el Grupo</option>
+                      <option value="-1" data-i18n="pqr.seleccione_grupo">Seleccione el Grupo</option>
                       <option v-for="option in groupOptions" v-bind:value="option.id">{{ option.name }}</option>
                     </select>
                   </td>
@@ -116,6 +119,7 @@
                   type="button"
                   class="btn btn-complete"
                   v-on:click="saveChangeBalancer"
+                  data-i18n="g.guardar"
               >
                 Guardar
               </button>
@@ -126,18 +130,17 @@
         <div class="card card-default">
           <div class="card-header">
             <div class="card-title">
-              CAMPOS A MOSTRAR EN EL REPORTE
-              <span class="text-danger" v-show="!+form.fk_formato"
-              >PRIMERO DEBE PUBLICAR EL FORMULARIO</span
-              >
+              <span class="text-uppercase" data-i18n="pqr.campos_mostar_reporte">Campos a mostrar en el reporte</span>
+              <span class="text-danger text-uppercase" data-i18n="pqr.primero_publique"
+                    v-show="!+form.fk_formato">Primero debe publicar el formulario</span>
             </div>
           </div>
           <div class="card-body">
             <table class="table">
               <thead class="thead-light text-center">
               <tr>
-                <th scope="col">ETIQUETA</th>
-                <th scope="col">MOSTRAR</th>
+                <th scope="col" class="text-uppercase" data-i18n="pqr.etiqueta">Etiqueta</th>
+                <th scope="col" class="text-uppercase" data-i18n="pqr.mostrar">Mostrar</th>
               </tr>
               </thead>
               <tbody>
@@ -166,6 +169,7 @@
                   type="button"
                   class="btn btn-complete"
                   v-on:click="editShowReport"
+                  data-i18n="g.guardar"
               >
                 Guardar
               </button>
@@ -178,13 +182,13 @@
 
         <div class="card card-default">
           <div class="card-header">
-            <div class="card-title">
-              CONFIGURACIÓN DÍAS DE VENCIMIENTO (EN DÍAS HABILES)
+            <div class="card-title text-uppercase" data-i18n="pqr.configuracion_dias_vencimiento">
+              Configuración días de vencimiento (en días habiles)
             </div>
           </div>
           <div class="card-body">
             <p>
-              Seleccione el campo :
+              <span data-i18n="pqr.seleccione_campo">Seleccione el campo :</span>
               <select v-model="responseTimeField" id="responseTimeField">
                 <option
                     v-for="(option, index) in responseTimeOptions"
@@ -209,8 +213,8 @@
             <table class="table">
               <thead class="thead-light text-center">
               <tr>
-                <th scope="col">Tipo</th>
-                <th scope="col">Días</th>
+                <th scope="col" data-i18n="pqr.tipo">Tipo</th>
+                <th scope="col" data-i18n="pqr.dias">Días</th>
               </tr>
               </thead>
               <tbody id="sortable">
@@ -240,6 +244,7 @@
                   type="button"
                   class="btn btn-complete"
                   v-on:click="saveChange"
+                  data-i18n="g.guardar"
               >
                 Guardar
               </button>
@@ -249,11 +254,11 @@
 
         <div class="card card-default">
           <div class="card-header">
-            <div class="card-title">NOTIFICACIONES</div>
+            <div class="card-title text-uppercase" data-i18n="pqr.notificaciones">Notificaciones</div>
           </div>
           <div class="card-body">
             <div class="form-group">
-              <label>FUNCIONARIOS</label>
+              <label class="text-uppercase" data-i18n="pqr.funcionarios">Funcionarios</label>
               <select
                   class="full-width select2-hidden-accessible"
                   id="person"
@@ -262,9 +267,9 @@
             <table class="table" v-show="personsNotifications.length">
               <thead class="thead-light text-center">
               <tr>
-                <th scope="col">FUNCIONARIO</th>
-                <th scope="col">NOTIFICACIÓN Y TRANSFERENCIA</th>
-                <th scope="col">E-MAIL</th>
+                <th scope="col" class="text-uppercase" data-i18n="pqr.funcionario">Funcionario</th>
+                <th scope="col" class="text-uppercase" data-i18n="pqr.noty_trans">Notificación y transferencia</th>
+                <th scope="col" class="text-uppercase" data-i18n="pqr.email">E-mail</th>
               </tr>
               </thead>
               <tbody>
@@ -308,15 +313,15 @@
 
         <div class="card card-default">
           <div class="card-header">
-            <div class="card-title">Mensajes de Notificación/E-mail</div>
+            <div class="card-title" data-i18n="pqr.mensaje_notificaciones">Mensajes de Notificación/E-mail</div>
           </div>
 
           <div class="card-body">
             <div class="row">
               <div class="col">
                 <div class="form-group">
-                  <label>Notificación/E-mail</label>
-                  <a href="#" v-on:click="openModal">(clic ayuda)</a>
+                  <label data-i18n="pqr.noty_email">Notificación/E-mail</label>
+                  <a href="#" v-on:click="openModal" data-i18n="pqr.clic_ayuda">(clic ayuda)</a>
                   <select v-model="noty_message" class="full-width">
                     <option
                         v-for="(option, index) in optionsNotyMessages"
@@ -332,10 +337,10 @@
                 </p>
                 <template v-if="noty_message.type == 2">
                   <div class="form-group">
-                    <label>ASUNTO:</label>
+                    <label class="text-uppercase" data-i18n="g.asunto">Asunto</label>
                     <input
                         name="subject"
-                        placeholder="Ingrese el asunto del e-mail"
+                        :placeholder="getWord('pqr.ingrese_asunto_email')"
                         type="email"
                         maxlength="250"
                         class="form-control required"
@@ -343,7 +348,7 @@
                     />
                   </div>
                   <div class="form-group">
-                    <label>CUERPO DEL E-MAIL:</label>
+                    <label class="text-uppercase" data-i18n="pqr.cuerpo_email">Cuerpo del e-mail</label>
                     <textarea
                         name="message_body"
                         class="form-control required"
@@ -353,7 +358,7 @@
                 </template>
                 <template v-else>
                   <div class="form-group">
-                    <label>MENSAJE:</label>
+                    <label class="text-uppercase" data-i18n="pqr.mensage">Mensaje</label>
                     <textarea
                         name="message_body"
                         class="form-control required"
@@ -371,6 +376,7 @@
                   type="button"
                   class="btn btn-complete"
                   v-on:click="saveNotyMessage"
+                  data-i18n="g.guardar"
               >
                 Guardar
               </button>
@@ -380,7 +386,8 @@
 
         <div class="card card-default">
           <div class="card-header">
-            <div class="card-title">CONFIGURACIÓN DEL CAMPO DESCRIPCIÓN</div>
+            <div class="card-title text-uppercase" data-i18n="pqr.conf_campo_desc">Configuración del campo descripción
+            </div>
           </div>
           <div class="card-body">
             <div class="form-group">
@@ -403,15 +410,17 @@
 
         <div class="card card-default">
           <div class="card-header">
-            <div class="card-title">Publicar en sitio web</div>
+            <div class="card-title" data-i18n="pqr.publicar_sitio">Publicar en sitio web</div>
           </div>
           <div class="card-body">
             <div class="row">
               <div class="col">
-                <h5>Enlace</h5>
+                <h5 data-i18n="pqr.enlace">Enlace</h5>
                 <p>
-                  Enlace directo al formulario :
-                  <a :href="urlWs" target="_blank" v-show="+publish"
+                  <span data-i18n="pqr.enlace_formulario">Enlace directo al formulario</span>
+                  <a :href="urlWs" target="_blank"
+                     v-show="+publish"
+                     data-i18n="pqr.formulario"
                   >Formulario</a
                   >
                 </p>
@@ -421,7 +430,7 @@
             <div class="row">
               <div class="col">
                 <h5>HTML</h5>
-                <p>
+                <p data-i18n="pqr.utilice_contenido">
                   Utilice el siguiente contenido HTML si desea agregar el
                   formulario a su sitio web
                 </p>
@@ -628,13 +637,17 @@ export default {
       "updateEnableBalancer",
       "updateDescriptionField"
     ]),
+    getWord(key) {
+      return top.i18next.t(key);
+    },
     enableEvents() {
       let _this = this;
       $("#sortable").sortable();
 
+      const placeholder = top.i18next.t('pqr.ingrese_nombre');
       $("#descripcion")
           .select2({
-            placeholder: "Ingrese el nombre del campo",
+            placeholder,
             minimumInputLength: 0,
             multiple: false,
             ajax: {
@@ -662,7 +675,7 @@ export default {
       const select = $("#person");
 
       select.select2({
-        placeholder: "Ingrese el nombre del funcionario",
+        placeholder,
         minimumInputLength: 3,
         multiple: false,
         ajax: {

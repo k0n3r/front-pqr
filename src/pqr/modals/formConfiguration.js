@@ -77,11 +77,15 @@ $(function () {
 
             },
             deleteField(id) {
+                const message=top.i18next.t('pqr.esta_opcion_irreversible');
+                const title=top.i18next.t('pqr.eliminando');
+                const continuar=top.i18next.t('g.continuar');
+                const cancelar=top.i18next.t('g.cancelar');
                 top.confirm({
                     id: 'question',
                     type: 'error',
-                    title: 'Eliminando!',
-                    message: '¿Está opción es irreversible, se borrará la información de la DB, desea continuar?',
+                    title,
+                    message,
                     position: 'center',
                     timeout: 0,
                     overlay: true,
@@ -90,7 +94,7 @@ $(function () {
                     closeOnClick: true,
                     buttons: [
                         [
-                            '<button>Continuar</button>',
+                            '<button>'+continuar+'</button>',
                             function (instance, toast) {
                                 instance.hide({
                                         transitionOut: 'fadeOut'
@@ -106,7 +110,7 @@ $(function () {
                             true
                         ],
                         [
-                            '<button>Cancelar</button>',
+                            '<button>'+cancelar+'</button>',
                             function (instance, toast) {
                                 instance.hide({
                                         transitionOut: 'fadeOut'

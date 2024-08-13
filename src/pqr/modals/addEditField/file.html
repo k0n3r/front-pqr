@@ -9,13 +9,13 @@
                 </div>
 
                 <div class="form-group form-group-default">
-                    <label>CANTIDAD MÁXIMA A PERMITIR</label>
+                    <label class="text-uppercase" data-i18n="pqr.cantidad_maxima">Cantidad máxima a permitir</label>
                     <input class="form-control" type="number" name="numberFiles" min="1" max="10"
                            v-model="form.numberFiles" data-rule-number="true" maxlength="2"/>
                 </div>
 
                 <div class="form-group form-group-default">
-                    <label>TIPOS A PERMITIR</label>
+                    <label class="text-uppercase" data-i18n="pqr.tipos_permitidos">Tipos a permitir</label>
                     <input class="form-control" type="text" name="typeFiles" v-model="form.typeFiles" maxlength="255"/>
                 </div>
 
@@ -25,10 +25,10 @@
                     <div class="radio radio-success input-group">
                         <input type="radio" name="required" id="required1" value="1" v-model="form.required"
                                class="required"/>
-                        <label for="required1" class="mr-3">SI</label>
+                        <label for="required1" class="mr-3" data-i18n="g.si">SI</label>
 
                         <input type="radio" name="required" id="required0" value="0" v-model="form.required"/>
-                        <label for="required0" class="mr-3">NO</label>
+                        <label for="required0" class="mr-3" data-i18n="g.no">NO</label>
                     </div>
 
                     <label id='required-error' class='error' for='required' style='display: none;'></label>
@@ -36,8 +36,8 @@
 
                 <div class="float-right">
                     <div class="form-group" id="form_buttons">
-                        <button type="button" class="btn btn-danger" style="margin:1px" v-on:click="resetForm">Cancelar</button>
-                        <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="onSubmit">Guardar</button>
+                        <button type="button" class="btn btn-danger" style="margin:1px" v-on:click="resetForm" data-i18n="g.cancelar">Cancelar</button>
+                        <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="onSubmit" data-i18n="g.guardar">Guardar</button>
                     </div>
                     <div class="progress-circle-indeterminate d-none" id="spiner"></div>
                 </div>

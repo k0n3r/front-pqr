@@ -14,32 +14,32 @@
                     <div class="radio radio-success input-group">
                         <input type="radio" name="required" id="required1" value="1" v-model="form.required"
                                class="required"/>
-                        <label for="required1" class="mr-3">SI</label>
+                        <label for="required1" class="mr-3" data-i18n="g.si">SI</label>
 
                         <input type="radio" name="required" id="required0" value="0" v-model="form.required"/>
-                        <label for="required0" class="mr-3">NO</label>
+                        <label for="required0" class="mr-3" data-i18n="g.no">NO</label>
                     </div>
 
                     <label id='required-error' class='error' for='required' style='display: none;'></label>
                 </div>
 
                 <div class="form-group form-group-default required">
-                    <label>MOSTRAR TODOS LOS PAISES?</label>
+                    <label class="text-uppercase" data-i18n="pqr.mostrar_todos_paises">Mostrar todos los paises</label>
 
                     <div class="radio radio-success input-group">
                         <input type="radio" name="allCountry" id="allCountry1" value="1" v-model="allCountry"
                                class="required"/>
-                        <label for="allCountry1" class="mr-3">SI</label>
+                        <label for="allCountry1" class="mr-3" data-i18n="g.si">SI</label>
 
                         <input type="radio" name="allCountry" id="allCountry0" value="0" v-model="allCountry"/>
-                        <label for="allCountry0" class="mr-3">SELECCIONAR</label>
+                        <label for="allCountry0" class="mr-3" data-i18n="g.seleccione">Por favor seleccione</label>
                     </div>
 
                     <label id='allCountry-error' class='error' for='required' style='display: none;'></label>
                 </div>
 
                 <div class="form-group form-group-default form-group-default-select2 required" v-show="+allCountry==0">
-                    <label>SELECCIONE EL PAÍS</label>
+                    <label class="text-uppercase" data-i18n="pqr.seleccione_pais">Seleccione el país</label>
                     <select class="full-width" id="country"></select>
                     <input class="form-control" :class="+allCountry==0 ? 'required' :''" name="country"
                            v-model="country" type="hidden"/>
@@ -48,8 +48,8 @@
 
                 <div class="float-right">
                     <div class="form-group" id="form_buttons">
-                        <button type="button" class="btn btn-danger" style="margin:1px" v-on:click="resetForm">Cancelar</button>
-                        <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="onSubmit">Guardar</button>
+                        <button type="button" class="btn btn-danger" style="margin:1px" v-on:click="resetForm" data-i18n="g.cancelar">Cancelar</button>
+                        <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="onSubmit" data-i18n="g.guardar">Guardar</button>
                     </div>
                     <div class="progress-circle-indeterminate d-none" id="spiner"></div>
                 </div>

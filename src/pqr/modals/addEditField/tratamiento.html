@@ -4,20 +4,20 @@
             <form id="form" name="form">
                 <input type="hidden" name="_csrf" value="">
                 <div class="form-group form-group-default required">
-                    <label>TEXTO DE TRATAMIENTO DE DATOS</label>
+                    <label class="text-uppercase" data-i18n="pqr.texto_tratamiento_datos">Texto de tratamiento de datos</label>
                     <textarea class="form-control required" v-model.trim="form.text"></textarea>
                 </div>
 
                 <div class="form-group form-group-default">
-                    <label>URL CONDICIONES DE USO Y POLÍTICAS DE PRIVACIDAD</label>
+                    <label class="text-uppercase" data-i18n="pqr.url_condiciones_uso">URL condiciones de uso y políticas de privacidad</label>
                     <input class="form-control" type="url" id="url" placeholder="https://example.com"
                            v-model.trim="form.url" maxlength="250"/>
                 </div>
 
                 <div class="float-right">
                     <div class="form-group" id="form_buttons">
-                        <button type="button" class="btn btn-danger" style="margin:1px" v-on:click="resetForm">Cancelar</button>
-                        <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="onSubmit">Guardar</button>
+                        <button type="button" class="btn btn-danger" style="margin:1px" v-on:click="resetForm" data-i18n="g.cancelar">Cancelar</button>
+                        <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="onSubmit" data-i18n="g.guardar">Guardar</button>
                     </div>
                     <div class="progress-circle-indeterminate d-none" id="spiner"></div>
                 </div>
