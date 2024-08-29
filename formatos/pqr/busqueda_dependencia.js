@@ -3,22 +3,12 @@ $(function () {
     const modalParams = window.modalOptions.params;
     const params = {
         idBusquedaComponente: modalParams.idbusqueda_componente,
-        variableBusqueda: modalParams.variable_busqueda || '',
-        graphId: modalParams.graphId || 0,
-        graphName: modalParams.graphName || '',
+        variableBusqueda: modalParams.variable_busqueda || ''
     }
 
     $('#component').val(params.idBusquedaComponente);
-    $('#variable_busqueda').val(params.variableBusqueda);
-
 
     const containerDate = $('#date_container');
-
-    function createPicker() {
-        $('#fecha_inicial,#fecha_final').datetimepicker({
-            format: 'YYYY-MM-DD'
-        });
-    }
 
     $('#btn_clear').on('click', function () {
         $('#filtro_fecha')
@@ -31,14 +21,7 @@ $(function () {
             .val('')
             .trigger('change');
 
-        $('input[type="radio"]').prop('checked', false);
-        $('input[type="checkbox"]').prop('checked', false);
-
         $('input[type="text"][name^="bqCampo_"]').val('');
-        $('input[type="number"][name^="bqCampo_"]').val('');
-        $('input[type="email"][name^="bqCampo_"]').val('');
-        $('textarea[name^="bqCampo_"]').val('');
-
     });
 
     $('#btn_success').on('click', function () {
@@ -47,7 +30,6 @@ $(function () {
 
     const fechaInitial = $('#fecha_inicial');
     const fechaFinal = $('#fecha_final');
-
 
     $('#filtro_fecha').on('select2:select', function (e) {
         fechaInitial
@@ -107,31 +89,9 @@ $(function () {
     });
 
     (function init() {
-        $('#filtro_fecha,#sys_frecuencia,#sys_impacto,#sys_severidad,#sys_oportuno').select2();
-        createPicker();
-
-        $.ajax({
-            url: `/api/pqr/contentDependencia`,
-        }).done((response) => {
-            if (+response.success) {
-                $("#row_dependencia")
-                    .empty()
-                    .show()
-                    .append(response.data.content);
-                $('#sys_dependencia').select2();
-            }
-        }).fail(function () {
-            console.error(...arguments)
-        });
-
-        $.ajax({
-            url: `/views/modules/pqr/formatos/pqr/buscar.html`,
-            dataType: 'html',
-        }).done((html) => {
-            const res = (html.replace(/d\./g, "v.")).replace(/_ft@/g, "_v@");
-            $("#morefields").empty().append(res);
-        }).fail(function () {
-            console.error(...arguments)
+        $('#filtro_fecha').select2();
+        $('#fecha_inicial,#fecha_final').datetimepicker({
+            format: 'YYYY-MM-DD'
         });
     })();
 

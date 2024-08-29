@@ -10,6 +10,7 @@
       "rep_pendientes_pqr": "Pending",
       "rep_proceso_pqr": "In process",
       "rep_terminados_pqr": "Completed",
+      "rep_dependencia_pqr": "By Dependency",
       "indicadores_pqr": "Indicators"
     }
   },
@@ -104,6 +105,21 @@
     "telefono": "Phone",
     "registrar_anonimo": "Would you like to register this request as an anonymous person?",
     "publicar": "Publish",
-    "componentes": "Components"
+    "componentes": "Components",
+    "oportunidad_respuesta": "Opportunity in responses",
+    "numero_consecutivo": "Consecutive Number",
+    "frecuencia": "Frequency",
+    "impacto": "Impact",
+    "severidad": "Severity",
+    "bajo": "Low",
+    "medio": "Medium",
+    "alto": "High",
+    "asignar_tarea": "Assign Task",
+    "validar_pqr": "Validate PQRSF",
+    "datos_remitente": "Sender Information",
+    "historial": "History",
+    "responder": "Respond",
+    "terminar": "Finish",
+    "anular": "Cancel"
   }
 }

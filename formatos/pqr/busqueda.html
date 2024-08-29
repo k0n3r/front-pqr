@@ -27,7 +27,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group form-group-default">
-                            <label>Número de Consecutivo:</label>
+                            <label data-i18n="pqr.numero_consecutivo">Número de Consecutivo</label>
                             <input class="form-control" name="bqCampo_v@numero" type="number">
                             <input type="hidden" name="bqCondicional_numero" value="like">
                         </div>
@@ -37,15 +37,15 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group form-group-default form-group-default-select2">
-                            <label>Fecha:</label>
+                            <label data-i18n="g.fecha">Fecha</label>
                             <select class="full-width" id="filtro_fecha">
-                                <option value="1">Seleccione</option>
-                                <option value="2">Hoy</option>
-                                <option value="3">Ayer</option>
-                                <option value="4">Últimos 7 días</option>
-                                <option value="5">Últimos 30 días</option>
-                                <option value="6">Últimos 90 días</option>
-                                <option value="7">Entre las fechas</option>
+                                <option value="1" data-i18n="g.seleccione">Por favor seleccione ...</option>
+                                <option value="2" data-i18n="buzones.hoy">Hoy</option>
+                                <option value="3" data-i18n="buzones.ayer">Ayer</option>
+                                <option value="4" data-i18n="buzones.ultimos_7_dias">Últimos 7 días</option>
+                                <option value="5" data-i18n="buzones.ultimos_30_dias">Últimos 30 días</option>
+                                <option value="6" data-i18n="buzones.ultimos_90_dias">Últimos 90 días</option>
+                                <option value="7" data-i18n="buzones.entre_las_fechas">Entre las fechas
                             </select>
                         </div>
                     </div>
@@ -55,9 +55,9 @@
                     <div class="col-12 col-md-6">
                         <div class="form-group form-group-default input-group">
                             <div class="form-input-group">
-                                <label>Fecha inicial:</label>
+                                <label data-i18n="g.fecha_ini">Fecha inicial</label>
                                 <input name="bqCampo_v@fecha_x" type="text" class="form-control"
-                                       placeholder="Seleccione.." id="fecha_inicial">
+                                       id="fecha_inicial">
                                 <input name="bqComparador_fecha_x" type="hidden" value="y"/>
                                 <input name="bqTipo_fecha_x" type="hidden" value="date">
                             </div>
@@ -70,9 +70,8 @@
                     <div class="col-12 col-md-6">
                         <div class="form-group form-group-default input-group">
                             <div class="form-input-group">
-                                <label>Fecha final:</label>
-                                <input name="fecha_y" type="text" class="form-control" placeholder="Seleccione.."
-                                       id="fecha_final">
+                                <label data-i18n="g.fecha_fin">Fecha final</label>
+                                <input name="fecha_y" type="text" class="form-control" id="fecha_final">
                             </div>
                             <div class="input-group-append ">
                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -81,14 +80,16 @@
                     </div>
                 </div>
 
+                <div class="row" id="row_dependencia"></div>
+
                 <div id="morefields"></div>
 
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group form-group-default form-group-default-select2">
-                            <label>OPORTUNIDAD EN LAS RESPUESTAS:</label>
+                            <label data-i18n="pqr.oportunidad_respuesta">Oportunidad en las respuestas</label>
                             <select class='full-width' name='bqCampo_sys_oportuno' id='sys_oportuno'>
-                                <option value="">Seleccione ...</option>
+                                <option value="" data-i18n="g.seleccione">Por favor seleccione ...</option>
                                 <option value="PENDIENTES SIN VENCER">PENDIENTES SIN VENCER</option>
                                 <option value="VENCIDAS SIN CERRAR">VENCIDAS SIN CERRAR</option>
                                 <option value="CERRADAS A TERMINO">CERRADAS A TERMINO</option>
@@ -103,12 +104,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group form-group-default form-group-default-select2">
-                            <label>FRECUENCIA:</label>
+                            <label data-i18n="pqr.frecuencia">Frecuencia</label>
                             <select class='full-width' name='bqCampo_sys_frecuencia' id='sys_frecuencia'>
-                                <option value="">Seleccione ...</option>
-                                <option value="1">Bajo</option>
-                                <option value="2">Medio</option>
-                                <option value="3">Alto</option>
+                                <option value="" data-i18n="g.seleccione">Por favor seleccione ...</option>
+                                <option value="1" data-i18n="pqr.bajo">Bajo</option>
+                                <option value="2" data-i18n="pqr.medio">Medio</option>
+                                <option value="3" data-i18n="pqr.alto">Alto</option>
                             </select>
 
                             <input type="hidden" name="bqCondicional_sys_frecuencia" value="=">
@@ -119,12 +120,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group form-group-default form-group-default-select2">
-                            <label>IMPACTO:</label>
+                            <label data-i18n="pqr.impacto">Impacto</label>
                             <select class='full-width' name='bqCampo_sys_impacto' id='sys_impacto'>
-                                <option value="">Seleccione ...</option>
-                                <option value="1">Bajo</option>
-                                <option value="2">Medio</option>
-                                <option value="3">Alto</option>
+                                <option value="" data-i18n="g.seleccione">Por favor seleccione ...</option>
+                                <option value="1" data-i18n="pqr.bajo">Bajo</option>
+                                <option value="2" data-i18n="pqr.medio">Medio</option>
+                                <option value="3" data-i18n="pqr.alto">Alto</option>
                             </select>
 
                             <input type="hidden" name="bqCondicional_sys_impacto" value="=">
@@ -135,12 +136,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group form-group-default form-group-default-select2">
-                            <label>SEVERIDAD:</label>
+                            <label data-i18n="pqr.severidad">Severidad</label>
                             <select class='full-width' name='bqCampo_sys_severidad' id='sys_severidad'>
-                                <option value="">Seleccione ...</option>
-                                <option value="1">Bajo</option>
-                                <option value="2">Medio</option>
-                                <option value="3">Alto</option>
+                                <option value="" data-i18n="g.seleccione">Por favor seleccione ...</option>
+                                <option value="1" data-i18n="pqr.bajo">Bajo</option>
+                                <option value="2" data-i18n="pqr.medio">Medio</option>
+                                <option value="3" data-i18n="pqr.alto">Alto</option>
                             </select>
 
                             <input type="hidden" name="bqCondicional_sys_severidad" value="=">

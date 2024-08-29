@@ -10,6 +10,7 @@
       "rep_pendientes_pqr": "Pendientes",
       "rep_proceso_pqr": "En proceso",
       "rep_terminados_pqr": "Terminados",
+      "rep_dependencia_pqr": "Por Dependencia",
       "indicadores_pqr": "Indicadores"
     }
   },
@@ -104,6 +105,21 @@
     "telefono": "Teléfono",
     "registrar_anonimo": "¿Desea registrar esta solicitud como una persona anónima?",
     "publicar": "Publicar",
-    "componentes": "Componentes"
+    "componentes": "Componentes",
+    "oportunidad_respuesta": "Oportunidad en las respuestas",
+    "numero_consecutivo": "Número de consecutivo",
+    "frecuencia": "Frecuencia",
+    "impacto": "Impacto",
+    "severidad": "Severidad",
+    "bajo": "Bajo",
+    "medio": "Medio",
+    "alto": "Alto",
+    "asignar_tarea": "Asignar tarea",
+    "validar_pqr": "Validar PQRSF",
+    "datos_remitente": "Datos remitente",
+    "historial": "Historial",
+    "responder": "Responder",
+    "terminar": "Terminar",
+    "anular": "Anular"
   }
 }
