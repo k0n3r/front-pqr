@@ -1,20 +1,15 @@
-import Vue from "vue"
-import Vuex from "vuex"
+import {createStore} from "vuex"; // Importa createStore desde Vuex 4
 
-Vue.use(Vuex)
-
+// Configuración global de AJAX con jQuery
 $.ajaxSetup({
-    method: 'GET',
-    dataType: 'json',
-    headers: {
-        "X-Bearer-Token": localStorage.getItem('token'),
-        "X-Bearer-Key": localStorage.getItem('key')
-    },
-    error: function (...args) {
+    method: 'GET', dataType: 'json', headers: {
+        "X-Bearer-Token": localStorage.getItem('token'), "X-Bearer-Key": localStorage.getItem('key')
+    }, error: function (...args) {
         console.error(args);
     }
 });
-export default new Vuex.Store({
+
+export default createStore({
     state: {
         urlWs: null,
         publish: null,
@@ -28,88 +23,72 @@ export default new Vuex.Store({
         balanceOptions: [],
         groupOptions: [],
         descriptionField: {}
-    },
-    mutations: {
+    }, mutations: {
         setUrlWs(state, url) {
             state.urlWs = url;
-        },
-        setPublish(state, value) {
+        }, setPublish(state, value) {
             state.publish = value;
-        },
-        setForm(state, data) {
+        }, setForm(state, data) {
             state.form = data;
-        },
-        setFormFields(state, data) {
+        }, setFormFields(state, data) {
             state.formFields = data;
-        },
-        setPqrTypes(state, data) {
+        }, setPqrTypes(state, data) {
             state.pqrTypes = data;
-        },
-        setBalancerGroup(state, data) {
+        }, setBalancerGroup(state, data) {
             state.pqrBalancerGroup = data;
-        },
-        setPersonNotifications(state, data) {
+        }, setPersonNotifications(state, data) {
             state.personsNotifications = data;
-        },
-        setOptionsNotyMessages(state, data) {
+        }, setOptionsNotyMessages(state, data) {
             state.optionsNotyMessages = data;
-        },
-        setResponseTimeOptions(state, data) {
+        }, setResponseTimeOptions(state, data) {
             state.responseTimeOptions = data;
-        },
-        setBalancerOptions(state, data) {
+        }, setBalancerOptions(state, data) {
             state.balanceOptions = data;
-        },
-        setGroupOptions(state, data) {
+        }, setGroupOptions(state, data) {
             state.groupOptions = data;
-        },
-        setDescriptionField(state, data) {
+        }, setDescriptionField(state, data) {
             state.descriptionField = data;
-        },
-        addPersonsNotification(state, data) {
+        }, addPersonsNotification(state, data) {
             state.personsNotifications.push(data);
-        },
-        delPersonsNotification(state, id) {
+        }, delPersonsNotification(state, id) {
             let index = state.personsNotifications.findIndex(i => i.id === id);
             state.personsNotifications.splice(index, 1);
-        },
-        editPersonsNotification(state, data) {
+        }, editPersonsNotification(state, data) {
             let index = state.personsNotifications.findIndex(i => i.id === data.id);
             state.personsNotifications.splice(index, 1, data);
         },
-    },
-    actions: {
+    }, actions: {
         getDataSetting({commit}) {
             return new Promise((resolve, reject) => {
-
                 $.ajax({
                     url: `/api/pqr/form/setting`,
                 }).done(response => {
-                    if (response.success) {
-                        let data = response.data;
-                        commit("setForm", data.pqrForm);
-                        commit("setFormFields", data.pqrFormFields);
-                        commit("setUrlWs", data.urlWs);
-                        commit("setPublish", data.publish);
-                        commit("setPersonNotifications", data.pqrNotifications)
-                        commit("setOptionsNotyMessages", data.optionsNotyMessages)
-                        commit("setResponseTimeOptions", data.responseTimeOptions)
-                        commit("setBalancerOptions", data.balancerOptions)
-                        commit("setGroupOptions", data.groupOptions)
-                        commit("setDescriptionField", data.descriptionField)
-                        resolve();
-                    } else {
+                    if (!+response.success) {
                         console.log(response)
                         reject();
+                        return;
                     }
+
+                    let data = response.data;
+                    commit("setForm", data.pqrForm);
+                    commit("setFormFields", data.pqrFormFields);
+                    commit("setUrlWs", data.urlWs);
+                    commit("setPublish", data.publish);
+                    commit("setPersonNotifications", data.pqrNotifications)
+                    commit("setOptionsNotyMessages", data.optionsNotyMessages)
+                    commit("setResponseTimeOptions", data.responseTimeOptions)
+                    commit("setBalancerOptions", data.balancerOptions)
+                    commit("setGroupOptions", data.groupOptions)
+                    commit("setDescriptionField", data.descriptionField)
+                    resolve();
                 }).fail((jqXHR) => {
+                    console.log("fail")
                     console.error(jqXHR)
                     reject();
                 });
 
             });
-        },
-        refreshPqrTypes({commit}, id) {
+        }, refreshPqrTypes({commit}, id) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -128,8 +107,7 @@ export default new Vuex.Store({
                 });
 
             });
-        },
-        refreshGroups({commit}, id) {
+        }, refreshGroups({commit}, id) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -148,14 +126,11 @@ export default new Vuex.Store({
                 });
 
             });
-        },
-        updatePqrTypes({commit}, data) {
+        }, updatePqrTypes({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `/api/pqr/responseTimes`,
-                    method: 'put',
-                    data
+                    url: `/api/pqr/responseTimes`, method: 'put', data
                 }).done(response => {
                     if (response.success) {
                         resolve();
@@ -169,14 +144,11 @@ export default new Vuex.Store({
                 });
 
             });
-        },
-        updateBalancerGroup({commit}, data) {
+        }, updateBalancerGroup({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `/api/pqr/balancer`,
-                    method: 'put',
-                    data
+                    url: `/api/pqr/balancer`, method: 'put', data
                 }).done(response => {
                     if (response.success) {
                         resolve();
@@ -190,14 +162,11 @@ export default new Vuex.Store({
                 });
 
             });
-        },
-        updateShowReport({commit}, data) {
+        }, updateShowReport({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `/api/pqr/form/updateShowReport`,
-                    method: 'put',
-                    data
+                    url: `/api/pqr/form/updateShowReport`, method: 'put', data
                 }).done(response => {
                     if (response.success) {
                         commit("setFormFields", response.data);
@@ -212,14 +181,11 @@ export default new Vuex.Store({
                 });
 
             });
-        },
-        insertNotification({commit}, data) {
+        }, insertNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `/api/pqr/notification`,
-                    method: 'post',
-                    data
+                    url: `/api/pqr/notification`, method: 'post', data
                 }).done(response => {
                     if (response.success) {
                         commit("addPersonsNotification", response.data);
@@ -234,14 +200,11 @@ export default new Vuex.Store({
                 });
 
             });
-        },
-        updateNotification({commit}, data) {
+        }, updateNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `/api/pqr/notification/${data.id}`,
-                    method: 'put',
-                    data: {
+                    url: `/api/pqr/notification/${data.id}`, method: 'put', data: {
                         data: data.data
                     }
                 }).done(response => {
@@ -258,14 +221,11 @@ export default new Vuex.Store({
                 });
 
             });
-        },
-        deleteNotification({commit}, data) {
+        }, deleteNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `/api/pqr/notification/${data.id}`,
-                    method: 'delete',
-                    data
+                    url: `/api/pqr/notification/${data.id}`, method: 'delete', data
                 }).done(response => {
                     if (response.success) {
                         commit("delPersonsNotification", data.id);
@@ -280,13 +240,10 @@ export default new Vuex.Store({
                 });
 
             });
-        },
-        updateDescriptionField({commit}, descriptionFieldId) {
+        }, updateDescriptionField({commit}, descriptionFieldId) {
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: `/api/pqr/form/descriptionField`,
-                    method: 'put',
-                    data: {
+                    url: `/api/pqr/form/descriptionField`, method: 'put', data: {
                         fieldId: descriptionFieldId
                     }
                 }).done(response => {
@@ -301,14 +258,11 @@ export default new Vuex.Store({
                 });
 
             })
-        },
-        updateNotyMessage({commit}, data) {
+        }, updateNotyMessage({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `/api/pqr/notyMessage/${data.id}`,
-                    method: 'put',
-                    data: {
+                    url: `/api/pqr/notyMessage/${data.id}`, method: 'put', data: {
                         data: data.data
                     }
                 }).done(response => {
@@ -324,14 +278,11 @@ export default new Vuex.Store({
                 });
 
             })
-        },
-        updateShowEmpty({commit}, val) {
+        }, updateShowEmpty({commit}, val) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `/api/pqr/form/showEmpty`,
-                    method: 'put',
-                    data: {
+                    url: `/api/pqr/form/showEmpty`, method: 'put', data: {
                         show_empty: val
                     }
                 }).done(response => {
@@ -348,14 +299,11 @@ export default new Vuex.Store({
                 });
 
             });
-        },
-        updateEnableFilter({commit}, val) {
+        }, updateEnableFilter({commit}, val) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `/api/pqr/form/filterReport`,
-                    method: 'put',
-                    data: {
+                    url: `/api/pqr/form/filterReport`, method: 'put', data: {
                         enable_filter_dep: val
                     }
                 }).done(response => {
@@ -372,14 +320,11 @@ export default new Vuex.Store({
                 });
 
             });
-        },
-        updateEnableBalancer({commit}, val) {
+        }, updateEnableBalancer({commit}, val) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
-                    url: `/api/pqr/form/balancer`,
-                    method: 'put',
-                    data: {
+                    url: `/api/pqr/form/balancer`, method: 'put', data: {
                         enable_balancer: val
                     }
                 }).done(response => {

@@ -120,6 +120,24 @@
     "historial": "Historial",
     "responder": "Responder",
     "terminar": "Terminar",
-    "anular": "Anular"
+    "anular": "Anular",
+    "conf_canal_recep": "Configurar Canal de Recepción",
+    "mensaje_canal_recep": "Las siguientes opciones son exclusivas para la radicación desde SAIA",
+    "obtener_dias": "No fue posible obtener los dias",
+    "obtener_grupos": "No fue posible obtener los grupos",
+    "obtener_datos": "No fue posible obtener los datos",
+    "noti_actualizada": "Notificación/Mensage actualizado!",
+    "error_guardar": "No fue posible guardar los cambios",
+    "cambios_actualizados": "Datos actualizados",
+    "funcionario_ingresado": "el funcionario ya ha sido agregado",
+    "error_funcionario_ingresado": "No fue posible agregar al funcionario",
+    "error_editar_funcionario": "No fue posible editar funcionario",
+    "error_eliminar_funcionario": "No fue posible retitar el funcionario",
+    "mostrar_vacios": "Se mostrarán los campos vacios!",
+    "ocultar_vacios": "Se ocultarán los campos vacios!",
+    "filtros_habilitados": "Filtros de reporte habilitado",
+    "filtros_deshabilitados": "Filtros de reporte deshabilitado",
+    "balanceo_habilitado": "Balanceo habilitado",
+    "balanceo_deshabilitado": "Balanceo deshabilitado"
   }
 }

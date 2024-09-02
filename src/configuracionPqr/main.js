@@ -2,24 +2,27 @@ import "jquery";
 
 window.jQuery = window.$ = jQuery;
 
-//boostrap
+// Bootstrap
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-//font-awesome
+// Font Awesome
 import "topViews/assets/theme/assets/plugins/font-awesome/css/font-awesome.min.css";
 
-// //pages
+// Pages
 import "topViews/assets/theme/pages/js/pages.min.js";
 import "topViews/assets/theme/pages/css/pages.min.css";
 
-import Vue from "vue";
+// Importar Vue desde la versión 3
+import { createApp } from "vue";
 import store from "./store";
 import App from "./App.vue";
 
-new Vue({
-    render: h => h(App),
-    store,
-}).$mount("#app");
+// Crear la aplicación de Vue
+const app = createApp(App);
 
+// Usar Vuex store
+app.use(store);
 
+// Montar la aplicación en el DOM
+app.mount("#app");

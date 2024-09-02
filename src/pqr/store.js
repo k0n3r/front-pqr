@@ -1,8 +1,6 @@
-import Vue from "vue"
-import Vuex from "vuex"
+import { createStore } from "vuex"; // Importa createStore desde Vuex 4
 
-Vue.use(Vuex)
-
+// Configuración global de AJAX con jQuery
 $.ajaxSetup({
     method: 'GET',
     dataType: 'json',
@@ -15,7 +13,7 @@ $.ajaxSetup({
     }
 });
 
-export default new Vuex.Store({
+export default createStore({
     state: {
         componentsHTML: [],
         formFields: [],

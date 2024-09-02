@@ -139,6 +139,8 @@ export default {
             message: "No fue posible obtener los valores",
           });
         });
+
+    top.$(document).localize();
   },
   computed: {
     ...mapState(["fieldOptions"]),

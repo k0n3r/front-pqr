@@ -63,10 +63,9 @@
                 </div>
               </div>
               <div id="sortable">
-                <template v-for="field in formFields">
+                <template v-for="field in formFields" :key="field.id">
                   <div
                       class="sortable"
-                      :key="field.id"
                       :data-id="field.id"
                       style="cursor: move"
                       v-show="isVisible(field)"
@@ -164,7 +163,7 @@ import "topViews/assets/theme/assets/plugins/dropzone/custom.css";
 window.Dropzone = Dropzone;
 
 //datetimepicker
-import "topViews/node_modules/moment/min/moment-with-locales.min.js";
+// import "topViews/node_modules/moment/min/moment-with-locales.min.js";
 import "topViews/assets/theme/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js";
 import "topViews/assets/theme/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css";
 
@@ -198,6 +197,7 @@ export default {
   },
   mounted() {
     this.initSortable();
+    top.$(document).localize();
   },
   computed: {
     ...mapState(["componentsHTML", "formFields", "form", "checkAnonymous"]),

@@ -1,5 +1,5 @@
 const webpack = require("webpack");
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const {VueLoaderPlugin} = require('vue-loader'); // Importar el plugin correctamente para Vue 3
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
@@ -12,7 +12,6 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, "./dist/"),
-        publicPath: "../",
         filename: "[name]/[name].js"
     },
     module: {
@@ -41,24 +40,29 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                use: [
+                    MiniCssExtractPlugin.loader, // Usa MiniCssExtractPlugin.loader en lugar de style-loader
+                    'css-loader',
+                ],
             },
             {
-                test: /\.(png|jpe?g|gif|svg|woff(2)?|ttf|eot)$/i,
-                use: [
-                    {
-                        loader: "file-loader",
-                        options: {
-                            name: "[name].[ext]",
-                            outputPath: 'images'
-                        }
-                    }
-                ]
+                test: /\.(png|jpe?g|gif|svg)$/i,
+                type: 'asset/resource', // Utiliza la nueva forma de Webpack 5 para manejar recursos
+                generator: {
+                    filename: 'images/[name][ext][query]',
+                },
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'fonts/[name][ext][query]',
+                },
             },
         ]
     },
     plugins: [
-        new VueLoaderPlugin(),
+        new VueLoaderPlugin(), // Usar el plugin correcto para Vue 3
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"

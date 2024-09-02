@@ -1,8 +1,6 @@
-import Vue from "vue"
-import Vuex from "vuex"
+import { createStore } from "vuex"; // Importa createStore desde Vuex 4
 
-Vue.use(Vuex)
-
+// Configuración global de AJAX con jQuery
 $.ajaxSetup({
     method: 'GET',
     dataType: 'json',
@@ -15,7 +13,8 @@ $.ajaxSetup({
     }
 });
 
-export default new Vuex.Store({
+// Crea la tienda con createStore en lugar de usar Vue.use(Vuex)
+export default createStore({
     state: {
         fieldOptions: []
     },
@@ -25,7 +24,7 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        getFieldOptions({commit}) {
+        getFieldOptions({ commit }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: `/api/pqr/form/textFields`,
@@ -34,17 +33,16 @@ export default new Vuex.Store({
                         commit("setFieldOptions", response.data);
                         resolve();
                     } else {
-                        console.log(response)
+                        console.log(response);
                         reject(response.message);
                     }
                 }).fail((jqXHR) => {
-                    console.error(jqXHR)
+                    console.error(jqXHR);
                     reject();
                 });
-
             });
         },
-        getFieldValues({commit}) {
+        getFieldValues({ commit }) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: `/api/pqr/form/responseSetting`,
@@ -52,17 +50,16 @@ export default new Vuex.Store({
                     if (response.success) {
                         resolve(response.data);
                     } else {
-                        console.log(response)
+                        console.log(response);
                         reject(response.message);
                     }
                 }).fail((jqXHR) => {
-                    console.error(jqXHR)
+                    console.error(jqXHR);
                     reject();
                 });
-
             });
         },
-        saveResponseConfiguration({commit}, data) {
+        saveResponseConfiguration({ commit }, data) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: `/api/pqr/form/updateResponseSetting`,
@@ -74,15 +71,14 @@ export default new Vuex.Store({
                     if (response.success) {
                         resolve();
                     } else {
-                        console.log(response)
+                        console.log(response);
                         reject(response.message);
                     }
                 }).fail((jqXHR) => {
-                    console.error(jqXHR)
+                    console.error(jqXHR);
                     reject();
                 });
-
             });
         }
     }
-})
+});

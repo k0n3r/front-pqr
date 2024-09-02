@@ -120,6 +120,24 @@
     "historial": "History",
     "responder": "Respond",
     "terminar": "Finish",
-    "anular": "Cancel"
+    "anular": "Cancel",
+    "conf_canal_recep": "Configure Reception Channel",
+    "mensaje_canal_recep": "The following options are exclusive for filing from SAIA",
+    "obtener_dias": "Unable to obtain the days",
+    "obtener_grupos": "Unable to obtain the groups",
+    "obtener_datos": "Unable to obtain the data",
+    "noti_actualizada": "Notification/Message updated!",
+    "error_guardar": "Unable to save the changes",
+    "cambios_actualizados": "Data updated",
+    "funcionario_ingresado": "The official has already been added",
+    "error_funcionario_ingresado": "Unable to add the official",
+    "error_editar_funcionario": "Unable to edit official",
+    "error_eliminar_funcionario": "Unable to remove the official",
+    "mostrar_vacios": "Empty fields will be displayed!",
+    "ocultar_vacios": "Empty fields will be hidden!",
+    "filtros_habilitados": "Report filters enabled",
+    "filtros_deshabilitados": "Report filters disabled",
+    "balanceo_habilitado": "Balancing enabled",
+    "balanceo_deshabilitado": "Balancing disabled"
   }
 }

@@ -13,7 +13,6 @@
               <div class="checkbox check-success input-group">
                 <input
                     type="checkbox"
-                    value="1"
                     id="showEmpty1"
                     v-model="showEmpty"
                     v-on:change="editShowEmpty($event)"
@@ -27,7 +26,6 @@
               <div class="checkbox check-success input-group">
                 <input
                     type="checkbox"
-                    value="1"
                     id="enableFilter1"
                     v-model="enableFilter"
                     v-on:change="editEnableFilter($event)"
@@ -41,7 +39,6 @@
               <div class="checkbox check-success input-group">
                 <input
                     type="checkbox"
-                    value="1"
                     id="enableBalancer1"
                     v-model="enableBalancer"
                     v-on:change="editEnableBalancer($event)"
@@ -93,9 +90,8 @@
               </tr>
               </thead>
               <tbody>
-              <template v-for="(balancer, index) in pqrBalancerGroup">
+              <template v-for="(balancer, index) in pqrBalancerGroup" :key="index">
                 <tr
-                    :key="index"
                     class="trBalancer"
                     :data-id="balancer.id"
                 >
@@ -176,6 +172,51 @@
             </div>
           </div>
         </div>
+
+        <div class="card card-default">
+          <div class="card-header">
+            <div class="card-title text-uppercase" data-i18n="pqr.conf_canal_recep">Configurar Canal de Recepción</div>
+          </div>
+          <div class="card-body">
+            <p data-i18n="pqr.mensaje_canal_recep">Las siguientes opciones son exclusivas para la radicación desde
+              SAIA</p>
+            <div class="form-group">
+              <div class="checkbox check-success">
+                <input type="checkbox" v-model="canalRecepcion" value="cWEB" id="checkbox-web">
+                <label for="checkbox-web">WEB</label>
+              </div>
+              <div class="checkbox check-success">
+                <input type="checkbox" v-model="canalRecepcion" value="cEMAIL" id="checkbox-email">
+                <label for="checkbox-email">EMAIL</label>
+              </div>
+              <div class="checkbox check-success">
+                <input type="checkbox" v-model="canalRecepcion" value="cFISICO" id="checkbox-fisico">
+                <label for="checkbox-fisico">FÍSICO</label>
+              </div>
+              <div class="checkbox check-success">
+                <input type="checkbox" v-model="canalRecepcion" value="cTELEFONICO" id="checkbox-telefonico">
+                <label for="checkbox-telefonico">TELEFÓNICO</label>
+              </div>
+              <div class="checkbox check-success">
+                <input type="checkbox" v-model="canalRecepcion" value="cREDES" id="checkbox-redes-sociales">
+                <label for="checkbox-redes-sociales">REDES SOCIALES (Facebook, Instagram, WhatsApp, otros)</label>
+              </div>
+            </div>
+
+            <div class="form-group float-md-left float-lg-right mt-2">
+              <button
+                  type="button"
+                  class="btn btn-complete"
+                  v-on:click="saveChanel"
+                  data-i18n="g.guardar"
+              >
+                Guardar
+              </button>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
       <div class="col-md">
@@ -218,9 +259,8 @@
               </tr>
               </thead>
               <tbody id="sortable">
-              <template v-for="(type, index) in pqrTypes">
+              <template v-for="(type, index) in pqrTypes" :key="index">
                 <tr
-                    :key="index"
                     class="sortable"
                     :data-id="type.id"
                     style="cursor: move"
@@ -274,8 +314,8 @@
               </thead>
               <tbody>
 
-              <template v-for="notification in personsNotifications">
-                <tr :key="notification.id">
+              <template v-for="notification in personsNotifications" :key="notification.id">
+                <tr>
                   <td scope="row" class="text-uppercase">
                     {{ notification.fk_funcionario.text }}
                   </td>
@@ -460,9 +500,14 @@ export default {
   name: "Formulario",
   data() {
     return {
-      showEmpty: 1,
-      enableFilter: null,
-      enableBalancer: null,
+      canalRecepcion: [
+        'cFISICO',
+        'cTELEFONICO',
+        'cREDES',
+      ],
+      showEmpty: false,
+      enableFilter: false,
+      enableBalancer: false,
       showReport: [],
       notify: [],
       notifyEmail: [],
@@ -499,9 +544,10 @@ export default {
     },
     valresponseTimeField(val) {
       this.refreshPqrTypes(val).catch(() => {
+        const message = top.i18next.t("pqr.obtener_dias", {defaultValue: "No fue posible obtener los dias"});
         top.notification({
           type: "error",
-          message: "No fue posible obtener los dias",
+          message
         });
       });
     },
@@ -520,9 +566,10 @@ export default {
     },
     valBalancerField(val) {
       this.refreshGroups(val).catch(() => {
+        const message = top.i18next.t("pqr.obtener_grupos", {defaultValue: "No fue posible obtener los grupos"});
         top.notification({
           type: "error",
-          message: "No fue posible obtener los grupos",
+          message
         });
       });
     }
@@ -557,11 +604,10 @@ export default {
           this.balancerField = this.form.fk_field_balancer;
           this.valBalancerField = -1;
 
-          this.showEmpty = +this.form.show_empty ? 1 : null;
-          this.enableFilter = +this.form.enable_filter_dep ? 1 : null;
-          this.enableBalancer = +this.form.enable_balancer ? 1 : null;
+          this.showEmpty = !!(+this.form.show_empty);
+          this.enableFilter = !!(+this.form.enable_filter_dep);
+          this.enableBalancer = !!(+this.form.enable_balancer);
           this.descriptionFieldId = this.descriptionField.id;
-
           if (this.descriptionField.id) {
             $('#descripcion').append(`
                         <option value="${this.descriptionField.id}">
@@ -570,22 +616,25 @@ export default {
                     `).val(this.descriptionField.id).trigger('change');
           }
         })
-
         .catch(() => {
+          const message = top.i18next.t("pqr.obtener_datos");
           top.notification({
             type: "error",
-            message: "No fue posible obtener los datos",
+            message,
           });
         });
   },
   mounted() {
-    this.$nextTick(() => {
-      this.enableEvents();
-
-      this.$on('hook:updated', () => {
+    const observer = new MutationObserver(() => {
+      if ($(".balancer").length) {
         $(".balancer").select2();
-      });
+        observer.disconnect(); // Desconectar el observador una vez que el elemento se ha encontrado
+      }
     });
+
+    observer.observe(document.body, {childList: true, subtree: true});
+    this.enableEvents();
+    top.$(document).localize();
   },
   computed: {
     ...mapState([
@@ -715,15 +764,17 @@ export default {
       };
       this.updateNotyMessage(data)
           .then(() => {
+            const message = top.i18next.t("pqr.noti_actualizada", {defaultValue: "Notificación/Mensage actualizado!"});
             top.notification({
               type: "success",
-              message: "Notificación/Mensage actualizado!",
+              message,
             });
           })
           .catch(() => {
+            const message = top.i18next.t("pqr.error_guardar", {defaultValue: "No fue posible guardar los cambios"});
             top.notification({
               type: "error",
-              message: "No fue posible guardar los cambios",
+              message,
             });
           });
     },
@@ -746,15 +797,17 @@ export default {
 
       this.updateBalancerGroup(data)
           .then(() => {
+            const message = top.i18next.t("pqr.cambios_actualizados");
             top.notification({
               type: "success",
-              message: "Cambios actualizados",
+              message,
             });
           })
           .catch(() => {
+            const message = top.i18next.t("pqr.error_guardar");
             top.notification({
               type: "error",
-              message: "No fue posible guardar los cambios",
+              message,
             });
           });
     },
@@ -779,17 +832,22 @@ export default {
 
       this.updatePqrTypes(data)
           .then(() => {
+            const message = top.i18next.t("pqr.cambios_actualizados");
             top.notification({
               type: "success",
-              message: "Cambios actualizados",
+              message,
             });
           })
           .catch(() => {
+            const message = top.i18next.t("pqr.error_guardar");
             top.notification({
               type: "error",
-              message: "No fue posible guardar los cambios",
+              message,
             });
           });
+    },
+    saveChanel(){
+
     },
     showField(field) {
       return !(
@@ -849,15 +907,17 @@ export default {
     editDescriptionField() {
       this.updateDescriptionField(this.descriptionFieldId)
           .then(() => {
+            const message = top.i18next.t("pqr.cambios_actualizados");
             top.notification({
               type: "success",
-              message: "Campo descripción actualizado!",
+              message,
             });
           })
           .catch(() => {
+            const message = top.i18next.t("pqr.error_guardar");
             top.notification({
               type: "error",
-              message: "No fue posible guardar el campo descripción!",
+              message,
             });
           });
     },
@@ -868,15 +928,17 @@ export default {
 
       this.updateShowReport(data)
           .then(() => {
+            const message = top.i18next.t("pqr.cambios_actualizados");
             top.notification({
               type: "success",
-              message: "Datos actualizados",
+              message,
             });
           })
           .catch(() => {
+            const message = top.i18next.t("pqr.error_guardar");
             top.notification({
               type: "error",
-              message: "No fue posible guardar los cambios",
+              message,
             });
           });
     },
@@ -887,9 +949,10 @@ export default {
       });
 
       if (index !== -1) {
+        const message = top.i18next.t("pqr.funcionario_ingresado");
         top.notification({
           type: "error",
-          message: "el funcionario ya ha sido agregado",
+          message,
         });
         return false;
       }
@@ -903,47 +966,55 @@ export default {
             this.notify.push(id);
           })
           .catch(() => {
+            const message = top.i18next.t("pqr.error_funcionario_ingresado");
             top.notification({
               type: "error",
-              message: "No fue posible agregar al funcionario",
+              message,
             });
           });
     },
     editNotification(data) {
       this.updateNotification(data).catch(() => {
+        const message = top.i18next.t("pqr.error_editar_funcionario");
         top.notification({
           type: "error",
-          message: "No fue posible editar funcionario",
+          message,
         });
       });
     },
     delNotification(id) {
       this.deleteNotification(id).catch(() => {
+        const message = top.i18next.t("pqr.error_eliminar_funcionario");
         top.notification({
           type: "error",
-          message: "No fue posible retitar el funcionario",
+          message,
         });
       });
     },
     editShowEmpty(e) {
       this.updateShowEmpty(e.target.checked ? 1 : 0)
           .then(() => {
+
+            const mHide = top.i18next.t("pqr.ocultar_vacios");
+            const mShow = top.i18next.t("pqr.mostrar_vacios");
             top.notification({
               type: "success",
               message: e.target.checked
-                  ? "Se mostrarán los campos vacios!"
-                  : "Se ocultarán los campos vacios!",
+                  ? mShow
+                  : mHide,
             });
           });
     },
     editEnableFilter(e) {
       this.updateEnableFilter(e.target.checked ? 1 : 0)
           .then(() => {
+            const mEnabled = top.i18next.t("pqr.filtros_habilitados");
+            const mDisabled = top.i18next.t("pqr.filtros_deshabilitados");
             top.notification({
               type: "success",
               message: e.target.checked
-                  ? "Filtros de reporte habilitado"
-                  : "Filtros de reporte deshabilitado"
+                  ? mEnabled
+                  : mDisabled
             });
           })
           .catch((message) => {
@@ -954,13 +1025,21 @@ export default {
           });
     },
     editEnableBalancer(e) {
-      this.updateEnableBalancer(e.target.checked ? 1 : 0)
+      const seleted = e.target.checked;
+      if (seleted) {
+        $(".balancer").select2();
+      }
+
+      this.updateEnableBalancer(seleted ? 1 : 0)
           .then(() => {
+            const mEnabled = top.i18next.t("pqr.balanceo_habilitado");
+            const mDisabled = top.i18next.t("pqr.balanceo_deshabilitado");
+
             top.notification({
               type: "success",
-              message: e.target.checked
-                  ? "Balanceo habilitado"
-                  : "Balanceo deshabilitado"
+              message: seleted
+                  ? mEnabled
+                  : mDisabled
             });
           })
           .catch((message) => {
