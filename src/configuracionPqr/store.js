@@ -22,7 +22,8 @@ export default createStore({
         responseTimeOptions: [],
         balanceOptions: [],
         groupOptions: [],
-        descriptionField: {}
+        descriptionField: {},
+        receivingChannel: []
     }, mutations: {
         setUrlWs(state, url) {
             state.urlWs = url;
@@ -57,6 +58,9 @@ export default createStore({
             let index = state.personsNotifications.findIndex(i => i.id === data.id);
             state.personsNotifications.splice(index, 1, data);
         },
+        setReceivingChannel(state, data) {
+            state.receivingChannel = data;
+        }
     }, actions: {
         getDataSetting({commit}) {
             return new Promise((resolve, reject) => {
@@ -80,6 +84,7 @@ export default createStore({
                     commit("setBalancerOptions", data.balancerOptions)
                     commit("setGroupOptions", data.groupOptions)
                     commit("setDescriptionField", data.descriptionField)
+                    commit("setReceivingChannel", data.receivingChannel)
                     resolve();
                 }).fail((jqXHR) => {
                     console.log("fail")
@@ -341,6 +346,27 @@ export default createStore({
                 });
 
             });
-        },
+        }, updateReceivingChannels({commit}, channels){
+            return new Promise((resolve, reject) => {
+
+                $.ajax({
+                    url: `/api/pqr/form/receivingchannels`, method: 'put', data: {
+                        channels
+                    }
+                }).done(response => {
+                    if (response.success) {
+                        commit("setReceivingChannel", response.data);
+                        resolve();
+                    } else {
+                        console.log(response)
+                        reject(response.message);
+                    }
+                }).fail((jqXHR) => {
+                    console.error(jqXHR)
+                    reject();
+                });
+
+            });
+        }
     }
 })

@@ -500,11 +500,7 @@ export default {
   name: "Formulario",
   data() {
     return {
-      canalRecepcion: [
-        'cFISICO',
-        'cTELEFONICO',
-        'cREDES',
-      ],
+      canalRecepcion: [],
       showEmpty: false,
       enableFilter: false,
       enableBalancer: false,
@@ -615,6 +611,9 @@ export default {
                         </option>
                     `).val(this.descriptionField.id).trigger('change');
           }
+
+          this.canalRecepcion = this.receivingChannel;
+
         })
         .catch(() => {
           const message = top.i18next.t("pqr.obtener_datos");
@@ -649,7 +648,8 @@ export default {
       "responseTimeOptions",
       "balanceOptions",
       "groupOptions",
-      "descriptionField"
+      "descriptionField",
+      "receivingChannel"
     ]),
     getContentIframe() {
       let iframe = "EL FORMULARIO NO HA SIDO PUBLICADO";
@@ -684,7 +684,8 @@ export default {
       "updateShowEmpty",
       "updateEnableFilter",
       "updateEnableBalancer",
-      "updateDescriptionField"
+      "updateDescriptionField",
+      "updateReceivingChannels"
     ]),
     getWord(key) {
       return top.i18next.t(key);
@@ -846,8 +847,30 @@ export default {
             });
           });
     },
-    saveChanel(){
+    saveChanel() {
+      if (this.canalRecepcion.length > 0) {
+        const message = top.i18next.t("pqr.seleccione_canal");
+        top.notification({
+          type: "error",
+          message,
+        });
+        return;
+      }
 
+      this.updateReceivingChannels(this.canalRecepcion)
+          .then(() => {
+            const message = top.i18next.t("pqr.cambios_actualizados");
+            top.notification({
+              type: "success",
+              message,
+            });
+          })
+          .catch((message) => {
+            top.notification({
+              type: "error",
+              message,
+            });
+          });
     },
     showField(field) {
       return !(

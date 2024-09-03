@@ -23,7 +23,13 @@
 * Copyright OpenJS Foundation and other contributors; Licensed MIT */
 
 /**
-* @vue/shared v3.4.38
+* @vue/runtime-dom v3.5.0
+* (c) 2018-present Yuxi (Evan) You and Vue contributors
+* @license MIT
+**/
+
+/**
+* @vue/shared v3.5.0
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/

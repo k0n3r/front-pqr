@@ -138,6 +138,7 @@
     "filtros_habilitados": "Filtros de reporte habilitado",
     "filtros_deshabilitados": "Filtros de reporte deshabilitado",
     "balanceo_habilitado": "Balanceo habilitado",
-    "balanceo_deshabilitado": "Balanceo deshabilitado"
+    "balanceo_deshabilitado": "Balanceo deshabilitado",
+    "seleccione_canal": "Debe seleccionar al menos un canal"
   }
 }
