@@ -848,7 +848,7 @@ export default {
           });
     },
     saveChanel() {
-      if (this.canalRecepcion.length > 0) {
+      if (this.canalRecepcion.length < 1) {
         const message = top.i18next.t("pqr.seleccione_canal");
         top.notification({
           type: "error",

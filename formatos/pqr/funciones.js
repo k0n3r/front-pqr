@@ -53,8 +53,21 @@ function add(data) {
             }
         });
     } else {
-        $('#cWEB,#cEMAIL').remove();
-        $("label[for='cWEB'],label[for='cEMAIL']").remove();
+        const allChanels = [
+            'cWEB',
+            'cEMAIL',
+            'cFISICO',
+            'cTELEFONICO',
+            'cREDES'
+        ];
+        const channels = data.moreData.channels;
+        const difference = allChanels.filter(item => !channels.includes(item));
+
+        difference.forEach((channelId) => {
+            $(`#${channelId}`).remove();
+            $(`label[for='${channelId}']`).remove();
+        });
+
         $("#group_dependencia").after($("#group_canal_recepcion"));
         $("#group_canal_recepcion").removeClass('d-none');
     }
