@@ -251,6 +251,7 @@
                 </option>
               </select>
             </p>
+
             <table class="table">
               <thead class="thead-light text-center">
               <tr>
@@ -270,6 +271,7 @@
                     <input
                         class="form-group"
                         :id="'type_' + type.id"
+                        v-model="type.dias"
                         min="1"
                         type="number"
                         :value="type.dias"
