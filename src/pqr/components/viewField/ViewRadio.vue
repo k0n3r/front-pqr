@@ -11,7 +11,7 @@
             aria-required="true"
             :class="isRequired"
         />
-        <label :for="getIdOption(index)" class="mr-3">{{ option.text }}</label>
+        <label :for="getIdOption(index)" class="me-3">{{ option.text }}</label>
       </div>
     </div>
 

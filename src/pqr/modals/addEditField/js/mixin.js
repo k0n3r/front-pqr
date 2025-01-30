@@ -11,7 +11,7 @@ $(function () {
                             node.tagName === 'SELECT' &&
                             node.className.indexOf('select2') !== false
                         ) {
-                            error.addClass('pl-3');
+                            error.addClass('ps-3');
                             element.next().append(error);
                         } else {
                             error.insertAfter(element);

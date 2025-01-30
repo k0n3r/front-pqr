@@ -25,16 +25,16 @@
                     <div class="radio radio-success input-group">
                         <input type="radio" name="required" id="required1" value="1" v-model="form.required"
                                class="required"/>
-                        <label for="required1" class="mr-3" data-i18n="g.si">SI</label>
+                        <label for="required1" class="me-3" data-i18n="g.si">SI</label>
 
                         <input type="radio" name="required" id="required0" value="0" v-model="form.required"/>
-                        <label for="required0" class="mr-3" data-i18n="g.no">NO</label>
+                        <label for="required0" class="me-3" data-i18n="g.no">NO</label>
                     </div>
 
                     <label id='required-error' class='error' for='required' style='display: none;'></label>
                 </div>
 
-                <div class="float-right">
+                <div class="float-end">
                     <div class="form-group" id="form_buttons">
                         <button type="button" class="btn btn-danger" style="margin:1px" v-on:click="resetForm" data-i18n="g.cancelar">Cancelar</button>
                         <button type="button" class="btn btn-complete" style="margin:1px" v-on:click="onSubmit" data-i18n="g.guardar">Guardar</button>

@@ -22,20 +22,20 @@
   "author": "Andrés Felipe Agudelo Mejía",
   "license": "ISC",
   "dependencies": {
-    "vue": "^3.4",
+    "vue": "^3.5",
     "vuex": "^4.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.25",
-    "@babel/preset-env": "^7.25",
-    "babel-loader": "^9.1",
+    "@babel/core": "^7.26",
+    "@babel/preset-env": "^7.26",
+    "babel-loader": "^9.2",
     "css-loader": "^7.1",
     "file-loader": "^6.2",
     "html-webpack-plugin": "^5.6",
     "mini-css-extract-plugin": "^2.9",
     "style-loader": "^4.0",
     "vue-loader": "^17.4.2",
-    "webpack": "^5.94",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^6.0",
+    "webpack": "^5.97"
   }
 }

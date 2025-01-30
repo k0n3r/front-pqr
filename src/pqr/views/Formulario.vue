@@ -32,14 +32,14 @@
             <div class="card-controls">
               <ul>
                 <li
-                    data-toggle="tooltip"
+                    data-bs-toggle="tooltip"
                     title="Configuración"
                     v-on:click="openFormConfig"
                 >
                   <button
                       type="button"
                       class="btn btn-small btn-complete"
-                      data-toggle="tooltip"
+                      data-bs-toggle="tooltip"
                       title="Configuración"
                   >
                     <i class="fa fa-cogs"></i>
@@ -73,7 +73,7 @@
                     <div class="row form-group">
                       <div class="col">
                         <div
-                            class="btn-group btn-group-xs float-right"
+                            class="btn-group btn-group-xs float-end"
                             role="group"
                         >
                           <button
@@ -83,7 +83,7 @@
                               type="button"
                               class="btn btn-xs btn-danger"
                               v-on:click="deleteField(field.id)"
-                              data-toggle="tooltip"
+                              data-bs-toggle="tooltip"
                               title="Eliminar"
                           >
                             <i class="fa fa-trash"></i>
@@ -99,7 +99,7 @@
                               +field.active ? 'btn-success' : 'btn-danger'
                             "
                               v-on:click="changeStatus(field.id, +field.active)"
-                              data-toggle="tooltip"
+                              data-bs-toggle="tooltip"
                               :title="+field.active ? 'Inactivar' : 'Activar'"
                           >
                             <i
@@ -115,7 +115,7 @@
                               type="button"
                               class="btn btn-xs btn-warning"
                               v-on:click="editField(field)"
-                              data-toggle="tooltip"
+                              data-bs-toggle="tooltip"
                               title="Editar"
                           >
                             <i class="fa fa-edit"></i>
@@ -133,7 +133,7 @@
                 </template>
               </div>
 
-              <div class="form-group float-md-left float-lg-right">
+              <div class="form-group float-md-start float-lg-end me-2">
                 <button type="button" class="btn btn-success" v-on:click="publish" data-i18n="pqr.publicar">
                   Publicar
                 </button>

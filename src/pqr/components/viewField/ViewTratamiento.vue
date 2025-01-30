@@ -14,7 +14,7 @@
           aria-required="true"
           class="required"
       />
-      <label :for="dataParams.name+'_0'" class="mr-3 text-uppercase" data-i18n="pqr.acepto_terminos">Acepto los terminos y condiciones</label>
+      <label :for="dataParams.name+'_0'" class="me-3 text-uppercase" data-i18n="pqr.acepto_terminos">Acepto los terminos y condiciones</label>
     </div>
     <label
         :id="dataParams.name+'-error'"
