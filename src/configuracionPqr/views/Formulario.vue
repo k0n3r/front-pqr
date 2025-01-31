@@ -83,7 +83,7 @@
               </select>
             </p>
             <table class="table">
-              <thead class="thead-light text-center">
+              <thead class="table-light text-center">
               <tr>
                 <th scope="col" data-i18n="pqr.tipo">Tipo</th>
                 <th scope="col" data-i18n="pqr.grupo">Grupo</th>
@@ -133,7 +133,7 @@
           </div>
           <div class="card-body">
             <table class="table">
-              <thead class="thead-light text-center">
+              <thead class="table-light text-center">
               <tr>
                 <th scope="col" class="text-uppercase" data-i18n="pqr.etiqueta">Etiqueta</th>
                 <th scope="col" class="text-uppercase" data-i18n="pqr.mostrar">Mostrar</th>
@@ -253,7 +253,7 @@
             </p>
 
             <table class="table">
-              <thead class="thead-light text-center">
+              <thead class="table-light text-center">
               <tr>
                 <th scope="col" data-i18n="pqr.tipo">Tipo</th>
                 <th scope="col" data-i18n="pqr.dias">Días</th>
@@ -307,7 +307,7 @@
               ></select>
             </div>
             <table class="table" v-show="personsNotifications.length">
-              <thead class="thead-light text-center">
+              <thead class="table-light text-center">
               <tr>
                 <th scope="col" class="text-uppercase" data-i18n="pqr.funcionario">Funcionario</th>
                 <th scope="col" class="text-uppercase" data-i18n="pqr.noty_trans">Notificación y transferencia</th>

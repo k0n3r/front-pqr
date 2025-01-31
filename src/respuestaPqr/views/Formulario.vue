@@ -15,7 +15,7 @@
             <p data-i18n="pqr.solo_carga_tipo_linea">Solo se cargaran los campos de tipo: Linea de texto, Numérico y
               E-mail</p>
             <table class="table">
-              <thead class="thead-light text-center text-uppercase">
+              <thead class="table-light text-center text-uppercase">
               <tr>
                 <th scope="col" data-i18n="pqr.tercero">Tercero</th>
                 <th scope="col" data-i18n="pqr.campo_pqr">Campo de la pqrsf</th>

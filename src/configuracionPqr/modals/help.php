@@ -3,7 +3,7 @@
         Si desea que se muestre el valor de las variables en las notificaciones por favor ingresar el dato mostrado en la columna "Variable"
     </p>
     <table class="table table-hover">
-        <thead class="thead-light">
+        <thead class="table-light">
             <tr>
                 <th data-i18n="pqr.variable">Variable</th>
                 <th data-i18n="pqr.campo">Campo</th>

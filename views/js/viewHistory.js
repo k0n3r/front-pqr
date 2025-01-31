@@ -12,7 +12,7 @@ $(function () {
             }
         },
         classes: 'table table-hover mt-0',
-        theadClasses: 'thead-light',
+        theadClasses: 'table-light',
         columns: [
             {
                 field: 'fecha',
