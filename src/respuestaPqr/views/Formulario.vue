@@ -11,7 +11,7 @@
             </div>
           </div>
 
-          <div class="modal-body">
+          <div class="card-body">
             <p data-i18n="pqr.solo_carga_tipo_linea">Solo se cargaran los campos de tipo: Linea de texto, Numérico y
               E-mail</p>
             <table class="table">
@@ -76,7 +76,14 @@
     </div>
   </div>
 </template>
-
+<style scoped>
+thead > tr > th {
+  font-weight: bold !important;
+  color: #626262 !important;
+  background: #e9ecef;
+  border-color: #dee2e6;
+}
+</style>
 <script>
 //select 2
 import "topViews/node_modules/select2/dist/js/select2.min.js";

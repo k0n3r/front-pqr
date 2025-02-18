@@ -7,7 +7,7 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 //pages
-import "topViews/assets/theme/pages/js/pages.min.js";
+// import "topViews/assets/theme/pages/js/pages.min.js";
 import "topViews/assets/theme/pages/css/pages.min.css";
 
 //font-awesome

@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "topViews/assets/theme/assets/plugins/font-awesome/css/font-awesome.min.css";
 
 // Pages
-import "topViews/assets/theme/pages/js/pages.min.js";
+// import "topViews/assets/theme/pages/js/pages.min.js";
 import "topViews/assets/theme/pages/css/pages.min.css";
 
 // Importar Vue desde la versión 3

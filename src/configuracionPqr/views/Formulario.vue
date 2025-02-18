@@ -485,7 +485,14 @@
     </div>
   </div>
 </template>
-
+<style scoped>
+thead > tr > th {
+  font-weight: bold !important;
+  color: #626262 !important;
+  background: #e9ecef;
+  border-color: #dee2e6;
+}
+</style>
 <script>
 //jquery ui
 import "topViews/node_modules/jquery-ui-dist/jquery-ui.min.js";
