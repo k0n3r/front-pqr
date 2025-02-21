@@ -28,3 +28,11 @@
         </tbody>
     </table>
 </div>
+<style>
+    thead > tr > th {
+        font-weight: bold !important;
+        color: #626262 !important;
+        background: #e9ecef;
+        border-color: #dee2e6;
+    }
+</style>
