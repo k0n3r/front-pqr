@@ -12,8 +12,11 @@ $(function () {
             headerTitle: 'Tarea o Recordatorio',
             content: iframe.prop('outerHTML'),
             onbeforeclose: function () {
-                delete top.topJsPanelData.panels['tarea'];
-                $('#table').bootstrapTable("refresh");
+                try {
+                    $('#table').bootstrapTable("refresh");
+                } catch (e) {
+                }
+
                 return true;
             }
         });
@@ -186,7 +189,7 @@ $(function () {
             },
             successModalEvent: function () {
                 $('#table').bootstrapTable('refresh');
-                top.closePanel('editTypes');
+                this.close();
             }
         }, 'modal');
     });
@@ -237,13 +240,13 @@ $(function () {
                             return;
                         }
 
-                        if(!+response.data.correo){
+                        if (!+response.data.correo) {
                             top.notification({
                                 title: "Datos actualizados!",
                                 message: "El tercero no tiene un correo electrónico registrado.",
                                 type: 'info'
                             });
-                        }else{
+                        } else {
                             top.notification({
                                 message: "Datos actualizados!",
                                 type: 'success'
@@ -283,7 +286,11 @@ $(function () {
                         },
                         content: iframe.prop('outerHTML'),
                         onbeforeclose: function () {
-                            $('#table').bootstrapTable("refresh");
+                            try {
+                                $('#table').bootstrapTable("refresh");
+                            } catch (e) {
+                            }
+
                             return true;
                         }
                     });

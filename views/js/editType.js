@@ -128,7 +128,7 @@ $(function () {
                         type: 'success'
                     });
                     const jsPanel = top.getPanel('editTypes');
-                    jsPanel.options.successModalEvent();
+                    jsPanel.successModalEvent();
 
                 } else {
                     top.notification({
