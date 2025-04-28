@@ -570,78 +570,21 @@ export default {
       }
     },
     valBalancerField(val) {
-      this.refreshGroups(val).catch(() => {
-        const message = top.i18next.t("pqr.obtener_grupos", {defaultValue: "No fue posible obtener los grupos"});
-        top.notification({
-          type: "error",
-          message
-        });
-      });
+      this.refreshGroups(val).then(() => {
+        $(".balancer").select2();
+      })
+          .catch(() => {
+            const message = top.i18next.t("pqr.obtener_grupos", {defaultValue: "No fue posible obtener los grupos"});
+            top.notification({
+              type: "error",
+              message
+            });
+          });
     }
   },
-  created() {
-    this.getDataSetting()
-        .then(() => {
-          let idsShowReport = [];
-          this.formFields.forEach((row) => {
-            if (+row.show_report) {
-              idsShowReport.push(row.id);
-            }
-          });
-          this.showReport = idsShowReport;
-
-          let idsNotify = [];
-          let idsNotifyEmail = [];
-          this.personsNotifications.forEach((row) => {
-            if (+row.email) {
-              idsNotifyEmail.push(+row.id);
-            }
-            if (+row.notify) {
-              idsNotify.push(+row.id);
-            }
-          });
-          this.notifyEmail = idsNotifyEmail;
-          this.notify = idsNotify;
-
-          this.responseTimeField = this.form.fk_field_time;
-          this.valresponseTimeField = -1;
-
-          this.balancerField = this.form.fk_field_balancer;
-          this.valBalancerField = -1;
-
-          this.showEmpty = !!(+this.form.show_empty);
-          this.enableFilter = !!(+this.form.enable_filter_dep);
-          this.enableBalancer = !!(+this.form.enable_balancer);
-          this.descriptionFieldId = this.descriptionField.id;
-          if (this.descriptionField.id) {
-            $('#descripcion').append(`
-                        <option value="${this.descriptionField.id}">
-                            ${this.descriptionField.name}
-                        </option>
-                    `).val(this.descriptionField.id).trigger('change');
-          }
-
-          this.canalRecepcion = this.receivingChannel;
-
-        })
-        .catch(() => {
-          const message = top.i18next.t("pqr.obtener_datos");
-          top.notification({
-            type: "error",
-            message,
-          });
-        });
-  },
-  mounted() {
-    const observer = new MutationObserver(() => {
-      if ($(".balancer").length) {
-        $(".balancer").select2();
-        observer.disconnect(); // Desconectar el observador una vez que el elemento se ha encontrado
-      }
-    });
-
-    observer.observe(document.body, {childList: true, subtree: true});
-    this.enableEvents();
+  async mounted() {
+    await this.getData();
+    await this.initialize();
     top.$(document).localize();
   },
   computed: {
@@ -699,11 +642,63 @@ export default {
     getWord(key) {
       return top.i18next.t(key);
     },
-    enableEvents() {
+    async getData() {
+      return this.getDataSetting()
+          .then(() => {
+            let idsShowReport = [];
+            this.formFields.forEach((row) => {
+              if (+row.show_report) {
+                idsShowReport.push(row.id);
+              }
+            });
+            this.showReport = idsShowReport;
+
+            let idsNotify = [];
+            let idsNotifyEmail = [];
+            this.personsNotifications.forEach((row) => {
+              if (+row.email) {
+                idsNotifyEmail.push(+row.id);
+              }
+              if (+row.notify) {
+                idsNotify.push(+row.id);
+              }
+            });
+            this.notifyEmail = idsNotifyEmail;
+            this.notify = idsNotify;
+
+            this.responseTimeField = this.form.fk_field_time;
+            this.valresponseTimeField = -1;
+
+            this.balancerField = this.form.fk_field_balancer;
+            this.valBalancerField = -1;
+
+            this.showEmpty = !!(+this.form.show_empty);
+            this.enableFilter = !!(+this.form.enable_filter_dep);
+            this.enableBalancer = !!(+this.form.enable_balancer);
+            this.descriptionFieldId = this.descriptionField.id;
+            if (this.descriptionField.id) {
+              $('#descripcion').append(`
+                        <option value="${this.descriptionField.id}">
+                            ${this.descriptionField.name}
+                        </option>
+                    `).val(this.descriptionField.id).trigger('change');
+            }
+
+            this.canalRecepcion = this.receivingChannel;
+          })
+          .catch(() => {
+            const message = top.i18next.t("pqr.obtener_datos");
+            top.notification({
+              type: "error",
+              message,
+            });
+          });
+    },
+    async initialize() {
       let _this = this;
       $("#sortable").sortable();
 
-      const placeholder = top.i18next.t('pqr.ingrese_nombre');
+      const placeholder = this.getWord('pqr.ingrese_nombre');
       $("#descripcion")
           .select2({
             placeholder,

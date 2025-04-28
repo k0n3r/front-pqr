@@ -6,10 +6,11 @@ $(function () {
             modalName: 'tarea'
         };
 
-        const iframe = top.getIframeJsPanel('/views/tareas/crear.php?' + $.param(paramsTarea));
+        const url = top.CUSTOM_GLOBAL_CONFIG.taskConfig.pathCreateTask
+        const iframe = top.getIframeJsPanel(url + '?' + $.param(paramsTarea));
         top.topJsPanel({
             id: 'tarea',
-            headerTitle: 'Tarea o Recordatorio',
+            headerTitle: top.i18next.t("dashboard.tarea_recordatorio"),
             content: iframe.prop('outerHTML'),
             onbeforeclose: function () {
                 try {
@@ -27,8 +28,9 @@ $(function () {
 
         const documentId = $(this).data('id');
 
+        const url = top.CUSTOM_GLOBAL_CONFIG.taskConfig.pathListTask;
         const options = {
-            url: `/views/tareas/lista_documento.php`,
+            url,
             params: {
                 documentId: documentId
             },
