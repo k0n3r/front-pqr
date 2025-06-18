@@ -76,13 +76,14 @@ function add(data) {
         const html = `<div class="form-group" id="group_sys_anonimo">
             <p>
                 ¿DESEA REGISTRAR ESTA SOLICITUD COMO UNA PERSONA ANÓNIMA?
-                <input type="checkbox" name="sys_anonimo" id="sys_anonimo" value="1"/>
+                <input type="checkbox" id="sys_anonimo_1"/>
             </p>
         </div>`;
         $("#group_dependencia").before(html);
 
-        $("#sys_anonimo").change(function () {
+        $("#sys_anonimo_1").change(function () {
             if ($(this).is(':checked')) {
+                $("#sys_anonimo").val(1);
                 $.each(data.moreData.fieldsWithAnonymous, function (i, field) {
                     processField(field);
                     const sGroup = $("#group_" + field.name);
@@ -94,6 +95,7 @@ function add(data) {
                 });
 
             } else {
+                $("#sys_anonimo").val(0);
                 $.each(data.moreData.fieldsWithoutAnonymous, function (i, field) {
                     processField(field, true);
                 });
