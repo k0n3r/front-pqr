@@ -83,7 +83,7 @@ function add(data) {
 
         $("#sys_anonimo_1").change(function () {
             if ($(this).is(':checked')) {
-                $("#sys_anonimo").val(1);
+                $("[name='sys_anonimo']").val(1);
                 $.each(data.moreData.fieldsWithAnonymous, function (i, field) {
                     processField(field);
                     const sGroup = $("#group_" + field.name);
@@ -95,7 +95,7 @@ function add(data) {
                 });
 
             } else {
-                $("#sys_anonimo").val(0);
+                $("[name='sys_anonimo']").val(0);
                 $.each(data.moreData.fieldsWithoutAnonymous, function (i, field) {
                     processField(field, true);
                 });
