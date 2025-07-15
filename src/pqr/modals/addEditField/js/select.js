@@ -7,20 +7,28 @@ $(function () {
             return {
                 dataParams: dataParams,
                 is_system: 0,
-                form: null,
+                form: {
+                    label: null,
+                    required: null,
+                    options: []
+                },
                 inputOption: null,
                 valueOptions: null
             };
         },
         created() {
-            this.form = this.clearDataForm();
+            const initialData = this.clearDataForm();
+
+            this.form.label = initialData.label;
+            this.form.required = initialData.required;
+            this.form.options = initialData.options;
         },
         methods: {
             clearDataForm() {
                 let dataForm = {
                     label: null,
                     required: 1,
-                    options: null
+                    options: []
                 };
                 if (this.dataParams.isEdit) {
                     let dataFormField = this.dataParams.dataFormField;
