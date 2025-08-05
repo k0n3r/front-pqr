@@ -70,6 +70,11 @@ $(function () {
                 });
             },
             changeStatus(id) {
+                const indice = this.formFields.findIndex(field => field.id === id);
+                if (indice !== -1) {
+                    this.formFields.splice(indice, 1);
+                }
+
                 top.successModalEvent({
                     option: 1,
                     id: id
@@ -77,10 +82,11 @@ $(function () {
 
             },
             deleteField(id) {
-                const message=top.i18next.t('pqr.esta_opcion_irreversible');
-                const title=top.i18next.t('pqr.eliminando');
-                const continuar=top.i18next.t('g.continuar');
-                const cancelar=top.i18next.t('g.cancelar');
+                const _this = this;
+                const message = top.i18next.t('pqr.esta_opcion_irreversible');
+                const title = top.i18next.t('pqr.eliminando');
+                const continuar = top.i18next.t('g.continuar');
+                const cancelar = top.i18next.t('g.cancelar');
                 top.confirm({
                     id: 'question',
                     type: 'error',
@@ -94,7 +100,7 @@ $(function () {
                     closeOnClick: true,
                     buttons: [
                         [
-                            '<button>'+continuar+'</button>',
+                            '<button>' + continuar + '</button>',
                             function (instance, toast) {
                                 instance.hide({
                                         transitionOut: 'fadeOut'
@@ -102,6 +108,12 @@ $(function () {
                                     toast,
                                     'button'
                                 );
+
+                                const indice = _this.formFields.findIndex(field => field.id === id);
+                                if (indice !== -1) {
+                                    _this.formFields.splice(indice, 1);
+                                }
+
                                 top.successModalEvent({
                                     option: 2,
                                     id: id
@@ -110,7 +122,7 @@ $(function () {
                             true
                         ],
                         [
-                            '<button>'+cancelar+'</button>',
+                            '<button>' + cancelar + '</button>',
                             function (instance, toast) {
                                 instance.hide({
                                         transitionOut: 'fadeOut'
