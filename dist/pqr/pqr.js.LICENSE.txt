@@ -1,6 +1,6 @@
 /*!
-  * Bootstrap v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap v5.3.6 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 
@@ -14,8 +14,6 @@
  *
  * Date: 2023-08-28T13:37Z
  */
-
-/*! #__NO_SIDE_EFFECTS__ */
 
 /*! jQuery UI - v1.13.3 - 2024-04-26
 * https://jqueryui.com
@@ -35,13 +33,13 @@
  */
 
 /**
-* @vue/runtime-dom v3.5.13
+* @vue/runtime-dom v3.5.21
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
 
 /**
-* @vue/shared v3.5.13
+* @vue/shared v3.5.21
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/

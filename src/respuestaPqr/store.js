@@ -1,4 +1,4 @@
-import { createStore } from "vuex"; // Importa createStore desde Vuex 4
+import {createStore} from "vuex"; // Importa createStore desde Vuex 4
 
 // Configuración global de AJAX con jQuery
 $.ajaxSetup({
@@ -24,42 +24,42 @@ export default createStore({
         }
     },
     actions: {
-        getFieldOptions({ commit }) {
+        getFieldOptions({commit}) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: `/api/pqr/form/textFields`,
                 }).done(response => {
-                    if (response.success) {
-                        commit("setFieldOptions", response.data);
-                        resolve();
-                    } else {
-                        console.log(response);
-                        reject(response.message);
-                    }
+                    commit("setFieldOptions", response.data);
+                    resolve();
                 }).fail((jqXHR) => {
                     console.error(jqXHR);
-                    reject();
+                    if (jqXHR.status === 500) {
+                        const message = top.translate('g.error_interno');
+                        reject(message);
+                    } else {
+                        reject(jqXHR.responseJSON.message);
+                    }
                 });
             });
         },
-        getFieldValues({ commit }) {
+        getFieldValues() {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: `/api/pqr/form/responseSetting`,
                 }).done(response => {
-                    if (response.success) {
-                        resolve(response.data);
-                    } else {
-                        console.log(response);
-                        reject(response.message);
-                    }
+                    resolve(response.data);
                 }).fail((jqXHR) => {
                     console.error(jqXHR);
-                    reject();
+                    if (jqXHR.status === 500) {
+                        const message = top.translate('g.error_interno');
+                        reject(message);
+                    } else {
+                        reject(jqXHR.responseJSON.message);
+                    }
                 });
             });
         },
-        saveResponseConfiguration({ commit }, data) {
+        saveResponseConfiguration({commit}, data) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: `/api/pqr/form/updateResponseSetting`,

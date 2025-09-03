@@ -107,19 +107,13 @@ export default {
       data: null,
     };
   },
-  created() {
-    let _this = this;
-    this.getFieldOptions().catch(() => {
-      top.notification({
-        type: "error",
-        message: "No fue posible obtener los campos",
-      });
-    });
-  },
   mounted() {
-    let _this = this;
-    this.getFieldValues()
-        .then((data) => {
+    const _this = this;
+    Promise.all([
+      this.getFieldOptions(),
+      this.getFieldValues()
+    ])
+        .then(([result1, data]) => {
           $("select")
               .select2({
                 placeholder: "Seleccione los campos",
@@ -127,8 +121,8 @@ export default {
                 data: _this.fieldOptions,
               })
               .on("change", function (e) {
-                let element = $(e.currentTarget);
-                let name = element.data("vmodel");
+                const element = $(e.currentTarget);
+                const name = element.data("vmodel");
                 _this.tercero[name] = element.val();
               });
 
@@ -140,14 +134,12 @@ export default {
             });
           }
         })
-        .catch(() => {
-          top.notification({
-            type: "error",
-            message: "No fue posible obtener los valores",
-          });
+        .catch((message) => {
+          top.notification({type: "error", message});
+        })
+        .finally(() => {
+          top.$(document).localize();
         });
-
-    top.$(document).localize();
   },
   computed: {
     ...mapState(["fieldOptions"]),
