@@ -188,12 +188,10 @@ export default {
     };
   },
   created() {
-    this.getAllData().catch(() => {
-      top.notification({
-        type: "error",
-        message: "No fue posible cargar la información",
-      });
-    });
+    this.getAllData()
+        .catch((message) => {
+          top.notification({type: "error", message});
+        });
   },
   mounted() {
     this.initSortable();
@@ -232,7 +230,7 @@ export default {
             });
           })
           .catch(() => {
-            let text = data.active ? "activar" : "inactivar";
+            const text = data.active ? "activar" : "inactivar";
             top.notification({
               type: "error",
               message: "No fue posible " + text + " el campo",
@@ -251,12 +249,10 @@ export default {
             });
           });
 
-          _this.udpateOrderOfFormField(order).catch(() => {
-            top.notification({
-              type: "error",
-              message: "No fue posible actualizar el orden de los campos",
-            });
-          });
+          _this.udpateOrderOfFormField(order)
+              .catch((message) => {
+                top.notification({type: "error", message});
+              });
         },
       });
     },
@@ -295,12 +291,8 @@ export default {
                   .then(() => {
                     top.closeTopModal();
                   })
-                  .catch(() => {
-                    top.notification({
-                      type: "error",
-                      message:
-                          "No fue posible actualizar la configuración del formulario",
-                    });
+                  .catch((message) => {
+                    top.notification({type: "error", message});
                   });
               break;
           }
@@ -409,31 +401,25 @@ export default {
         ...options,
         onSuccess: (response) => {
           if (response.edit) {
-            this.updateFormField(response.data).catch(() => {
-              top.notification({
-                type: "error",
-                message: "No fue posible actualizar el campo",
-              });
-            });
+            this.updateFormField(response.data)
+                .catch((message) => {
+                  top.notification({type: "error", message});
+                });
           } else {
-            this.insertFormField(response.data).catch(() => {
-              top.notification({
-                type: "error",
-                message: "No fue posible guardar el nuevo campo",
-              });
-            });
+            this.insertFormField(response.data)
+                .catch((message) => {
+                  top.notification({type: "error", message});
+                });
           }
           top.closeTopModal();
         },
       });
     },
     deleteField(id) {
-      this.deleteFormField(id).catch(() => {
-        top.notification({
-          type: "error",
-          message: "No fue posible eliminar el campo",
-        });
-      });
+      this.deleteFormField(id)
+          .catch((message) => {
+            top.notification({type: "error", message});
+          });
     },
     publish() {
       this.publishForm()
@@ -443,11 +429,8 @@ export default {
               message: "Formulario generado",
             });
           })
-          .catch(() => {
-            top.notification({
-              type: "error",
-              message: "No fue posible generar el formulario",
-            });
+          .catch((message) => {
+            top.notification({type: "error", message});
           });
     },
     updatecheckAnonymous(e) {

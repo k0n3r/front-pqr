@@ -161,10 +161,10 @@ export default {
               message: "Datos actualizados!",
             });
           })
-          .catch(() => {
+          .catch((message) => {
             top.notification({
               type: "error",
-              message: "No fue posible actualizar la informacion!",
+              message,
             });
           });
     },

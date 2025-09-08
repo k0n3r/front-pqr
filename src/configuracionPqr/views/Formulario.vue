@@ -548,13 +548,10 @@ export default {
       }
     },
     valresponseTimeField(val) {
-      this.refreshPqrTypes(val).catch(() => {
-        const message = top.i18next.t("pqr.obtener_dias", {defaultValue: "No fue posible obtener los dias"});
-        top.notification({
-          type: "error",
-          message
-        });
-      });
+      this.refreshPqrTypes(val)
+          .catch((message) => {
+            top.notification({type: "error", message});
+          });
     },
     balancerField(val) {
       let index = this.balanceOptions.findIndex(i => i.id === val);
@@ -570,15 +567,12 @@ export default {
       }
     },
     valBalancerField(val) {
-      this.refreshGroups(val).then(() => {
-        $(".balancer").select2();
-      })
-          .catch(() => {
-            const message = top.i18next.t("pqr.obtener_grupos", {defaultValue: "No fue posible obtener los grupos"});
-            top.notification({
-              type: "error",
-              message
-            });
+      this.refreshGroups(val)
+          .then(() => {
+            $(".balancer").select2();
+          })
+          .catch((message) => {
+            top.notification({type: "error", message});
           });
     }
   },
@@ -686,13 +680,10 @@ export default {
 
             this.canalRecepcion = this.receivingChannel;
           })
-          .catch(() => {
-            const message = top.i18next.t("pqr.obtener_datos");
-            top.notification({
-              type: "error",
-              message,
-            });
+          .catch((message) => {
+            top.notification({type: "error", message});
           });
+
     },
     async initialize() {
       let _this = this;
@@ -775,12 +766,8 @@ export default {
               message,
             });
           })
-          .catch(() => {
-            const message = top.i18next.t("pqr.error_guardar", {defaultValue: "No fue posible guardar los cambios"});
-            top.notification({
-              type: "error",
-              message,
-            });
+          .catch((message) => {
+            top.notification({type: "error", message});
           });
     },
     saveChangeBalancer() {
@@ -808,12 +795,8 @@ export default {
               message,
             });
           })
-          .catch(() => {
-            const message = top.i18next.t("pqr.error_guardar");
-            top.notification({
-              type: "error",
-              message,
-            });
+          .catch((message) => {
+            top.notification({type: "error", message});
           });
     },
     saveChange() {
@@ -843,12 +826,8 @@ export default {
               message,
             });
           })
-          .catch(() => {
-            const message = top.i18next.t("pqr.error_guardar");
-            top.notification({
-              type: "error",
-              message,
-            });
+          .catch((message) => {
+            top.notification({type: "error", message});
           });
     },
     saveChanel() {
@@ -940,12 +919,8 @@ export default {
               message,
             });
           })
-          .catch(() => {
-            const message = top.i18next.t("pqr.error_guardar");
-            top.notification({
-              type: "error",
-              message,
-            });
+          .catch((message) => {
+            top.notification({type: "error", message});
           });
     },
     editShowReport() {
@@ -961,12 +936,8 @@ export default {
               message,
             });
           })
-          .catch(() => {
-            const message = top.i18next.t("pqr.error_guardar");
-            top.notification({
-              type: "error",
-              message,
-            });
+          .catch((message) => {
+            top.notification({type: "error", message});
           });
     },
     addNotification(idfuncionario) {
@@ -992,31 +963,21 @@ export default {
           .then((id) => {
             this.notify.push(id);
           })
-          .catch(() => {
-            const message = top.i18next.t("pqr.error_funcionario_ingresado");
-            top.notification({
-              type: "error",
-              message,
-            });
+          .catch((message) => {
+            top.notification({type: "error", message});
           });
     },
     editNotification(data) {
-      this.updateNotification(data).catch(() => {
-        const message = top.i18next.t("pqr.error_editar_funcionario");
-        top.notification({
-          type: "error",
-          message,
-        });
-      });
+      this.updateNotification(data)
+          .catch((message) => {
+            top.notification({type: "error", message});
+          });
     },
     delNotification(id) {
-      this.deleteNotification(id).catch(() => {
-        const message = top.i18next.t("pqr.error_eliminar_funcionario");
-        top.notification({
-          type: "error",
-          message,
-        });
-      });
+      this.deleteNotification(id)
+          .catch((message) => {
+            top.notification({type: "error", message});
+          });
     },
     editShowEmpty(e) {
       this.updateShowEmpty(e.target.checked ? 1 : 0)

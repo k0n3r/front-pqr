@@ -9,6 +9,15 @@ $.ajaxSetup({
     }
 });
 
+function handleFail(jqXHR, reject) {
+    console.error(jqXHR);
+    if (jqXHR.status === 500) {
+        reject(top.translate('g.error_interno'));
+    } else {
+        reject(jqXHR.responseJSON?.message || 'Error');
+    }
+}
+
 export default createStore({
     state: {
         urlWs: null,
@@ -67,13 +76,7 @@ export default createStore({
                 $.ajax({
                     url: `/api/pqr/form/setting`,
                 }).done(response => {
-                    if (!+response.success) {
-                        console.log(response)
-                        reject();
-                        return;
-                    }
-
-                    let data = response.data;
+                    const data = response.data;
                     commit("setForm", data.pqrForm);
                     commit("setFormFields", data.pqrFormFields);
                     commit("setUrlWs", data.urlWs);
@@ -86,126 +89,81 @@ export default createStore({
                     commit("setDescriptionField", data.descriptionField)
                     commit("setReceivingChannel", data.receivingChannel)
                     resolve();
-                }).fail((jqXHR) => {
-                    console.log("fail")
-                    console.error(jqXHR)
-                    reject();
-                });
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, refreshPqrTypes({commit}, id) {
+        },
+        refreshPqrTypes({commit}, id) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
                     url: `/api/pqr/responseTimes/field/${id}`,
                 }).done(response => {
-                    if (response.success) {
-                        commit("setPqrTypes", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("setPqrTypes", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, refreshGroups({commit}, id) {
+        },
+        refreshGroups({commit}, id) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
                     url: `/api/pqr/balancer/field/${id}`,
                 }).done(response => {
-                    if (response.success) {
-                        commit("setBalancerGroup", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("setBalancerGroup", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, updatePqrTypes({commit}, data) {
+        },
+        updatePqrTypes({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
                     url: `/api/pqr/responseTimes`, method: 'put', data
-                }).done(response => {
-                    if (response.success) {
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                }).done(() => {
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, updateBalancerGroup({commit}, data) {
+        },
+        updateBalancerGroup({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
                     url: `/api/pqr/balancer`, method: 'put', data
-                }).done(response => {
-                    if (response.success) {
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                }).done(() => {
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, updateShowReport({commit}, data) {
+        },
+        updateShowReport({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
                     url: `/api/pqr/form/updateShowReport`, method: 'put', data
                 }).done(response => {
-                    if (response.success) {
-                        commit("setFormFields", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("setFormFields", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, insertNotification({commit}, data) {
+        },
+        insertNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
                     url: `/api/pqr/notification`, method: 'post', data
                 }).done(response => {
-                    if (response.success) {
-                        commit("addPersonsNotification", response.data);
-                        resolve(response.data.id);
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("addPersonsNotification", response.data);
+                    resolve(response.data.id);
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, updateNotification({commit}, data) {
+        },
+        updateNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -213,36 +171,21 @@ export default createStore({
                         data: data.data
                     }
                 }).done(response => {
-                    if (response.success) {
-                        commit("editPersonsNotification", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("editPersonsNotification", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, deleteNotification({commit}, data) {
+        },
+        deleteNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
                     url: `/api/pqr/notification/${data.id}`, method: 'delete', data
-                }).done(response => {
-                    if (response.success) {
-                        commit("delPersonsNotification", data.id);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                }).done(() => {
+                    commit("delPersonsNotification", data.id);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         }, updateDescriptionField({commit}, descriptionFieldId) {
@@ -251,16 +194,9 @@ export default createStore({
                     url: `/api/pqr/form/descriptionField`, method: 'put', data: {
                         fieldId: descriptionFieldId
                     }
-                }).done(response => {
-                    if (response.success) {
-                        resolve();
-                    } else {
-                        reject(response.message);
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                }).done(() => {
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             })
         }, updateNotyMessage({commit}, data) {
@@ -271,16 +207,9 @@ export default createStore({
                         data: data.data
                     }
                 }).done(response => {
-                    if (response.success) {
-                        commit("setOptionsNotyMessages", response.data)
-                        resolve();
-                    } else {
-                        reject(response.message);
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("setOptionsNotyMessages", response.data)
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             })
         }, updateShowEmpty({commit}, val) {
@@ -291,17 +220,9 @@ export default createStore({
                         show_empty: val
                     }
                 }).done(response => {
-                    if (response.success) {
-                        commit("setForm", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("setForm", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         }, updateEnableFilter({commit}, val) {
@@ -312,17 +233,9 @@ export default createStore({
                         enable_filter_dep: val
                     }
                 }).done(response => {
-                    if (response.success) {
-                        commit("setForm", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject(response.message);
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("setForm", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         }, updateEnableBalancer({commit}, val) {
@@ -333,20 +246,12 @@ export default createStore({
                         enable_balancer: val
                     }
                 }).done(response => {
-                    if (response.success) {
-                        commit("setForm", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject(response.message);
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("setForm", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, updateReceivingChannels({commit}, channels){
+        }, updateReceivingChannels({commit}, channels) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -354,17 +259,9 @@ export default createStore({
                         channels
                     }
                 }).done(response => {
-                    if (response.success) {
-                        commit("setReceivingChannel", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject(response.message);
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("setReceivingChannel", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         }

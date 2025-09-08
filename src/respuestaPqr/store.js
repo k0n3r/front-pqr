@@ -13,6 +13,15 @@ $.ajaxSetup({
     }
 });
 
+function handleFail(jqXHR, reject) {
+    console.error(jqXHR);
+    if (jqXHR.status === 500) {
+        reject(top.translate('g.error_interno'));
+    } else {
+        reject(jqXHR.responseJSON?.message || 'Error');
+    }
+}
+
 // Crea la tienda con createStore en lugar de usar Vue.use(Vuex)
 export default createStore({
     state: {
@@ -31,15 +40,7 @@ export default createStore({
                 }).done(response => {
                     commit("setFieldOptions", response.data);
                     resolve();
-                }).fail((jqXHR) => {
-                    console.error(jqXHR);
-                    if (jqXHR.status === 500) {
-                        const message = top.translate('g.error_interno');
-                        reject(message);
-                    } else {
-                        reject(jqXHR.responseJSON.message);
-                    }
-                });
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
             });
         },
         getFieldValues() {
@@ -48,15 +49,7 @@ export default createStore({
                     url: `/api/pqr/form/responseSetting`,
                 }).done(response => {
                     resolve(response.data);
-                }).fail((jqXHR) => {
-                    console.error(jqXHR);
-                    if (jqXHR.status === 500) {
-                        const message = top.translate('g.error_interno');
-                        reject(message);
-                    } else {
-                        reject(jqXHR.responseJSON.message);
-                    }
-                });
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
             });
         },
         saveResponseConfiguration({commit}, data) {
@@ -67,17 +60,9 @@ export default createStore({
                     data: {
                         data: data
                     }
-                }).done(response => {
-                    if (response.success) {
-                        resolve();
-                    } else {
-                        console.log(response);
-                        reject(response.message);
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR);
-                    reject();
-                });
+                }).done(() => {
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
             });
         }
     }

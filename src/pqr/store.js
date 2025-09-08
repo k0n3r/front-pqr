@@ -1,4 +1,4 @@
-import { createStore } from "vuex"; // Importa createStore desde Vuex 4
+import {createStore} from "vuex"; // Importa createStore desde Vuex 4
 
 // Configuración global de AJAX con jQuery
 $.ajaxSetup({
@@ -12,6 +12,16 @@ $.ajaxSetup({
         console.error(args);
     }
 });
+
+
+function handleFail(jqXHR, reject) {
+    console.error(jqXHR);
+    if (jqXHR.status === 500) {
+        reject(top.translate('g.error_interno'));
+    } else {
+        reject(jqXHR.responseJSON?.message || 'Error');
+    }
+}
 
 export default createStore({
     state: {
@@ -52,20 +62,12 @@ export default createStore({
                 $.ajax({
                     url: `/api/pqr/structure/dataViewIndex`,
                 }).done(response => {
-                    if (response.success) {
-                        let data = response.data;
-                        commit("setComponentsHTML", data.pqrHtmlFields);
-                        commit("setForm", data.pqrForm);
-                        commit("setFormFields", data.pqrFormFields);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject(response.message);
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    const data = response.data;
+                    commit("setComponentsHTML", data.pqrHtmlFields);
+                    commit("setForm", data.pqrForm);
+                    commit("setFormFields", data.pqrFormFields);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         },
@@ -79,20 +81,12 @@ export default createStore({
                         data: data
                     }
                 }).done(response => {
-                    if (response.success) {
-                        let data = response.data;
-                        commit("setCheckAnonymous", false);
-                        commit("setFormFields", data.pqrFormFields);
-                        commit("setForm", data.pqrForm);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject(response.message);
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    const data = response.data;
+                    commit("setCheckAnonymous", false);
+                    commit("setFormFields", data.pqrFormFields);
+                    commit("setForm", data.pqrForm);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         },
@@ -108,17 +102,9 @@ export default createStore({
                         data: dataField
                     }
                 }).done(response => {
-                    if (response.success) {
-                        commit("addFormField", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("addFormField", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         },
@@ -132,17 +118,9 @@ export default createStore({
                         data: dataEdit.dataField
                     }
                 }).done(response => {
-                    if (response.success) {
-                        commit("editFormField", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("editFormField", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         },
@@ -152,18 +130,10 @@ export default createStore({
                 $.ajax({
                     url: `/api/pqr/formField/${id}`,
                     method: "DELETE"
-                }).done(response => {
-                    if (response.success) {
-                        commit("delFormField", id);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                }).done(() => {
+                    commit("delFormField", id);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         },
@@ -174,18 +144,10 @@ export default createStore({
                     url: `/api/pqr/form/publish`,
                     method: 'PUT',
                 }).done(response => {
-                    if (response.success) {
-                        commit("setForm", response.data.pqrForm);
-                        commit("setFormFields", response.data.pqrFormFields);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("setForm", response.data.pqrForm);
+                    commit("setFormFields", response.data.pqrFormFields);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         },
@@ -198,17 +160,9 @@ export default createStore({
                     data: {
                         fieldOrder: fieldOrder
                     }
-                }).done(response => {
-                    if (response.success) {
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                }).done(() => {
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         },
@@ -221,17 +175,9 @@ export default createStore({
                     url,
                     method: "PUT"
                 }).done(response => {
-                    if (response.success) {
-                        commit("editFormField", response.data);
-                        resolve();
-                    } else {
-                        console.log(response)
-                        reject();
-                    }
-                }).fail((jqXHR) => {
-                    console.error(jqXHR)
-                    reject();
-                });
+                    commit("editFormField", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
         }
