@@ -5,6 +5,7 @@ $(function () {
 
     $("#tableHistory").bootstrapTable({
         url: `/api/pqr/${params.idft}/history`,
+        locale: localStorage.getItem('locale'),
         queryParams: function () {
             return {
                 key: localStorage.getItem('key'),
