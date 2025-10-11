@@ -19,16 +19,19 @@ $(function () {
             data: {
                 observaciones
             },
-            success: function (response) {
-                if (response.success) {
-                    top.successModalEvent();
-                } else {
-                    top.notification({
-                        message: response.message,
-                        type: 'error'
-                    });
-                }
+        }).done(() => {
+            top.successModalEvent();
+        }).fail((jqXHR) => {
+            console.error(jqXHR);
+            let message = jqXHR.responseJSON?.message || 'Error';
+            if (jqXHR.status === 500) {
+                message = top.translate('g.error_interno');
             }
+
+            top.notification({
+                message,
+                type: 'error'
+            });
         });
     });
 

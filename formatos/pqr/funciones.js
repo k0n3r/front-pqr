@@ -159,9 +159,6 @@ function addEdit(data, isEdit) {
             } catch (e) {
                 console.info(e.message)
             }
-        })
-        .fail(() => {
-            console.info("No existen funciones personalizadas en el front");
         });
 }
 

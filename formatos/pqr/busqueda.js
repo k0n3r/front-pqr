@@ -113,16 +113,12 @@ $(function () {
         $.ajax({
             url: `/api/pqr/contentDependencia`,
         }).done((response) => {
-            if (+response.success) {
-                $("#row_dependencia")
-                    .empty()
-                    .show()
-                    .append(response.data.content);
-                $('#sys_dependencia').select2();
-            }
-        }).fail(function () {
-            console.error(...arguments)
-        });
+            $("#row_dependencia")
+                .empty()
+                .show()
+                .append(response.data.content);
+            $('#sys_dependencia').select2();
+        })
 
         $.ajax({
             url: `/views/modules/pqr/formatos/pqr/buscar.html`,
@@ -130,9 +126,7 @@ $(function () {
         }).done((html) => {
             const res = (html.replace(/d\./g, "v.")).replace(/_ft@/g, "_v@");
             $("#morefields").empty().append(res);
-        }).fail(function () {
-            console.error(...arguments)
-        });
+        })
     })();
 
 });

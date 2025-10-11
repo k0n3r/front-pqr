@@ -27,42 +27,39 @@ function add(data) {
     top.$.get(
         `/api/pqr/${idft}/dataToLoadResponse`,
         function (response) {
-            if (response.success) {
-                const data = response.data;
 
-                if (typeof data.destino === 'object' && data.destino.id > 0) {
-                    const sDestino = $("#destino");
-                    sDestino.select2('close');
+            const data = response.data;
 
-                    const option = new Option(data.destino.text, data.destino.id, true, true);
-                    sDestino.append(option).trigger('change');
-                }
+            if (typeof data.destino === 'object' && data.destino.id > 0) {
+                const sDestino = $("#destino");
+                sDestino.select2('close');
 
-                if (data.tipo_distribucion) {
-                    const sTipoDistribucion = $("#tipo_distribucion");
-                    sTipoDistribucion.val(data.tipo_distribucion)
-                        .trigger('change');
-
-                    const key = sTipoDistribucion.select2('data')[0].element.dataset.key;
-                    showHideEncuesta(key);
-                }
-
-                if (data.despedida) {
-                    const sDespedida = $("#despedida");
-                    sDespedida.val(data.despedida)
-                        .trigger('change');
-
-                    const key = sDespedida.select2('data')[0].element.dataset.key;
-                    showHideDespedida(key);
-                }
-
-                if (data.asunto) {
-                    $("#asunto").val(data.asunto);
-                }
-
-            } else {
-                console.error(response)
+                const option = new Option(data.destino.text, data.destino.id, true, true);
+                sDestino.append(option).trigger('change');
             }
+
+            if (data.tipo_distribucion) {
+                const sTipoDistribucion = $("#tipo_distribucion");
+                sTipoDistribucion.val(data.tipo_distribucion)
+                    .trigger('change');
+
+                const key = sTipoDistribucion.select2('data')[0].element.dataset.key;
+                showHideEncuesta(key);
+            }
+
+            if (data.despedida) {
+                const sDespedida = $("#despedida");
+                sDespedida.val(data.despedida)
+                    .trigger('change');
+
+                const key = sDespedida.select2('data')[0].element.dataset.key;
+                showHideDespedida(key);
+            }
+
+            if (data.asunto) {
+                $("#asunto").val(data.asunto);
+            }
+
         },
         'json'
     );
@@ -130,9 +127,6 @@ function addEdit(data, isEdit) {
             } catch (e) {
                 console.info(e.message)
             }
-        })
-        .fail(() => {
-            console.info("No existen funciones personalizadas en el front");
         });
 }
 

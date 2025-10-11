@@ -36,20 +36,11 @@ $(function () {
 
                         top.$.ajax({
                             url: `/api/pqr/answers/${idft}/requestSurveyByEmail`,
-                            success: function (response) {
-
-                                if (response.success) {
-                                    top.notification({
-                                        message: "Se ha solicitado la calificación",
-                                        type: 'success'
-                                    });
-                                } else {
-                                    top.notification({
-                                        message: response.message,
-                                        type: 'error'
-                                    });
-                                }
-                            }
+                        }).done(() => {
+                            top.notification({
+                                message: "Se ha solicitado la calificación",
+                                type: 'success'
+                            });
                         });
                     },
                     true

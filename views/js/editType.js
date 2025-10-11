@@ -47,46 +47,36 @@ $(function () {
         top.$.ajax({
             url: `/api/pqr/${params.idft}/valuesForType`,
         }).done(response => {
-            if (response.success) {
-                if (+response.data.sys_tipo) {
-                    $('#sys_tipo').val(response.data.sys_tipo).trigger('change');
-                }
-                if (+response.data.sys_subtipo) {
-                    $('#sys_subtipo').val(response.data.sys_subtipo).trigger('change');
-                }
-                setTimeout(() => {
-                    $("#sys_fecha_vencimiento").val(response.data.sys_fecha_vencimiento);
-                }, 1500);
-
-                if (response.data.sys_dependencia) {
-                    let u = response.data.optionsDependency;
-                    let option = new Option(u.text, u.id, true, true);
-                    $('#sys_dependencia')
-                        .append(option)
-                        .trigger('change');
-                }
-
-                if (+response.data.sys_frecuencia) {
-                    $('#sys_frecuencia').val(response.data.sys_frecuencia).trigger('change');
-                }
-
-                if (+response.data.sys_impacto) {
-                    $('#sys_impacto').val(response.data.sys_impacto).trigger('change');
-                }
-
-                if (+response.data.sys_severidad) {
-                    $('#sys_severidad').val(response.data.sys_severidad).trigger('change');
-                }
-
-            } else {
-                console.error(response)
-                top.notification({
-                    message: 'No fue posible cargar los valores seleccionados',
-                    type: 'error'
-                });
+            if (+response.data.sys_tipo) {
+                $('#sys_tipo').val(response.data.sys_tipo).trigger('change');
             }
-        }).fail((jqXHR) => {
-            console.error(jqXHR)
+            if (+response.data.sys_subtipo) {
+                $('#sys_subtipo').val(response.data.sys_subtipo).trigger('change');
+            }
+            setTimeout(() => {
+                $("#sys_fecha_vencimiento").val(response.data.sys_fecha_vencimiento);
+            }, 1500);
+
+            if (response.data.sys_dependencia) {
+                let u = response.data.optionsDependency;
+                let option = new Option(u.text, u.id, true, true);
+                $('#sys_dependencia')
+                    .append(option)
+                    .trigger('change');
+            }
+
+            if (+response.data.sys_frecuencia) {
+                $('#sys_frecuencia').val(response.data.sys_frecuencia).trigger('change');
+            }
+
+            if (+response.data.sys_impacto) {
+                $('#sys_impacto').val(response.data.sys_impacto).trigger('change');
+            }
+
+            if (+response.data.sys_severidad) {
+                $('#sys_severidad').val(response.data.sys_severidad).trigger('change');
+            }
+
         });
     }
 
@@ -121,21 +111,13 @@ $(function () {
                         sys_severidad: $("#sys_severidad").val(),
                     }
                 }
-            }).done(response => {
-                if (response.success) {
-                    top.notification({
-                        message: 'Datos actualizados!',
-                        type: 'success'
-                    });
-                    const jsPanel = top.getPanel('editTypes');
-                    jsPanel.successModalEvent();
-
-                } else {
-                    top.notification({
-                        message: response.message,
-                        type: 'error'
-                    });
-                }
+            }).done(() => {
+                top.notification({
+                    message: 'Datos actualizados!',
+                    type: 'success'
+                });
+                const jsPanel = top.getPanel('editTypes');
+                jsPanel.successModalEvent();
             }).fail((jqXHR) => {
                 console.error(jqXHR)
             }).always(() => {
@@ -173,12 +155,9 @@ $(function () {
                             type: sys_tipo
                         }
                     }).done(response => {
-                        if (response.success) {
-                            $("#sys_fecha_vencimiento").val(response.data.date);
-                        } else {
-                            $("#sys_fecha_vencimiento").val('');
-                        }
+                        $("#sys_fecha_vencimiento").val(response.data.date);
                     }).fail((jqXHR) => {
+                        $("#sys_fecha_vencimiento").val('');
                         console.error(jqXHR)
                     });
 

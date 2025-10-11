@@ -203,13 +203,6 @@ $(function () {
         top.$.ajax({
             url: `/api/pqr/${idft}/externalUser`,
         }).done(response => {
-            if (!+response.success) {
-                top.notification({
-                    message: response.message,
-                    type: 'error'
-                });
-                return;
-            }
 
             top.topModal({
                 url: `/views/tercero/formularioDinamico.html`,
@@ -237,11 +230,6 @@ $(function () {
                             sys_tercero: data.id
                         }
                     }).done(response => {
-                        if (!+response.success) {
-                            console.error(response)
-                            return;
-                        }
-
                         if (!+response.data.correo) {
                             top.notification({
                                 title: "Datos actualizados!",
@@ -255,12 +243,11 @@ $(function () {
                             });
                         }
 
-                    });
-
+                    })
                     top.closeTopModal();
                 }
             });
-        });
+        })
     });
 
 
