@@ -36,34 +36,48 @@ export default createStore({
     }, mutations: {
         setUrlWs(state, url) {
             state.urlWs = url;
-        }, setPublish(state, value) {
+        },
+        setPublish(state, value) {
             state.publish = value;
-        }, setForm(state, data) {
+        },
+        setForm(state, data) {
             state.form = data;
-        }, setFormFields(state, data) {
+        },
+        setFormFields(state, data) {
             state.formFields = data;
-        }, setPqrTypes(state, data) {
+        },
+        setPqrTypes(state, data) {
             state.pqrTypes = data;
-        }, setBalancerGroup(state, data) {
+        },
+        setBalancerGroup(state, data) {
             state.pqrBalancerGroup = data;
-        }, setPersonNotifications(state, data) {
+        },
+        setPersonNotifications(state, data) {
             state.personsNotifications = data;
-        }, setOptionsNotyMessages(state, data) {
+        },
+        setOptionsNotyMessages(state, data) {
             state.optionsNotyMessages = data;
-        }, setResponseTimeOptions(state, data) {
+        },
+        setResponseTimeOptions(state, data) {
             state.responseTimeOptions = data;
-        }, setBalancerOptions(state, data) {
+        },
+        setBalancerOptions(state, data) {
             state.balanceOptions = data;
-        }, setGroupOptions(state, data) {
+        },
+        setGroupOptions(state, data) {
             state.groupOptions = data;
-        }, setDescriptionField(state, data) {
+        },
+        setDescriptionField(state, data) {
             state.descriptionField = data;
-        }, addPersonsNotification(state, data) {
+        },
+        addPersonsNotification(state, data) {
             state.personsNotifications.push(data);
-        }, delPersonsNotification(state, id) {
+        },
+        delPersonsNotification(state, id) {
             let index = state.personsNotifications.findIndex(i => i.id === id);
             state.personsNotifications.splice(index, 1);
-        }, editPersonsNotification(state, data) {
+        },
+        editPersonsNotification(state, data) {
             let index = state.personsNotifications.findIndex(i => i.id === data.id);
             state.personsNotifications.splice(index, 1, data);
         },
@@ -188,7 +202,8 @@ export default createStore({
                 }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, updateDescriptionField({commit}, descriptionFieldId) {
+        },
+        updateDescriptionField({commit}, descriptionFieldId) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: `/api/pqr/form/descriptionField`, method: 'put', data: {
@@ -199,7 +214,8 @@ export default createStore({
                 }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             })
-        }, updateNotyMessage({commit}, data) {
+        },
+        updateNotyMessage({commit}, data) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -212,7 +228,8 @@ export default createStore({
                 }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             })
-        }, updateShowEmpty({commit}, val) {
+        },
+        updateShowEmpty({commit}, val) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -225,7 +242,8 @@ export default createStore({
                 }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, updateEnableFilter({commit}, val) {
+        },
+        updateEnableFilter({commit}, val) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -238,7 +256,8 @@ export default createStore({
                 }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, updateEnableBalancer({commit}, val) {
+        },
+        updateEnableBalancer({commit}, val) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -251,7 +270,8 @@ export default createStore({
                 }).fail((jqXHR) => handleFail(jqXHR, reject));
 
             });
-        }, updateReceivingChannels({commit}, channels) {
+        },
+        updateReceivingChannels({commit}, channels) {
             return new Promise((resolve, reject) => {
 
                 $.ajax({
@@ -260,6 +280,20 @@ export default createStore({
                     }
                 }).done(response => {
                     commit("setReceivingChannel", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
+
+            });
+        },
+        updateEnableConsecutiveDays({commit}, val) {
+            return new Promise((resolve, reject) => {
+
+                $.ajax({
+                    url: `/api/pqr/form/consecutiveDays`, method: 'put', data: {
+                        enable_con_days: val
+                    }
+                }).done(response => {
+                    commit("setForm", response.data);
                     resolve();
                 }).fail((jqXHR) => handleFail(jqXHR, reject));
 

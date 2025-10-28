@@ -48,6 +48,19 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <div class="checkbox check-success input-group">
+                <input
+                    type="checkbox"
+                    id="enableConsecutiveDays"
+                    v-model="enableConsecutiveDays"
+                    v-on:change="editEnableConsecutiveDays($event)"
+                />
+                <label for="enableConsecutiveDays" class="text-uppercase" data-i18n="pqr.incluir_dias_festivos">Incluir
+                  fines de semana y festivos en el conteo de dias</label>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -513,6 +526,7 @@ export default {
       showEmpty: false,
       enableFilter: false,
       enableBalancer: false,
+      enableConsecutiveDays: false,
       showReport: [],
       notify: [],
       notifyEmail: [],
@@ -630,6 +644,7 @@ export default {
       "updateShowEmpty",
       "updateEnableFilter",
       "updateEnableBalancer",
+      "updateEnableConsecutiveDays",
       "updateDescriptionField",
       "updateReceivingChannels"
     ]),
@@ -669,6 +684,7 @@ export default {
             this.showEmpty = !!(+this.form.show_empty);
             this.enableFilter = !!(+this.form.enable_filter_dep);
             this.enableBalancer = !!(+this.form.enable_balancer);
+            this.enableConsecutiveDays = !!(+this.form.enable_con_days);
             this.descriptionFieldId = this.descriptionField.id;
             if (this.descriptionField.id) {
               $('#descripcion').append(`
@@ -1037,6 +1053,26 @@ export default {
             });
           });
     },
+    editEnableConsecutiveDays(e) {
+      const seleted = e.target.checked;
+
+      this.updateEnableConsecutiveDays(seleted ? 1 : 0)
+          .then(() => {
+            const message = top.i18next.t("pqr.cambios_actualizados");
+
+            top.notification({
+              type: "success",
+              message
+            });
+          })
+          .catch((message) => {
+            top.notification({
+              type: "error",
+              message
+            });
+          });
+
+    }
   }
 }
 </script>
