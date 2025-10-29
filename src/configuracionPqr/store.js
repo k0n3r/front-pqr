@@ -2,9 +2,12 @@ import {createStore} from "vuex"; // Importa createStore desde Vuex 4
 
 // Configuración global de AJAX con jQuery
 $.ajaxSetup({
-    method: 'GET', dataType: 'json', headers: {
-        "X-Bearer-Token": localStorage.getItem('token'), "X-Bearer-Key": localStorage.getItem('key')
-    }, error: function (...args) {
+    method: 'GET',
+    dataType: 'json',
+    headers: {
+        Authorization: "Bearer " + localStorage.getItem('token')
+    },
+    error: function (...args) {
         console.error(args);
     }
 });
@@ -23,6 +26,7 @@ export default createStore({
         urlWs: null,
         publish: null,
         form: {},
+        emailsConfig: [],
         formFields: [],
         pqrTypes: [],
         pqrBalancerGroup: [],
@@ -42,6 +46,9 @@ export default createStore({
         },
         setForm(state, data) {
             state.form = data;
+        },
+        setEmailsConfig(state, data) {
+            state.emailsConfig = data;
         },
         setFormFields(state, data) {
             state.formFields = data;
@@ -92,6 +99,7 @@ export default createStore({
                 }).done(response => {
                     const data = response.data;
                     commit("setForm", data.pqrForm);
+                    commit("setEmailsConfig", data.emailsConfig);
                     commit("setFormFields", data.pqrFormFields);
                     commit("setUrlWs", data.urlWs);
                     commit("setPublish", data.publish);
@@ -294,6 +302,18 @@ export default createStore({
                     }
                 }).done(response => {
                     commit("setForm", response.data);
+                    resolve();
+                }).fail((jqXHR) => handleFail(jqXHR, reject));
+
+            });
+        },
+        updateEmailConfig({commit}, {id, ...data}) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: `/api/emailConfig/${id}/updateFields`,
+                    method: 'put',
+                    data
+                }).done(() => {
                     resolve();
                 }).fail((jqXHR) => handleFail(jqXHR, reject));
 

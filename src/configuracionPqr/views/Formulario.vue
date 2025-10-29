@@ -64,6 +64,47 @@
           </div>
         </div>
 
+        <!-- -->
+        <div class="card card-default">
+          <div class="card-header">
+            <div class="card-title text-uppercase" data-i18n="pqr.configuracion_emails">Configuracion de Emails</div>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered table-hover">
+              <thead>
+              <tr>
+                <th>Descripción</th>
+                <th class="text-center">Correo Certificado</th>
+                <th class="text-center">Estado</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(item, index) in emailsConfig" :key="index">
+                <td>{{ item.description }}</td>
+                <td class="text-center">
+                  <input
+                      type="checkbox"
+                      v-model="item.transport_type"
+                      true-value="certified"
+                      false-value="default"
+                      @change="enableCertified(item, index)"
+                  >
+                </td>
+                <td class="text-center">
+                  <input
+                      type="checkbox"
+                      v-model="item.active"
+                      @change="changeStatus(item, index)"
+                  >
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- -->
+
+
         <div class="card card-default">
           <div class="card-header">
             <div class="card-title">
@@ -602,6 +643,7 @@ export default {
       "pqrTypes",
       "pqrBalancerGroup",
       "form",
+      "emailsConfig",
       "formFields",
       "personsNotifications",
       "optionsNotyMessages",
@@ -645,6 +687,7 @@ export default {
       "updateEnableFilter",
       "updateEnableBalancer",
       "updateEnableConsecutiveDays",
+      "updateEmailConfig",
       "updateDescriptionField",
       "updateReceivingChannels"
     ]),
@@ -1072,6 +1115,40 @@ export default {
             });
           });
 
+    },
+    enableCertified(item) {
+      const data = {
+        id: item.id,
+        campo: 'transport_type',
+        valor: item.transport_type
+      }
+      this.saveEmailConfig(data);
+    },
+    changeStatus(item) {
+      const data = {
+        id: item.id,
+        campo: 'active',
+        valor: item.active ? 1 : 0
+      }
+      this.saveEmailConfig(data);
+    },
+    saveEmailConfig(data) {
+
+      this.updateEmailConfig(data)
+          .then(() => {
+            const message = top.i18next.t("pqr.cambios_actualizados");
+
+            top.notification({
+              type: "success",
+              message
+            });
+          })
+          .catch((message) => {
+            top.notification({
+              type: "error",
+              message
+            });
+          });
     }
   }
 }
