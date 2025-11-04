@@ -113,6 +113,10 @@ $(function () {
         $.ajax({
             url: `/api/pqr/contentDependencia`,
         }).done((response) => {
+            if (!+response.data.enabled) {
+                return
+            }
+
             $("#row_dependencia")
                 .empty()
                 .show()
