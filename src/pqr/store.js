@@ -5,8 +5,7 @@ $.ajaxSetup({
     method: 'GET',
     dataType: 'json',
     headers: {
-        "X-Bearer-Token": localStorage.getItem('token'),
-        "X-Bearer-Key": localStorage.getItem('key')
+        Authorization: "Bearer " + localStorage.getItem('token')
     },
     error: function (...args) {
         console.error(args);
