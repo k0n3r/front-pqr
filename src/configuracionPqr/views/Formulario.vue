@@ -762,7 +762,7 @@ export default {
                 };
               },
               processResults: function (response) {
-                return response.success ? {results: response.data} : {};
+                return {results: response.data}
               },
             },
           })
