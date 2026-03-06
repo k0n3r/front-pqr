@@ -6,5 +6,7 @@ formatos/*/adicionar.html
 formatos/*/buscar.html
 formatos/*/edit.js
 formatos/*/editar.html
+formatos/*/css/
+formatos/*/buscar.js
 
 translations/*_tmp.json
