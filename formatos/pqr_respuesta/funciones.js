@@ -132,6 +132,13 @@ function addEdit(data, isEdit) {
 
 //evento ejecutado en el mostrar
 function show(data) {
+    $(document)
+        .off('click', '#chat_user_ia')
+        .on('click', '#chat_user_ia', function () {
+            const documentId = data.ft.moreData.pqrDocumentId;
+            top.openChatUser(documentId);
+            return;
+        });
 }
 
 //evento ejecutado anterior al adicionar

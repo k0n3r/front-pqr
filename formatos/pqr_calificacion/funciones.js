@@ -14,6 +14,14 @@ function edit(data) {
 
 //evento ejecutado en el mostrar
 function show(data) {
+    $(document)
+        .off('click', '#chat_user_ia')
+        .on('click', '#chat_user_ia', function () {
+            top.notification({
+                type: 'error',
+                message: 'Por favor abre el chat desde la PQR o la Respuesta'
+            });
+        });
 }
 
 //evento ejecutado anterior al adicionar
