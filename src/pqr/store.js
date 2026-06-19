@@ -22,6 +22,25 @@ function handleFail(jqXHR, reject) {
     }
 }
 
+/**
+ * El backend entrega `setting` como string JSON (PqrFormField.setting es `text`),
+ * pero el front lo consume como objeto (setting.placeholder, setting.options, …).
+ * Se normaliza a objeto al entrar al store para que el preview y los modales de
+ * edición lean los valores correctamente.
+ */
+function normalizeField(field) {
+    if (field && typeof field.setting === "string") {
+        try {
+            field.setting = JSON.parse(field.setting) || {};
+        } catch (e) {
+            field.setting = {};
+        }
+    } else if (field && (field.setting === null || field.setting === undefined)) {
+        field.setting = {};
+    }
+    return field;
+}
+
 export default createStore({
     state: {
         componentsHTML: [],
@@ -34,15 +53,16 @@ export default createStore({
             state.componentsHTML = data;
         },
         setFormFields(state, data) {
-            state.formFields = data;
+            state.formFields = data.map(normalizeField);
         },
         setForm(state, data) {
             state.form = data;
         },
         addFormField(state, data) {
-            state.formFields.push(data);
+            state.formFields.push(normalizeField(data));
         },
         editFormField(state, data) {
+            normalizeField(data);
             let index = state.formFields.findIndex(i => +i.id === +data.id);
             state.formFields.splice(index, 1, data);
         },
