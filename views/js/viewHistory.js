@@ -8,8 +8,6 @@ $(function () {
         locale: localStorage.getItem('locale'),
         queryParams: function () {
             return {
-                key: localStorage.getItem('key'),
-                token: localStorage.getItem('token')
             }
         },
         classes: 'table table-hover mt-0',

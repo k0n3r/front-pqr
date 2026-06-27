@@ -16,8 +16,6 @@ $(function () {
                 dataType: "json",
                 data: function (p) {
                     return {
-                        key: localStorage.getItem("key"),
-                        token: localStorage.getItem("token"),
                         name: 'sys_dependencia',
                         data: {
                             term: p.term
