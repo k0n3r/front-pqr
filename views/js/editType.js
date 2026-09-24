@@ -135,55 +135,54 @@ $(function () {
     $('#sys_frecuencia,#sys_impacto,#sys_severidad').select2();
 
     top.$.ajax({
-        url: `/api/pqr/structure/dataModalViewEditType`,
-        success: function (response) {
-            if (+response.data.dataType.length) {
-                initSelect('sys_tipo', response.data.dataType);
+        url: `/api/pqr/structure/dataModalViewEditType`
+    }).done(function (response) {
+        if (+response.data.dataType.length) {
+            initSelect('sys_tipo', response.data.dataType);
 
-                $('#sys_tipo').on('change', function () {
-                    let sys_tipo = this.value;
-                    if (!sys_tipo) {
-                        $("#sys_fecha_vencimiento").val('');
-                        return false;
+            $('#sys_tipo').on('change', function () {
+                let sys_tipo = this.value;
+                if (!sys_tipo) {
+                    $("#sys_fecha_vencimiento").val('');
+                    return false;
+                }
+
+                top.$.ajax({
+                    url: `/api/pqr/${params.idft}/dateForType`,
+                    data: {
+                        type: sys_tipo
                     }
-
-                    top.$.ajax({
-                        url: `/api/pqr/${params.idft}/dateForType`,
-                        data: {
-                            type: sys_tipo
-                        }
-                    }).done(response => {
-                        $("#sys_fecha_vencimiento").val(response.data.date);
-                    }).fail((jqXHR) => {
-                        $("#sys_fecha_vencimiento").val('');
-                        console.error(jqXHR)
-                    });
-
+                }).done(response => {
+                    $("#sys_fecha_vencimiento").val(response.data.date);
+                }).fail((jqXHR) => {
+                    $("#sys_fecha_vencimiento").val('');
+                    console.error(jqXHR)
                 });
 
-            } else {
-                top.notification({
-                    message: 'No fue posible cargar los tipos',
-                    type: 'error'
-                });
-            }
+            });
 
-            if (+response.data.dataSubType.length) {
-                subtypeExist = 1;
-                initSelect('sys_subtipo', response.data.dataSubType);
-            } else {
-                $("#divSubType").remove();
-            }
-
-
-            if (+response.data.activeDependency) {
-                dependencyExist = 1;
-                initSelectDependency();
-            } else {
-                $("#divDependency").remove();
-            }
-            getValues()
+        } else {
+            top.notification({
+                message: 'No fue posible cargar los tipos',
+                type: 'error'
+            });
         }
+
+        if (+response.data.dataSubType.length) {
+            subtypeExist = 1;
+            initSelect('sys_subtipo', response.data.dataSubType);
+        } else {
+            $("#divSubType").remove();
+        }
+
+
+        if (+response.data.activeDependency) {
+            dependencyExist = 1;
+            initSelectDependency();
+        } else {
+            $("#divDependency").remove();
+        }
+        getValues()
     });
 
 });

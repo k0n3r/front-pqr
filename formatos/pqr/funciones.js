@@ -47,10 +47,9 @@ function add(data) {
             url: `/api/roundcube/rcmail`,
             data: {
                 id: rcmailDataId
-            },
-            success: function (response) {
-                loadAnexosPqr(response.data.anexos_digitales);
             }
+        }).done(function (response) {
+            loadAnexosPqr(response.data.anexos_digitales);
         });
     } else {
         const allChanels = [

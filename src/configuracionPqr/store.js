@@ -94,7 +94,7 @@ export default createStore({
     }, actions: {
         getDataSetting({commit}) {
             return new Promise((resolve, reject) => {
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/setting`,
                 }).done(response => {
                     const data = response.data;
@@ -118,7 +118,7 @@ export default createStore({
         refreshPqrTypes({commit}, id) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/responseTimes/field/${id}`,
                 }).done(response => {
                     commit("setPqrTypes", response.data);
@@ -130,7 +130,7 @@ export default createStore({
         refreshGroups({commit}, id) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/balancer/field/${id}`,
                 }).done(response => {
                     commit("setBalancerGroup", response.data);
@@ -142,7 +142,7 @@ export default createStore({
         updatePqrTypes({commit}, data) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/responseTimes`, method: 'put', data
                 }).done(() => {
                     resolve();
@@ -153,7 +153,7 @@ export default createStore({
         updateBalancerGroup({commit}, data) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/balancer`, method: 'put', data
                 }).done(() => {
                     resolve();
@@ -164,7 +164,7 @@ export default createStore({
         updateShowReport({commit}, data) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/updateShowReport`, method: 'put', data
                 }).done(response => {
                     commit("setFormFields", response.data);
@@ -176,7 +176,7 @@ export default createStore({
         insertNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/notification`, method: 'post', data
                 }).done(response => {
                     commit("addPersonsNotification", response.data);
@@ -188,7 +188,7 @@ export default createStore({
         updateNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/notification/${data.id}`, method: 'put', data: {
                         data: data.data
                     }
@@ -202,7 +202,7 @@ export default createStore({
         deleteNotification({commit}, data) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/notification/${data.id}`, method: 'delete', data
                 }).done(() => {
                     commit("delPersonsNotification", data.id);
@@ -213,7 +213,7 @@ export default createStore({
         },
         updateDescriptionField({commit}, descriptionFieldId) {
             return new Promise((resolve, reject) => {
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/descriptionField`, method: 'put', data: {
                         fieldId: descriptionFieldId
                     }
@@ -226,7 +226,7 @@ export default createStore({
         updateNotyMessage({commit}, data) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/notyMessage/${data.id}`, method: 'put', data: {
                         data: data.data
                     }
@@ -240,7 +240,7 @@ export default createStore({
         updateShowEmpty({commit}, val) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/showEmpty`, method: 'put', data: {
                         show_empty: val
                     }
@@ -254,7 +254,7 @@ export default createStore({
         updateEnableFilter({commit}, val) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/filterReport`, method: 'put', data: {
                         enable_filter_dep: val
                     }
@@ -268,7 +268,7 @@ export default createStore({
         updateEnableBalancer({commit}, val) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/balancer`, method: 'put', data: {
                         enable_balancer: val
                     }
@@ -282,7 +282,7 @@ export default createStore({
         updateReceivingChannels({commit}, channels) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/receivingchannels`, method: 'put', data: {
                         channels
                     }
@@ -296,7 +296,7 @@ export default createStore({
         updateEnableConsecutiveDays({commit}, val) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/consecutiveDays`, method: 'put', data: {
                         enable_con_days: val
                     }
@@ -309,7 +309,7 @@ export default createStore({
         },
         updateEmailConfig({commit}, {id, ...data}) {
             return new Promise((resolve, reject) => {
-                $.ajax({
+                top.$.ajax({
                     url: `/api/emailConfig/${id}/updateFields`,
                     method: 'put',
                     data

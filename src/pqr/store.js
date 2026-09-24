@@ -78,7 +78,7 @@ export default createStore({
         getAllData({commit}) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/structure/dataViewIndex`,
                 }).done(response => {
                     const data = response.data;
@@ -93,7 +93,7 @@ export default createStore({
         updateSetting({commit}, data) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/updateSetting`,
                     method: "PUT",
                     data: {
@@ -114,7 +114,7 @@ export default createStore({
 
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/formField`,
                     method: "POST",
                     data: {
@@ -130,7 +130,7 @@ export default createStore({
         updateFormField({commit}, dataEdit) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/formField/${dataEdit.id}`,
                     method: "PUT",
                     data: {
@@ -146,7 +146,7 @@ export default createStore({
         deleteFormField({commit}, id) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/formField/${id}`,
                     method: "DELETE"
                 }).done(() => {
@@ -159,7 +159,7 @@ export default createStore({
         publishForm({commit}) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/publish`,
                     method: 'PUT',
                 }).done(response => {
@@ -173,7 +173,7 @@ export default createStore({
         udpateOrderOfFormField({commit}, fieldOrder) {
             return new Promise((resolve, reject) => {
 
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/sortFields`,
                     method: "PUT",
                     data: {
@@ -190,7 +190,7 @@ export default createStore({
                 let url = data.active ? `/api/pqr/formField/${data.id}/active`
                     : `/api/pqr/formField/${data.id}/inactive`;
 
-                $.ajax({
+                top.$.ajax({
                     url,
                     method: "PUT"
                 }).done(response => {

@@ -34,7 +34,7 @@ export default createStore({
     actions: {
         getFieldOptions({commit}) {
             return new Promise((resolve, reject) => {
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/textFields`,
                 }).done(response => {
                     commit("setFieldOptions", response.data);
@@ -44,7 +44,7 @@ export default createStore({
         },
         getFieldValues() {
             return new Promise((resolve, reject) => {
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/responseSetting`,
                 }).done(response => {
                     resolve(response.data);
@@ -53,7 +53,7 @@ export default createStore({
         },
         saveResponseConfiguration({commit}, data) {
             return new Promise((resolve, reject) => {
-                $.ajax({
+                top.$.ajax({
                     url: `/api/pqr/form/updateResponseSetting`,
                     method: "put",
                     data: {

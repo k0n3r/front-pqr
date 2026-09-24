@@ -110,7 +110,7 @@ $(function () {
         $('#filtro_fecha,#sys_frecuencia,#sys_impacto,#sys_severidad,#sys_oportuno').select2();
         createPicker();
 
-        $.ajax({
+        top.$.ajax({
             url: `/api/pqr/contentDependencia`,
         }).done((response) => {
             if (!+response.data.enabled) {
@@ -124,7 +124,7 @@ $(function () {
             $('#sys_dependencia').select2();
         })
 
-        $.ajax({
+        top.$.ajax({
             url: `/views/modules/pqr/formatos/pqr/buscar.html`,
             dataType: 'html',
         }).done((html) => {
