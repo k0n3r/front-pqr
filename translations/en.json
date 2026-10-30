@@ -26,6 +26,7 @@
     "activar": "Activate",
     "nombre_formulario": "Form name",
     "marcador_texto": "Placeholder",
+    "requerir_confirmacion_correo": "Require email confirmation (the user must type it twice)",
     "tipo_fecha": "Date type",
     "fecha_hora": "Date and time",
     "mostrar_todas_dependencia": "Show all dependencies",

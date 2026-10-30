@@ -14,11 +14,17 @@ $(function () {
             this.form = this.clearDataForm();
         },
         methods: {
+            isEmailField() {
+                return this.dataParams.isEdit ?
+                    this.dataParams.dataFormField.fk_pqr_html_field.type === 'email' :
+                    this.dataParams.type === 'email';
+            },
             clearDataForm() {
                 let dataForm = {
                     label: null,
                     required: 1,
-                    placeholder: null
+                    placeholder: null,
+                    confirmEmail: true
                 };
                 if (this.dataParams.isEdit) {
                     let dataFormField = this.dataParams.dataFormField;
@@ -27,7 +33,8 @@ $(function () {
                     dataForm = {
                         label: dataFormField.label,
                         required: dataFormField.required,
-                        placeholder: dataFormField.setting.placeholder
+                        placeholder: dataFormField.setting.placeholder,
+                        confirmEmail: dataFormField.setting.confirmEmail ?? true
                     };
                 }
                 return dataForm;
@@ -38,7 +45,8 @@ $(function () {
                         label: this.form.label,
                         required: this.form.required,
                         setting: {
-                            placeholder: this.form.placeholder
+                            placeholder: this.form.placeholder,
+                            confirmEmail: this.form.confirmEmail
                         }
                     },
                     id: this.dataParams.dataFormField.id
@@ -54,7 +62,8 @@ $(function () {
                     label: this.form.label,
                     required: this.form.required,
                     setting: {
-                        placeholder: this.form.placeholder
+                        placeholder: this.form.placeholder,
+                        confirmEmail: this.form.confirmEmail
                     }
                 };
 

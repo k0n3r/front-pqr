@@ -10,6 +10,19 @@
         maxlength="250"
     />
   </div>
+  <div v-if="isEmailWithConfirmation" class="form-group form-group-default" :class="isRequired">
+    <label>{{ dataParams.label }} (confirmación)</label>
+    <input
+        class="form-control"
+        :class="isRequired"
+        :placeholder="dataParams.setting.placeholder"
+        type="email"
+        maxlength="250"
+        autocomplete="off"
+        @paste.prevent
+        @drop.prevent
+    />
+  </div>
 </template>
 
 <script>
@@ -22,6 +35,12 @@ export default {
     dataParams: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    isEmailWithConfirmation() {
+      return this.dataParams.fk_pqr_html_field.type === "email" &&
+          (this.dataParams.setting.confirmEmail ?? true);
     }
   }
 };

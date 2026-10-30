@@ -26,6 +26,7 @@
     "activar": "Activar",
     "nombre_formulario": "Nombre del formulario",
     "marcador_texto": "Marcador de texto",
+    "requerir_confirmacion_correo": "Requerir confirmación de correo (el usuario debe escribirlo dos veces)",
     "tipo_fecha": "Tipo de fecha",
     "fecha_hora": "Fecha y hora",
     "mostrar_todas_dependencia": "Mostrar todas las dependencias",
