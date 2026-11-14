@@ -39,8 +39,10 @@ export default {
   },
   computed: {
     isEmailWithConfirmation() {
-      return this.dataParams.fk_pqr_html_field.type === "email" &&
-          (this.dataParams.setting.confirmEmail ?? true);
+      const value = this.dataParams.setting.confirmEmail;
+      const isFalse = [false, "false", "0", 0, null, undefined, ""].includes(value);
+
+      return this.dataParams.fk_pqr_html_field.type === "email" && !isFalse;
     }
   }
 };

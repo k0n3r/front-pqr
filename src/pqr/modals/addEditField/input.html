@@ -30,7 +30,7 @@
 
                 <div v-if="isEmailField()" class="form-group form-group-default">
                     <div class="checkbox check-success">
-                        <input type="checkbox" id="confirmEmail" v-model="form.confirmEmail"/>
+                        <input type="checkbox" id="confirmEmail" true-value="1" false-value="0" v-model="form.confirmEmail"/>
                         <label for="confirmEmail" data-i18n="pqr.requerir_confirmacion_correo">Requerir confirmación de correo (el usuario debe escribirlo dos veces)</label>
                     </div>
                 </div>

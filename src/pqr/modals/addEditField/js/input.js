@@ -1,6 +1,16 @@
 $(function () {
     const dataParams = top.window.dataModal;
 
+    /**
+     * El valor viaja por un PUT/POST form-urlencoded (jQuery $.param()), que
+     * convierte cualquier booleano a su representación de texto literal
+     * ("true"/"false"), ambas truthy en JS/PHP. Se trata como falso solo lo
+     * que explícitamente lo es, para sanar también registros ya guardados así.
+     */
+    function isTruthyFlag(value) {
+        return ![false, "false", "0", 0, null, undefined, ""].includes(value);
+    }
+
     const app = Vue.createApp({
         mixins: [top.window.validateFormMixin],
         data() {
@@ -24,7 +34,7 @@ $(function () {
                     label: null,
                     required: 1,
                     placeholder: null,
-                    confirmEmail: true
+                    confirmEmail: "1"
                 };
                 if (this.dataParams.isEdit) {
                     let dataFormField = this.dataParams.dataFormField;
@@ -34,7 +44,7 @@ $(function () {
                         label: dataFormField.label,
                         required: dataFormField.required,
                         placeholder: dataFormField.setting.placeholder,
-                        confirmEmail: dataFormField.setting.confirmEmail ?? true
+                        confirmEmail: isTruthyFlag(dataFormField.setting.confirmEmail) ? "1" : "0"
                     };
                 }
                 return dataForm;
